@@ -3562,9 +3562,8 @@
   .section-title::before { color: var(--aksen); }
   /* =====================================================================
      v5 - PENTAS MENU (skrin lebar): ruang kiri/kanan panel menu diisi hiasan premium yang bergerak perlahan.
-       - bintang geometri Islam beremas + gelang biru laut (putaran berlawanan, 100-140 saat)
-       - aurora biru laut & champagne yang hanyut
-       - 14 zarah emas yang naik perlahan
+       - bintang geometri Islam beremas (putaran sangat perlahan, 200 saat) di belakang panel kaca
+       - aurora biru laut & champagne yang hanyut perlahan
        - panel menu & jubin dibesarkan pada skrin >=1200px supaya tidak kelihatan kecil di tengah
      Hanya transform/opacity dianimasikan (ringan). Dimatikan bila pengguna memilih "kurangkan gerakan".
   ===================================================================== */
@@ -3574,37 +3573,14 @@
   .pentas-bintang { position: absolute; top: 50%; width: 360px; height: 360px; margin-top: -180px; }
   .pentas-bintang.kiri  { left: calc(50% - var(--sh) - 270px); }
   .pentas-bintang.kanan { left: calc(50% + var(--sh) - 90px); }
-  .pentas-bintang .b-emas, .pentas-bintang .b-navy { position: absolute; background-position: center; background-repeat: no-repeat; background-size: contain; will-change: transform; }
-  .pentas-bintang .b-emas { inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23C9A24D' stroke-width='1.1'%3E%3Ccircle cx='100' cy='100' r='97' stroke-opacity='.55'/%3E%3Ccircle cx='100' cy='100' r='88' stroke-opacity='.35' stroke-dasharray='1.5 5'/%3E%3Crect x='34' y='34' width='132' height='132' stroke-opacity='.8'/%3E%3Crect x='34' y='34' width='132' height='132' transform='rotate(45 100 100)' stroke-opacity='.8'/%3E%3Crect x='56' y='56' width='88' height='88' stroke-opacity='.55'/%3E%3Crect x='56' y='56' width='88' height='88' transform='rotate(45 100 100)' stroke-opacity='.55'/%3E%3Ccircle cx='100' cy='100' r='24' stroke-opacity='.65'/%3E%3Ccircle cx='100' cy='100' r='3.2' fill='%23C9A24D' stroke='none' fill-opacity='.8'/%3E%3C/svg%3E"); filter: drop-shadow(0 0 10px rgba(201,162,77,.35)); animation: pentasPutar 140s linear infinite; }
-  .pentas-bintang .b-navy { inset: 26px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%231F4F9E' stroke-width='1'%3E%3Ccircle cx='100' cy='100' r='96' stroke-opacity='.28' stroke-dasharray='3 6'/%3E%3Ccircle cx='100' cy='100' r='70' stroke-opacity='.22'/%3E%3Cpath d='M100 4 L127 73 L196 100 L127 127 L100 196 L73 127 L4 100 L73 73 Z' stroke-opacity='.3'/%3E%3C/svg%3E"); animation: pentasPutar 100s linear infinite reverse; }
+  .pentas-bintang .b-emas { position: absolute; background-position: center; background-repeat: no-repeat; background-size: contain; will-change: transform; }
+  .pentas-bintang .b-emas { inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23C9A24D' stroke-width='1.1'%3E%3Ccircle cx='100' cy='100' r='97' stroke-opacity='.55'/%3E%3Ccircle cx='100' cy='100' r='88' stroke-opacity='.35' stroke-dasharray='1.5 5'/%3E%3Crect x='34' y='34' width='132' height='132' stroke-opacity='.8'/%3E%3Crect x='34' y='34' width='132' height='132' transform='rotate(45 100 100)' stroke-opacity='.8'/%3E%3Crect x='56' y='56' width='88' height='88' stroke-opacity='.55'/%3E%3Crect x='56' y='56' width='88' height='88' transform='rotate(45 100 100)' stroke-opacity='.55'/%3E%3Ccircle cx='100' cy='100' r='24' stroke-opacity='.65'/%3E%3Ccircle cx='100' cy='100' r='3.2' fill='%23C9A24D' stroke='none' fill-opacity='.8'/%3E%3C/svg%3E"); filter: drop-shadow(0 0 8px rgba(201,162,77,.28)); animation: pentasPutar 200s linear infinite; }
   .pentas-bintang.kanan .b-emas { animation-direction: reverse; }
-  .pentas-bintang.kanan .b-navy { animation-direction: normal; }
   @keyframes pentasPutar { to { transform: rotate(360deg); } }
-  .pentas-aurora { position: absolute; width: 420px; height: 300px; top: 50%; margin-top: -150px; border-radius: 50%; filter: blur(46px); opacity: .6; will-change: transform; animation: pentasHanyut 22s ease-in-out infinite alternate; }
+  .pentas-aurora { position: absolute; width: 420px; height: 300px; top: 50%; margin-top: -150px; border-radius: 50%; filter: blur(50px); opacity: .5; will-change: transform; animation: pentasHanyut 22s ease-in-out infinite alternate; }
   .pentas-aurora.a1 { left: calc(50% - var(--sh) - 330px); background: radial-gradient(closest-side, rgba(46,100,190,.36), transparent); }
   .pentas-aurora.a2 { left: calc(50% + var(--sh) - 90px); background: radial-gradient(closest-side, rgba(201,162,77,.34), transparent); animation-delay: -9s; }
   @keyframes pentasHanyut { from { transform: translate(-26px, 10px) scale(.94); } to { transform: translate(34px, -16px) scale(1.12); } }
-  .zarah { position: absolute; display: block; width: var(--s, 4px); height: var(--s, 4px); border-radius: 50%; background: radial-gradient(circle, #FFF4D2 0%, #E6CC85 46%, rgba(201,162,77,0) 74%); box-shadow: 0 0 9px rgba(230,204,133,.75); opacity: 0; will-change: transform, opacity; animation: zarahNaik var(--d, 20s) ease-in-out var(--t, 0s) infinite; }
-  @keyframes zarahNaik {
-    0%   { transform: translate(0, 0) scale(.6); opacity: 0; }
-    16%  { opacity: .9; }
-    62%  { opacity: .55; }
-    100% { transform: translate(14px, -200px) scale(1.15); opacity: 0; }
-  }
-  .zarah:nth-child(5) { left: 6%; top: 78%; --s: 3px; --d: 19s; --t: -0s; }
-  .zarah:nth-child(6) { left: 13%; top: 64%; --s: 5px; --d: 23s; --t: -3s; }
-  .zarah:nth-child(7) { left: 21%; top: 88%; --s: 4px; --d: 17s; --t: -6s; }
-  .zarah:nth-child(8) { left: 27%; top: 70%; --s: 3px; --d: 26s; --t: -9s; }
-  .zarah:nth-child(9) { left: 3%; top: 52%; --s: 4px; --d: 21s; --t: -12s; }
-  .zarah:nth-child(10) { left: 17%; top: 92%; --s: 6px; --d: 29s; --t: -2s; }
-  .zarah:nth-child(11) { left: 24%; top: 58%; --s: 3px; --d: 18s; --t: -14s; }
-  .zarah:nth-child(12) { left: 73%; top: 80%; --s: 4px; --d: 20s; --t: -1s; }
-  .zarah:nth-child(13) { left: 79%; top: 66%; --s: 6px; --d: 24s; --t: -4s; }
-  .zarah:nth-child(14) { left: 86%; top: 90%; --s: 3px; --d: 18s; --t: -7s; }
-  .zarah:nth-child(15) { left: 92%; top: 72%; --s: 5px; --d: 27s; --t: -10s; }
-  .zarah:nth-child(16) { left: 97%; top: 56%; --s: 3px; --d: 22s; --t: -13s; }
-  .zarah:nth-child(17) { left: 70%; top: 94%; --s: 4px; --d: 25s; --t: -5s; }
-  .zarah:nth-child(18) { left: 89%; top: 60%; --s: 4px; --d: 19s; --t: -16s; }
   @media (min-width: 1180px) {
     .pentas-hiasan { display: block; }
     .menu-grid { max-width: 1040px; padding: 26px 30px; gap: 16px; }
@@ -3619,8 +3595,7 @@
     .menu-grid { max-width: 1180px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .pentas-bintang .b-emas, .pentas-bintang .b-navy, .pentas-aurora, .zarah { animation: none !important; }
-    .zarah { opacity: .55; }
+    .pentas-bintang .b-emas, .pentas-aurora { animation: none !important; }
   }
 </style>
 </head>
@@ -3888,27 +3863,13 @@
         </div>
 
         <!-- Pentas menu: hiasan HANYA untuk skrin lebar (>=1180px) supaya ruang kiri/kanan panel menu tidak kosong -
-             bintang geometri Islam (rub el hizb) beremas yang berputar perlahan di belakang panel kaca (kelihatan kabur melalui
-             kaca = kesan "refraction"), cahaya aurora yang hanyut, dan zarah emas yang naik. Semua aria-hidden & tanpa kesan klik. -->
+             bintang geometri Islam (rub el hizb) beremas yang berputar sangat perlahan di belakang panel kaca (kelihatan kabur melalui
+             kaca = kesan "refraction") dan cahaya aurora yang hanyut. Ringkas & halus. Semua aria-hidden & tanpa kesan klik. -->
         <div class="menu-pentas">
           <div class="pentas-hiasan" aria-hidden="true">
             <span class="pentas-aurora a1"></span><span class="pentas-aurora a2"></span>
-            <span class="pentas-bintang kiri"><span class="b-emas"></span><span class="b-navy"></span></span>
-            <span class="pentas-bintang kanan"><span class="b-emas"></span><span class="b-navy"></span></span>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
-            <i class="zarah"></i>
+            <span class="pentas-bintang kiri"><span class="b-emas"></span></span>
+            <span class="pentas-bintang kanan"><span class="b-emas"></span></span>
           </div>
         <div class="menu-grid">
           <div class="menu-card c-green" onclick="navigasi('murid')">
