@@ -8,3 +8,6 @@ kod enjin dalam repo ini.
 - `config.js` - satu baris: alamat web app Google (`.../exec`).
 
 Pautan sekolah: `https://<akaun>.github.io/<repo>/?kod=KODSEKOLAH` (mengisi Kod Sekolah pada borang log masuk).
+
+**Hak cipta (c) 2026 Cikgu Rizwan Yusop. Hakcipta Terpelihara.** Repo ini dihos awam HANYA supaya paparan boleh dipaparkan
+melalui GitHub Pages; tiada lesen diberikan untuk menyalin, mengubah suai atau mengedar. Lihat `LICENSE.txt`.

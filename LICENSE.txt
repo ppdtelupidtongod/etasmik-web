@@ -1,0 +1,38 @@
+HAK CIPTA TERPELIHARA / ALL RIGHTS RESERVED
+===========================================
+
+Sistem E-Tasmik Daerah
+Hak cipta (c) 2026 Cikgu Rizwan Yusop. Hakcipta Terpelihara.
+
+
+BAHASA MELAYU
+-------------
+Kod sumber, reka bentuk antara muka, teks, susun atur, skema pangkalan data, logo dan semua bahan lain dalam
+sistem E-Tasmik Daerah (termasuk salinan dalam repositori ini dan sistem yang dihos) ialah hak milik Cikgu Rizwan
+Yusop dan dilindungi hak cipta, termasuk di bawah Akta Hak Cipta 1987 (Malaysia).
+
+TIADA LESEN DIBERIKAN. Tanpa kebenaran BERTULIS daripada pemilik, anda TIDAK dibenarkan untuk menyalin, mengubah
+suai, menterjemah, menggabungkan, menerbitkan, mengedar, menjual, memberi lesen kecil, menghos semula, atau
+menggunakan semula mana-mana bahagian sistem ini (kod, reka bentuk, teks atau data), sama ada sepenuhnya atau
+sebahagian. Dapat melihat kod ini (contohnya kerana ia dihos secara awam untuk paparan) tidak memberi anda sebarang
+hak untuk menggunakannya.
+
+PPD dan sekolah yang diberi akaun hanya dibenarkan menggunakan sistem yang dihos oleh pemilik bagi tujuan rasmi
+mereka. Pelanggaran boleh dikenakan tindakan undang-undang.
+
+Untuk kebenaran atau pertanyaan, hubungi pemilik: Cikgu Rizwan Yusop.
+
+
+ENGLISH
+-------
+The source code, user-interface design, text, layout, database schema, logos and all other material of the
+E-Tasmik Daerah system (including the copy in this repository and the hosted system) are the property of
+Cikgu Rizwan Yusop and are protected by copyright, including under the Copyright Act 1987 (Malaysia).
+
+NO LICENCE IS GRANTED. Without the owner's WRITTEN permission you may not copy, modify, translate, merge, publish,
+distribute, sell, sublicense, re-host or reuse any part of this system (code, design, text or data), in whole or in
+part. Being able to view this code (for example because it is publicly hosted for display) does not give you any
+right to use it.
+
+The district office (PPD) and schools that are given accounts may use the system hosted by the owner for their
+official purposes only. Infringement may result in legal action.
