@@ -4165,7 +4165,80 @@
   .logo-emblem.cerah .em-inti { box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 calc(var(--em) * -.09) calc(var(--em) * .16) rgba(0,0,0,.3), 0 calc(var(--em) * .08) calc(var(--em) * .16) calc(var(--em) * -.06) rgba(11,59,43,.55), 0 0 0 calc(var(--em) * .04) rgba(255,255,255,.92), 0 0 0 calc(var(--em) * .052) rgba(201,162,77,.6); }
   .app-topbar .navbar-brand .logo-emblem { margin: 0 2px 0 0; }
   .kelas-gate-brand .logo-emblem, .enrol-jenama .logo-emblem { flex: none; }
-  @media (prefers-reduced-motion: reduce) { .login-emblem { animation: none !important; } }</style>
+  @media (prefers-reduced-motion: reduce) { .login-emblem { animation: none !important; } }  /* =====================================================================
+     v12 - KONTRAS KAD & KOTAK (aduan: jubin/kad "tenggelam" kerana semuanya hijau tua).
+       Palet permata berkontras tinggi: ZAMRUD, EMAS, BURGUNDI, TEAL, TEMBAGA (+ zaitun untuk Tahun 6). Jiran sentiasa berlainan warna.
+       Jubin menu: Enrolmen=zamrud, Rekod=emas (teks gelap), Analisis=burgundi, PERKASA=teal, Sijil=tembaga.
+       Kad Tahun: 1 zamrud, 2 emas, 3 burgundi, 4 teal, 5 tembaga, 6 zaitun-lemon. Butang kelas ada jalur warna Tahun & latar kad dicerahkan.
+  ===================================================================== */
+  .menu-grid { background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(236,243,232,.72)); border: 1px solid rgba(14,64,46,.18); box-shadow: inset 0 1.5px 0 #fff, 0 26px 54px -30px rgba(10,50,36,.55); }
+  .menu-card { border: 1px solid rgba(255,255,255,.5); }
+  .menu-card .menu-card-title { text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+  .menu-card .menu-card-desc { color: rgba(255,255,255,.97); text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+  .menu-card.c-green  { background: linear-gradient(160deg, rgba(255,255,255,.3), rgba(255,255,255,0) 42%), linear-gradient(150deg, #1FA876, #0A5C3E); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), 0 18px 30px -14px rgba(10,92,62,.85); }
+  .menu-card.c-gold   { background: linear-gradient(160deg, rgba(255,255,255,.42), rgba(255,255,255,0) 44%), linear-gradient(150deg, #EDCB73, #B8861F); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.7), 0 18px 30px -14px rgba(150,104,18,.8); }
+  .menu-card.c-gold .menu-card-title { color: #2B1D04; text-shadow: 0 1px 0 rgba(255,255,255,.35); }
+  .menu-card.c-gold .menu-card-desc { color: rgba(43,29,4,.9); text-shadow: none; }
+  .menu-card.c-gold .menu-icon-circle { background: rgba(43,29,4,.14); border-color: rgba(43,29,4,.32); color: #2B1D04; }
+  .menu-card.c-red    { background: linear-gradient(160deg, rgba(255,255,255,.28), rgba(255,255,255,0) 42%), linear-gradient(150deg, #C73A5B, #6B1125); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.5), 0 18px 30px -14px rgba(107,17,37,.8); }
+  .menu-card.c-blue   { background: linear-gradient(160deg, rgba(255,255,255,.3), rgba(255,255,255,0) 42%), linear-gradient(150deg, #1BA3B0, #0B5B63); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.5), 0 18px 30px -14px rgba(11,91,99,.8); }
+  .menu-card.c-purple { background: linear-gradient(160deg, rgba(255,255,255,.3), rgba(255,255,255,0) 42%), linear-gradient(150deg, #DB7C2E, #7A370B); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.5), 0 18px 30px -14px rgba(122,55,11,.8); }
+  .perkasa-mini-badge { background: linear-gradient(150deg, #1BA3B0, #0B5B63); box-shadow: 0 10px 18px -10px rgba(11,91,99,.65); }
+
+  .tb-1 { background: linear-gradient(160deg, #1FA876, #0A5C3E); }
+  .tb-2 { background: linear-gradient(160deg, #C99A2E, #70490C); }
+  .tb-3 { background: linear-gradient(160deg, #C73A5B, #6B1125); }
+  .tb-4 { background: linear-gradient(160deg, #1BA3B0, #0B5B63); }
+  .tb-5 { background: linear-gradient(160deg, #DB7C2E, #7A370B); }
+  .tb-6 { background: linear-gradient(160deg, #84A53A, #34501A); }
+  .kelas-gate-btn.tb-1 i.fa-book-open { color: #17936A; }
+  .kelas-gate-btn.tb-2 i.fa-book-open { color: #B8892B; }
+  .kelas-gate-btn.tb-3 i.fa-book-open { color: #B02F4D; }
+  .kelas-gate-btn.tb-4 i.fa-book-open { color: #128895; }
+  .kelas-gate-btn.tb-5 i.fa-book-open { color: #C0681F; }
+  .kelas-gate-btn.tb-6 i.fa-book-open { color: #5F8228; }
+  .rumusan-kelas-pill.tb-1 { border-left-color: #17936A; }
+  .rumusan-kelas-pill.tb-2 { border-left-color: #B8892B; }
+  .rumusan-kelas-pill.tb-3 { border-left-color: #B02F4D; }
+  .rumusan-kelas-pill.tb-4 { border-left-color: #128895; }
+  .rumusan-kelas-pill.tb-5 { border-left-color: #C0681F; }
+  .rumusan-kelas-pill.tb-6 { border-left-color: #5F8228; }
+  .tahun-kad, .enrol-kelas-kepala { --w1: #1FA876; --w2: #0A5C3E; }
+  .tahun-kad[data-w="2"], .enrol-kelas-kepala[data-w="2"] { --w1: #C99A2E; --w2: #70490C; }
+  .tahun-kad[data-w="3"], .enrol-kelas-kepala[data-w="3"] { --w1: #C73A5B; --w2: #6B1125; }
+  .tahun-kad[data-w="4"], .enrol-kelas-kepala[data-w="4"] { --w1: #1BA3B0; --w2: #0B5B63; }
+  .tahun-kad[data-w="5"], .enrol-kelas-kepala[data-w="5"] { --w1: #DB7C2E; --w2: #7A370B; }
+  .tahun-kad[data-w="6"], .enrol-kelas-kepala[data-w="6"] { --w1: #84A53A; --w2: #34501A; }
+  .tahun-kad .tahun-info b, .enrol-kelas-tajuk { text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+
+  /* Enrolmen: badan kad kelabu-hijau muda supaya butang kelas (putih) timbul; jalur warna Tahun di kiri butang */
+  .tahun-grid-enrolmen .tahun-kad { background: linear-gradient(180deg, #FFFFFF, #F0F4EA); border-color: rgba(14,64,46,.22); }
+  .tahun-grid-enrolmen .tahun-kelas-senarai { background: linear-gradient(180deg, #E9F0E3, #E1EADA); }
+  .tahun-grid-enrolmen .kelas-gate-btn { background: #fff; border: 1px solid rgba(14,64,46,.26); border-left: 5px solid var(--w1); box-shadow: 0 2px 4px rgba(10,50,36,.12), 0 12px 20px -12px rgba(10,50,36,.5); }
+  .tahun-grid-enrolmen .kelas-gate-btn:hover { border-color: var(--w1); box-shadow: 0 0 0 3px rgba(14,64,46,.1), 0 16px 24px -12px rgba(10,50,36,.6); }
+  .tahun-kad .kg-bil { background: rgba(14,64,46,.1); color: #0C3526; }
+  /* Tasmik/Laporan (poster gelap): kad lebih cerah daripada latar + jalur warna Tahun di atas */
+  .tahun-grid-poster .tahun-kad { background: linear-gradient(160deg, rgba(255,255,255,.3), rgba(255,255,255,.16)); border: 1px solid rgba(230,204,133,.62); box-shadow: inset 0 3px 0 var(--w1), inset 0 1px 0 rgba(255,255,255,.3), 0 20px 36px -24px rgba(0,0,0,.7); }
+  .tahun-grid-poster .tahun-no { border-color: #F3E5B8; }
+  .tahun-grid-poster .kelas-gate-btn { border-left: 5px solid var(--w1); }
+  .tahun-grid-poster .tahun-info small, .tahun-grid-poster .kelas-gate-kosong { color: rgba(255,255,255,.9); opacity: 1; }
+  .tahun-grid-poster .kelas-gate-kosong { font-weight: 600; }
+
+  /* Konsol PPD: nada KPI berkontras */
+  .ppd-kpi[data-nada="indigo"] { --a: #2BC48C; --b: #0A5C3E; --n1: rgba(31,168,118,.20); }
+  .ppd-kpi[data-nada="violet"] { --a: #F2A04F; --b: #7A370B; --n1: rgba(219,124,46,.22); }
+  .ppd-kpi[data-nada="teal"]   { --a: #3CC9D6; --b: #0B5B63; --n1: rgba(27,163,176,.2); }
+
+  /* Dialog (modal Bootstrap & SweetAlert2): latar PEJAL (tiada kaca lut-sinar yang membiarkan teks belakang tembus) + pengepala berjalur emas */
+  .modal-backdrop { --bs-backdrop-bg: #04170F; --bs-backdrop-opacity: .72; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .modal-content { background: #FDFDF8 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; border: 1px solid rgba(14,64,46,.32) !important; box-shadow: 0 0 0 1px rgba(201,162,77,.45), 0 44px 90px -30px rgba(2,18,12,.85) !important; }
+  .modal-header { background: linear-gradient(180deg, #F2F7EC, #E5EEDD); border-bottom: 3px solid #C9A24D !important; border-radius: 27px 27px 0 0; }
+  .modal-title { color: var(--green-1); font-weight: 800; }
+  .modal-footer { background: #F0F4E9; border-top: 1px solid rgba(14,64,46,.16) !important; border-radius: 0 0 27px 27px; }
+  .modal-body .form-label, .modal-body label { color: #1B382D; font-weight: 700; }
+  .form-control, .form-select { border-color: rgba(14,64,46,.34); background-color: #fff; }
+  .swal2-popup { background: #FDFDF8 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; border: 1px solid rgba(14,64,46,.32) !important; box-shadow: 0 0 0 1px rgba(201,162,77,.45), 0 44px 90px -30px rgba(2,18,12,.85) !important; }
+  .swal2-container.swal2-backdrop-show { background: rgba(4,23,15,.7) !important; }</style>
 </head>
 <body>
 
