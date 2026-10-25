@@ -3597,6 +3597,87 @@
   @media (prefers-reduced-motion: reduce) {
     .pentas-bintang .b-emas, .pentas-aurora { animation: none !important; }
   }
+  /* =====================================================================
+     v6 - ATUR KELAS (editor kelas premium): pilih bilangan kelas, taip nama.
+       Digunakan dalam modal #modalSusunKelas; butang pada get Enrolmen & Tetapan Sekolah.
+  ===================================================================== */
+  .kelas-gate-atur { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: -4px 0 14px; position: relative; z-index: 2; }
+  .btn-atur-kelas {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; cursor: pointer;
+    font-weight: 800; font-size: .78rem; letter-spacing: .02em; color: #FFF4D2;
+    background: linear-gradient(180deg, rgba(214,178,94,.28), rgba(214,178,94,.12));
+    border: 1px solid rgba(230,204,133,.7);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 10px 22px -12px rgba(0,0,0,.6);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    transition: transform .4s var(--spring), box-shadow .3s ease, background .25s ease;
+  }
+  .btn-atur-kelas:hover { transform: translateY(-2px); background: linear-gradient(180deg, rgba(214,178,94,.42), rgba(214,178,94,.2)); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 14px 26px -12px rgba(0,0,0,.65); }
+  .btn-atur-kelas:active { transform: scale(.96); }
+  .kelas-gate-petua { max-width: 460px; text-align: center; font-size: .72rem; color: rgba(255,255,255,.92); background: rgba(255,255,255,.1); border: 1px dashed rgba(230,204,133,.6); border-radius: 14px; padding: 8px 14px; animation: pentasHanyutKecil 3.2s ease-in-out infinite alternate; }
+  .kelas-gate-petua i { color: #E6CC85; margin-right: 4px; }
+  @keyframes pentasHanyutKecil { from { transform: translateY(0); } to { transform: translateY(-2px); } }
+
+  /* get Pilih Kelas: sekolah dengan 1-2 kelas setahun - butang tidak melebar sepanjang baris */
+  .kelas-gate-kelas-list .kelas-gate-btn { max-width: 420px; }
+  .tb-all { background: linear-gradient(160deg, #D9AE52, #8E661A); }
+  .ke-pil-tahun { display: inline-block; padding: 3px 12px; border-radius: 999px; font-size: .72rem; font-weight: 800; color: #fff; letter-spacing: .02em; box-shadow: inset 0 1px 0 rgba(255,255,255,.4); white-space: nowrap; }
+  .ke-chip { display: inline-block; margin: 2px 4px 2px 0; padding: 3px 11px; border-radius: 999px; background: rgba(31,79,158,.09); border: 1px solid rgba(31,79,158,.18); color: var(--green-1); font-size: .78rem; font-weight: 700; }
+  .ke-kosong { color: var(--ink-faint); font-size: .76rem; font-style: italic; }
+  .ke-pr-baris { display: flex; gap: 10px; align-items: flex-start; padding: 5px 0; }
+  .ke-pr-baris > .ke-pil-tahun { flex: 0 0 auto; min-width: 82px; text-align: center; margin-top: 3px; }
+  .tetapan-kelas-ringkas { padding: 8px 12px; border-radius: 16px; background: rgba(255,255,255,.7); border: 1px solid rgba(31,79,158,.14); max-height: 190px; overflow: auto; }
+
+  .kelas-editor .modal-body { padding-top: 14px; }
+  .ke-mod { margin-bottom: 14px; }
+  .ke-salin { text-align: right; margin-bottom: 8px; }
+  .ke-salin button { border: 1px solid rgba(31,79,158,.25); background: rgba(255,255,255,.8); color: var(--green-2); border-radius: 999px; padding: 5px 14px; font-size: .76rem; font-weight: 700; transition: transform .35s var(--spring), box-shadow .25s; }
+  .ke-salin button:hover { transform: translateY(-1px); box-shadow: 0 8px 16px -10px rgba(15,39,80,.5); }
+  .ke-beza-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .ke-kumpulan { padding: 14px; border-radius: 20px; background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72)); border: 1px solid rgba(31,79,158,.14); box-shadow: var(--kilau-atas), 0 10px 24px -18px rgba(15,39,80,.4); }
+  .ke-kumpulan.ke-besar { padding: 18px; }
+  .ke-kepala { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .ke-judul { display: flex; align-items: center; gap: 10px; }
+  .ke-ringkas { font-size: .74rem; color: var(--ink-soft); font-weight: 600; }
+  .ke-kawal { display: flex; align-items: center; gap: 8px; }
+  .ke-lbl { font-size: .72rem; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+  .ke-stepper { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(15,39,80,.07); box-shadow: inset 0 1px 3px rgba(15,27,51,.12); }
+  .ke-stepper button { width: 34px; height: 34px; border: 0; border-radius: 50%; background: #fff; color: var(--green-1); font-size: 1.1rem; font-weight: 800; line-height: 1; box-shadow: 0 4px 10px -4px rgba(15,39,80,.4), inset 0 1px 0 #fff; transition: transform .35s var(--spring), opacity .2s; }
+  .ke-stepper button:hover:not(:disabled) { transform: scale(1.1); }
+  .ke-stepper button:active:not(:disabled) { transform: scale(.92); }
+  .ke-stepper button:disabled { opacity: .35; box-shadow: none; }
+  .ke-nilai { min-width: 38px; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; color: var(--green-1); font-variant-numeric: lining-nums tabular-nums; }
+  .ke-bil-pantas { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .ke-bil-pil { width: 40px; height: 40px; border-radius: 14px; border: 1px solid rgba(31,79,158,.2); background: rgba(255,255,255,.85); color: var(--green-1); font-weight: 800; font-size: 1rem; transition: transform .35s var(--spring), background .2s, color .2s, box-shadow .25s; }
+  .ke-bil-pil:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 16px -10px rgba(15,39,80,.5); }
+  .ke-bil-pil.aktif { background: linear-gradient(180deg, #2E68C2, #173F82); color: #fff; border-color: transparent; box-shadow: inset 0 1px 0 rgba(255,255,255,.38), 0 10px 20px -10px rgba(23,63,130,.75); }
+  .ke-bil-pil:disabled { opacity: .35; }
+  .ke-bil-teks { font-size: .76rem; color: var(--ink-soft); margin-left: 4px; }
+  .ke-nama-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+  .ke-beza-grid .ke-nama-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .ke-medan { position: relative; display: flex; align-items: center; gap: 8px; margin: 0; padding: 4px 6px 4px 8px; border-radius: 14px; background: rgba(255,255,255,.85); border: 1px solid rgba(31,79,158,.18); box-shadow: inset 0 1px 2px rgba(15,27,51,.06); transition: border-color .2s, box-shadow .25s; }
+  .ke-medan:focus-within { border-color: var(--aksen); box-shadow: 0 0 0 3px rgba(201,162,77,.25); }
+  .ke-medan.berkunci { background: rgba(31,79,158,.07); }
+  .ke-no { flex: 0 0 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: .68rem; font-weight: 800; color: #fff; background: linear-gradient(150deg, #3470C8, #143572); }
+  .ke-nama { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; padding: 7px 2px; font-weight: 700; color: var(--ink); }
+  .ke-nama::placeholder { color: var(--ink-faint); font-weight: 500; }
+  .ke-nama.ralat { background: rgba(196,64,95,.1); border-radius: 8px; box-shadow: 0 0 0 2px rgba(196,64,95,.45); }
+  .ke-nama[readonly] { cursor: not-allowed; color: var(--green-1); }
+  .ke-bendul { flex: 0 0 auto; font-style: normal; font-size: .64rem; font-weight: 800; color: var(--green-2); background: rgba(31,79,158,.12); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+  .ke-alat { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 10px; font-size: .72rem; color: var(--ink-faint); }
+  .ke-alat button { border: 0; background: transparent; color: var(--green-2); font-weight: 700; font-size: .74rem; padding: 3px 8px; border-radius: 999px; transition: background .2s; }
+  .ke-alat button:hover { background: rgba(31,79,158,.1); }
+  .ke-amaran { margin-top: 10px; padding: 8px 12px; border-radius: 14px; background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.35); color: #8A5A0B; font-size: .78rem; }
+  .ke-pratonton-wrap { margin-top: 16px; padding: 12px 14px; border-radius: 18px; background: linear-gradient(180deg, rgba(245,243,238,.9), rgba(255,255,255,.7)); border: 1px dashed rgba(201,162,77,.55); }
+  .ke-pratonton-tajuk { font-size: .72rem; font-weight: 800; color: var(--aksen-gelap); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+  @media (max-width: 767px) {
+    .ke-beza-grid { grid-template-columns: 1fr; }
+    .ke-kumpulan { padding: 12px; }
+    .ke-nama-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kelas-gate-petua { animation: none; }
+    .btn-atur-kelas, .ke-bil-pil, .ke-stepper button, .ke-salin button { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -3796,7 +3877,7 @@
           <div class="hero-corner-star tr" aria-hidden="true"></div>
           <div class="hero-corner-star bl" aria-hidden="true"></div>
           <div class="hero-corner-star br" aria-hidden="true"></div>
-          <div class="hero-ribbon" aria-hidden="true"><span class="r1" id="heroHashtag">#ETasmikKu</span><span class="r2">Gemilang</span></div>
+          <div class="hero-ribbon" aria-hidden="true"><span class="r1" id="heroHashtag">#ETasmikKu</span><span class="r2 d-none" id="heroHashtagKata"></span></div>
           <svg class="hero-skyline" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
             <g class="hero-skyline-stars" fill="currentColor">
               <circle cx="40" cy="14" r="1.6"/>
@@ -4283,6 +4364,10 @@
                 <div class="kelas-gate-title-pill">Pilih Kelas</div>
               </div>
               <div class="kelas-gate-subtitle">Sila pilih tahun dan kelas untuk enrolmen murid</div>
+              <div class="kelas-gate-atur d-none" id="wrapAturKelasGate">
+                <div class="kelas-gate-petua d-none" id="petuaAturKelas"><i class="fa-solid fa-wand-magic-sparkles"></i> Kelas masih <b>A, B, C</b> (lalai). Sesuaikan dengan sekolah anda dalam beberapa saat.</div>
+                <button type="button" class="btn-atur-kelas" id="btnAturKelasGate"><i class="fa-solid fa-sliders"></i> Atur Kelas Sekolah</button>
+              </div>
               <div class="kelas-gate-grid" id="gridKelasEnrolmen"></div>
               <div class="kelas-gate-footer">
                 <div class="kelas-gate-quote"><i class="fa-solid fa-book-quran"></i> Al-Quran Panduan Sepanjang Hayat</div>
@@ -4876,9 +4961,15 @@
               </div>
             </div>
             <div class="mb-3">
-              <label class="form-label small mb-1">Senarai Kelas (pisah dengan koma)</label>
-              <input type="text" class="form-control" id="inputTetapanKelas" placeholder="cth: Cemerlang, Bestari, Gemilang" autocomplete="off">
-              <div class="form-text">Menukar senarai ini tidak mengubah murid sedia ada; ia menentukan kelas yang boleh dipilih semasa enrolmen dan import.</div>
+              <label class="form-label small mb-1">Hashtag (pilihan)</label>
+              <input type="text" class="form-control" id="inputTetapanHashtag" placeholder="cth: Cemerlang" maxlength="24" autocomplete="off" spellcheck="false">
+              <div class="form-text" id="tetapanHashtagPratonton"></div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small mb-1">Kelas sekolah</label>
+              <div class="tetapan-kelas-ringkas" id="tetapanKelasRingkas"></div>
+              <button type="button" class="btn btn-sm btn-outline-success mt-2" id="btnAturKelasTetapan"><i class="fa-solid fa-sliders"></i> Atur Kelas</button>
+              <div class="form-text">Pilih bilangan kelas bagi setiap tahun dan taip namanya. Murid sedia ada tidak berubah.</div>
             </div>
             <div class="mb-2">
               <label class="form-label small mb-1">Logo sekolah</label>
@@ -4912,6 +5003,36 @@
     </div>
   </div>
 
+  <!-- Modal "Atur Kelas Sekolah" (Admin / Ketua Panitia): pilih bilangan kelas, taip nama; sama untuk semua tahun ATAU berbeza ikut tahun. -->
+  <div class="modal fade" id="modalSusunKelas" tabindex="-1" aria-labelledby="modalSusunKelasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content kelas-editor">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title" id="modalSusunKelasLabel"><i class="fa-solid fa-layer-group"></i> Atur Kelas Sekolah</h5>
+            <div class="small text-muted">Pilih bilangan kelas, kemudian taip nama kelas. Murid sedia ada tidak berubah.</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <div class="ppd-segmen ke-mod" id="keMod" role="tablist">
+            <button type="button" class="ppd-segmen-btn active" data-mod="sama"><i class="fa-solid fa-equals"></i> Sama untuk semua tahun</button>
+            <button type="button" class="ppd-segmen-btn" data-mod="beza"><i class="fa-solid fa-code-branch"></i> Berbeza ikut tahun</button>
+          </div>
+          <div id="keArea"></div>
+          <div class="ke-pratonton-wrap">
+            <div class="ke-pratonton-tajuk"><i class="fa-solid fa-eye"></i> Paparan akhir</div>
+            <div id="kePratonton" class="ke-pratonton"></div>
+          </div>
+          <div id="keRalat" class="text-danger small mt-2" role="alert"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-success shine-hover" id="btnSimpanKelas"><i class="fa-solid fa-floppy-disk"></i> Simpan Kelas</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modal "Daftar Sekolah" (PPD sahaja). Diletakkan DI LUAR <main> atas sebab stacking context yang sama
        seperti modal lain di sini. -->
   <div class="modal fade" id="modalDaftarSekolah" tabindex="-1" aria-labelledby="modalDaftarSekolahLabel" aria-hidden="true">
@@ -5432,6 +5553,7 @@ async function cubaSemulaClient_(fn, cubaan, jedaMs, hadMasaMs) {
 
 const apiGetTetapan = gs('getTetapan');
 const apiKemaskiniTetapan = gs('kemaskiniTetapan');
+const apiKemaskiniKelas = gs('kemaskiniKelas');
 const apiGetSenaraiMurid = gs('getSenaraiMurid');
 const apiTambahMurid = gs('tambahMurid');
 const apiKemaskiniMurid = gs('kemaskiniMurid');
@@ -5624,7 +5746,7 @@ function bersihkanPaparanData_() {
   rekodPenuhSemasa = null; rosterMuridLaporanCache = []; rosterMuridTasmikCache = []; enrolmenKelasAktif = null;
   cacheRumusanKelas_ = []; cacheRumusanTahun_ = []; cachePerkasa = []; senaraiGuruCache = [];
   try { bersihkanPaparanPpd_(); } catch (e) { /* abaikan */ }
-  elemenAnalisisAktif_ = null; analisisSemasa_ = null;
+  elemenAnalisisAktif_ = null; analisisSemasa_ = null; keState = null; keAsal_ = null;
   if (chartIqraQuranInstance) { try { chartIqraQuranInstance.destroy(); } catch (e) { /* abaikan */ } chartIqraQuranInstance = null; }
   if (chartPerkasaInstance) { try { chartPerkasaInstance.destroy(); } catch (e) { /* abaikan */ } chartPerkasaInstance = null; }
   ['gridKelasTasmik', 'gridKelasLaporan', 'gridKelasEnrolmen', 'rosterMuridTasmik', 'rosterMuridLaporan', 'senaraiMuridCard',
@@ -5776,6 +5898,28 @@ async function mulakanApp(papatSelamatDatang) {
   }
 }
 
+/** Kelas bagi satu Tahun: kelas khusus tahun itu jika ada, jika tidak senarai umum sekolah. */
+function kelasUntukTahun(tahun) {
+  const t = tetapanSistem || {};
+  const khusus = (t.KelasMengikutTahun || {})[String(tahun)];
+  return (khusus && khusus.length ? khusus : (t.Kelas || [])).map(String);
+}
+/** Semua nama kelas unik merentas semua tahun (untuk penapis). */
+function semuaKelasTetapanUnik() {
+  const th = (tetapanSistem && tetapanSistem.Tahun ? tetapanSistem.Tahun : []).map(String);
+  const hasil = [];
+  (th.length ? th : ['1']).forEach(function (t) { kelasUntukTahun(t).forEach(function (k) { if (hasil.indexOf(k) === -1) hasil.push(k); }); });
+  return hasil;
+}
+/** Isi pilihan Kelas dalam borang murid mengikut Tahun yang dipilih (kelas lama murid yang tidak lagi disenaraikan tetap boleh dipilih). */
+function isiPilihanKelasMurid_(tahun, kelasPilih) {
+  const sel = document.getElementById('inputMuridKelas');
+  const senarai = kelasUntukTahun(tahun).slice();
+  if (kelasPilih && senarai.indexOf(String(kelasPilih)) === -1) senarai.push(String(kelasPilih));
+  sel.innerHTML = senarai.map(function (k) { return '<option value="' + escapeHtml(k) + '">' + escapeHtml(k) + '</option>'; }).join('');
+  if (kelasPilih) sel.value = String(kelasPilih);
+}
+
 function isiDropdownTetapan() {
   const kategoriSel = document.getElementById('inputKategori');
   kategoriSel.innerHTML = tetapanSistem.SenaraiKategoriBacaan.map(k => `<option value="${k}">${k}</option>`).join('');
@@ -5783,8 +5927,7 @@ function isiDropdownTetapan() {
   const tahunOpts = tetapanSistem.Tahun.map(t => `<option value="${t}">Tahun ${t}</option>`).join('');
   document.getElementById('inputMuridTahun').innerHTML = tahunOpts;
 
-  const kelasOpts = tetapanSistem.Kelas.map(k => `<option value="${k}">${k}</option>`).join('');
-  document.getElementById('inputMuridKelas').innerHTML = kelasOpts;
+  isiPilihanKelasMurid_(document.getElementById('inputMuridTahun').value);
 
   document.getElementById('inputJuzuk').innerHTML =
     tetapanSistem.SenaraiJuzuk.map(j => `<option value="${j}">Juzuk ${j}</option>`).join('');
@@ -5861,6 +6004,7 @@ function isiDropdownMurid() {
   setupPilihanBertingkat('Transkrip');
   isiFilterKelasMurid();
   renderGridKelas('gridKelasEnrolmen', pilihKelasEnrolmen, true);
+  kemaskiniPetuaAturKelas_();
   renderGridKelas('gridKelasTasmik', pilihKelasTasmikDariGate);
   renderGridKelas('gridKelasLaporan', pilihKelasLaporanDariGate);
 }
@@ -5872,8 +6016,9 @@ function isiFilterKelasMurid() {
   if (!selTahun || !selKelas) return;
   selTahun.innerHTML = '<option value="">-- Semua Tahun --</option>' +
     tetapanSistem.Tahun.map(t => `<option value="${t}">Tahun ${t}</option>`).join('');
-  selKelas.innerHTML = '<option value="">-- Semua Kelas --</option>' +
-    tetapanSistem.Kelas.map(k => `<option value="${k}">${k}</option>`).join('');
+  // kelas dalam tetapan (semua tahun) + kelas yang masih ada murid (kelas lama yang sudah dibuang daripada senarai)
+  const gabung = [...new Set([...semuaKelasTetapanUnik(), ...(cacheSenaraiMurid || []).map(m => String(m.Kelas))])];
+  selKelas.innerHTML = '<option value="">-- Semua Kelas --</option>' + gabung.map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join('');
 }
 
 // ---------------------------------------------------------------
@@ -5890,7 +6035,7 @@ function renderGridKelas(containerId, onPilih, semuaKelasTetapan) {
   container.innerHTML = tahunSenarai.map((tahun, i) => {
     // Enrolmen: tunjuk SEMUA kelas dalam Tetapan (sekolah baharu belum ada murid); skrin lain: kelas yang sudah ada murid.
     const kelasSenarai = semuaKelasTetapan
-      ? [...new Set([...(tetapanSistem.Kelas || []).map(String), ...opsiKelasUntukTahun(tahun)])]
+      ? [...new Set([...kelasUntukTahun(tahun), ...opsiKelasUntukTahun(tahun).map(String)])]
       : opsiKelasUntukTahun(tahun);
     const warnaClass = WARNA_TAHUN_GATE[i % WARNA_TAHUN_GATE.length];
     const butang = kelasSenarai.length
@@ -7827,6 +7972,8 @@ document.getElementById('filterKelasMurid').addEventListener('change', terapkanF
 document.getElementById('carianMuridSenarai').addEventListener('input', terapkanFilterMurid);
 
 let modalMuridInstance = null;
+// Tukar Tahun dalam borang murid -> senarai Kelas mengikut kelas Tahun itu
+document.getElementById('inputMuridTahun').addEventListener('change', function () { isiPilihanKelasMurid_(this.value); });
 document.getElementById('btnTambahMurid').addEventListener('click', () => bukaModalMurid(null));
 function bukaModalMuridById(idMurid) {
   const murid = cacheSenaraiMurid.find(m => m.ID_Murid === idMurid);
@@ -7838,13 +7985,15 @@ function bukaModalMurid(murid) {
   if (murid) {
     document.getElementById('inputMuridNama').value = murid.Nama;
     document.getElementById('inputMuridTahun').value = murid.Tahun;
-    document.getElementById('inputMuridKelas').value = murid.Kelas;
+    isiPilihanKelasMurid_(murid.Tahun, murid.Kelas);
     document.getElementById('inputMuridJantina').value = murid.Jantina;
     document.getElementById('inputMuridKeperluanKhas').value = murid.Status_Keperluan_Khas || '';
   } else if (enrolmenKelasAktif) {
     // Tambah murid baharu dari dalam skrin kelas -> pra-isi Tahun/Kelas semasa
     document.getElementById('inputMuridTahun').value = enrolmenKelasAktif.Tahun;
-    document.getElementById('inputMuridKelas').value = enrolmenKelasAktif.Kelas;
+    isiPilihanKelasMurid_(enrolmenKelasAktif.Tahun, enrolmenKelasAktif.Kelas);
+  } else {
+    isiPilihanKelasMurid_(document.getElementById('inputMuridTahun').value);
   }
   if (!modalMuridInstance) modalMuridInstance = new bootstrap.Modal(document.getElementById('modalMurid'));
   modalMuridInstance.show();
@@ -8419,6 +8568,23 @@ function paparPratontonFoto_(uri) {
   document.getElementById('tetapanFotoNota').textContent = uri ? 'Foto sekolah anda.' : 'Lalai: foto Al-Quran.';
 }
 
+/** Pratonton hashtag dalam Tetapan: #<Singkatan>Ku<kata>. Kata = hashtag ditetapkan, atau daripada moto (1-3 perkataan), atau kosong. */
+function hashtagDaripadaMoto_(moto) {
+  const kata = String(moto || '').replace(/[^A-Za-z0-9 ]/g, ' ').trim().split(/\s+/).filter(function (k) { return k.length > 0; });
+  if (kata.length === 0 || kata.length > 3) return '';
+  return kata.map(function (k) { return k.charAt(0).toUpperCase() + k.slice(1).toLowerCase(); }).join('').slice(0, 24);
+}
+function kemaskiniPratontonHashtag_() {
+  const sing = (document.getElementById('inputTetapanSingkatan').value.trim() || singkatanSemasa_() || 'ETasmik').toUpperCase();
+  const jelas = document.getElementById('inputTetapanHashtag').value.trim().replace(/^#/, '');
+  const kata = jelas || hashtagDaripadaMoto_(document.getElementById('inputTetapanMoto').value);
+  document.getElementById('tetapanHashtagPratonton').innerHTML = 'Paparan: <b>#' + escapeHtml(sing) + 'Ku' + escapeHtml(kata) + '</b> ' +
+    (jelas ? '' : (kata ? '(dijana daripada moto)' : '(moto panjang/kosong: tanpa perkataan tambahan - taip hashtag di atas jika mahu)'));
+}
+['inputTetapanSingkatan', 'inputTetapanMoto', 'inputTetapanHashtag'].forEach(function (id) {
+  document.getElementById(id).addEventListener('input', kemaskiniPratontonHashtag_);
+});
+
 document.getElementById('btnTetapanSijil').addEventListener('click', function () {
   if (!modalTetapanSijilInstance) modalTetapanSijilInstance = new bootstrap.Modal(document.getElementById('modalTetapanSijil'));
   const t = tetapanSistem || {};
@@ -8427,7 +8593,10 @@ document.getElementById('btnTetapanSijil').addEventListener('click', function ()
   document.getElementById('inputTetapanGuruBesar').value = t.Guru_Besar || '';
   document.getElementById('inputTetapanSingkatan').value = t.Singkatan || '';
   document.getElementById('inputTetapanMoto').value = t.Moto || '';
-  document.getElementById('inputTetapanKelas').value = (t.Kelas || []).join(', ');
+  document.getElementById('inputTetapanHashtag').value = t.Hashtag_Tetapan || '';
+  kemaskiniPratontonHashtag_();
+  document.getElementById('tetapanKelasRingkas').innerHTML = ringkasKelasHtml_();
+  document.getElementById('btnAturKelasTetapan').classList.toggle('d-none', !(currentUser && (currentUser.Peranan === 'Admin' || currentUser.Peranan === 'Ketua Panitia')));
   document.getElementById('inputTetapanLogoFail').value = '';
   document.getElementById('inputTetapanFotoFail').value = '';
   logoTetapanBaharu_ = undefined;
@@ -8533,10 +8702,9 @@ document.getElementById('formTetapanSijil').addEventListener('submit', async fun
     Ketua_Panitia: document.getElementById('inputTetapanKetuaPanitia').value.trim(),
     Guru_Besar: document.getElementById('inputTetapanGuruBesar').value.trim(),
     Singkatan: document.getElementById('inputTetapanSingkatan').value.trim(),
-    Moto: document.getElementById('inputTetapanMoto').value.trim()
+    Moto: document.getElementById('inputTetapanMoto').value.trim(),
+    Hashtag: document.getElementById('inputTetapanHashtag').value.trim()      // kosong = ikut moto (jika 1-3 perkataan)
   };
-  const kelasTeks = document.getElementById('inputTetapanKelas').value.trim();
-  if (kelasTeks) data.Kelas = kelasTeks;                 // kosong = kekalkan senarai kelas sedia ada
   if (logoTetapanBaharu_ !== undefined) data.Logo = logoTetapanBaharu_;
   if (fotoTetapanBaharu_ !== undefined) data.Foto = fotoTetapanBaharu_;
   tunjukLoading('Mengemaskini tetapan...');
@@ -8558,6 +8726,284 @@ document.getElementById('formTetapanSijil').addEventListener('submit', async fun
     ralatEl.textContent = 'Gagal mengemaskini tetapan (' + mesejRalat + ').';
   }
 });
+
+// ---------------------------------------------------------------
+// ATUR KELAS (Admin / Ketua Panitia) - pilih bilangan kelas, taip nama kelas.
+// Dua mod: "Sama untuk semua tahun" (kebanyakan sekolah) atau "Berbeza ikut tahun" (cth. 1 kelas Tahun 1, 4 kelas Tahun 2).
+// Kelas yang sudah ada murid DIKUNCI (nama tidak boleh diubah/dibuang) supaya murid tidak terpisah daripada kelasnya.
+// Pelayan (kemaskiniKelas_) mengesahkan semula semuanya; UI ini hanya kemudahan.
+// ---------------------------------------------------------------
+const KE_MAKS = 12;
+let modalSusunKelasInstance = null;
+let keState = null;     // { mod: 'sama'|'beza', sama: [nama], tahun: { '1': [nama], ... } }
+
+function kelasSamaSemuaTahun_() {
+  const th = (tetapanSistem && tetapanSistem.Tahun ? tetapanSistem.Tahun : []).map(String);
+  if (!th.length) return true;
+  const asas = JSON.stringify(kelasUntukTahun(th[0]));
+  return th.every(function (t) { return JSON.stringify(kelasUntukTahun(t)) === asas; });
+}
+
+function keBilMurid_(tahun, nama) {
+  return (cacheSenaraiMurid || []).filter(function (m) { return String(m.Tahun) === String(tahun) && String(m.Kelas) === String(nama); }).length;
+}
+/** Bilangan murid dalam kelas `nama`: bagi satu tahun, atau (tahun 'sama') jumlah merentas semua tahun. */
+function keBilMuridKunci_(kunci, nama) {
+  if (kunci !== 'sama') return keBilMurid_(kunci, nama);
+  return (tetapanSistem.Tahun || []).reduce(function (n, t) { return n + keBilMurid_(t, nama); }, 0);
+}
+
+function keSenaraiSemasa_(kunci) { return kunci === 'sama' ? keState.sama : keState.tahun[kunci]; }
+
+/** Indeks terakhir kelas berkunci + 1 = bilangan minimum yang dibenarkan. */
+function keBilMinimum_(kunci) {
+  const s = keSenaraiSemasa_(kunci);
+  let min = 1;
+  s.forEach(function (nama, i) { if (nama && keBilMuridKunci_(kunci, nama) > 0) min = Math.max(min, i + 1); });
+  return min;
+}
+
+function keKumpulanHtml_(kunci) {
+  const senarai = keSenaraiSemasa_(kunci);
+  const sama = kunci === 'sama';
+  const tajuk = sama ? '<span class="ke-pil-tahun tb-all">Semua tahun</span>' : '<span class="ke-pil-tahun tb-' + kunci + '">Tahun ' + escapeHtml(kunci) + '</span>';
+  const min = keBilMinimum_(kunci);
+  const pantas = sama ? '<div class="ke-bil-pantas" role="group" aria-label="Pilih bilangan kelas">' +
+    [1, 2, 3, 4, 5, 6].map(function (n) {
+      return '<button type="button" class="ke-bil-pil' + (senarai.length === n ? ' aktif' : '') + '" data-bil="' + n + '"' + (n < min ? ' disabled title="Ada kelas yang mempunyai murid"' : '') + '>' + n + '</button>';
+    }).join('') + '<span class="ke-bil-teks">kelas setiap tahun</span></div>' : '';
+  const medan = senarai.map(function (nama, i) {
+    const bil = nama ? keBilMuridKunci_(kunci, nama) : 0;
+    return '<label class="ke-medan' + (bil ? ' berkunci' : '') + '"><span class="ke-no">' + (i + 1) + '</span>' +
+      '<input type="text" class="ke-nama" data-i="' + i + '" value="' + escapeHtml(nama) + '" maxlength="30" placeholder="' + (i === 0 ? 'cth: Meranti' : 'Nama kelas ' + (i + 1)) + '" autocomplete="off" spellcheck="false"' + (bil ? ' readonly' : '') + ' aria-label="Nama kelas ' + (i + 1) + '">' +
+      (bil ? '<em class="ke-bendul" title="Kelas ini ada murid, nama tidak boleh diubah"><i class="fa-solid fa-lock"></i> ' + bil + ' murid</em>' : '') + '</label>';
+  }).join('');
+  return '<div class="ke-kumpulan' + (sama ? ' ke-besar' : '') + '" data-kunci="' + escapeHtml(kunci) + '">' +
+    '<div class="ke-kepala"><div class="ke-judul">' + tajuk + '<span class="ke-ringkas">' + senarai.length + ' kelas</span></div>' +
+    '<div class="ke-kawal"><span class="ke-lbl">Bilangan</span><div class="ke-stepper">' +
+      '<button type="button" data-aksi="kurang" aria-label="Kurangkan bilangan kelas"' + (senarai.length <= min ? ' disabled' : '') + '>&minus;</button>' +
+      '<output class="ke-nilai">' + senarai.length + '</output>' +
+      '<button type="button" data-aksi="tambah" aria-label="Tambah bilangan kelas"' + (senarai.length >= KE_MAKS ? ' disabled' : '') + '>+</button></div></div></div>' +
+    pantas +
+    '<div class="ke-nama-grid">' + medan + '</div>' +
+    '<div class="ke-alat"><span>Isi pantas:</span><button type="button" data-isi="huruf">A, B, C&hellip;</button><button type="button" data-isi="nombor">1, 2, 3&hellip;</button><button type="button" data-isi="kosong">Kosongkan</button></div>' +
+  '</div>';
+}
+
+function keRender_() {
+  const area = document.getElementById('keArea');
+  document.querySelectorAll('#keMod .ppd-segmen-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.mod === keState.mod); });
+  const tahun = (tetapanSistem.Tahun || []).map(String);
+  if (keState.mod === 'sama') {
+    const beza = tahun.length > 1 && !kelasSamaSemuaTahun_();
+    area.innerHTML = keKumpulanHtml_('sama') + (beza ? '<div class="ke-amaran"><i class="fa-solid fa-triangle-exclamation"></i> Kelas semasa berbeza ikut tahun. Menyimpan dalam mod ini akan <b>menyamakan</b> kelas semua tahun mengikut senarai di atas.</div>' : '');
+  } else {
+    area.innerHTML = '<div class="ke-salin"><button type="button" data-aksi="salin"><i class="fa-regular fa-copy"></i> Salin Tahun ' + escapeHtml(tahun[0] || '1') + ' ke semua tahun</button></div>' +
+      '<div class="ke-beza-grid">' + tahun.map(keKumpulanHtml_).join('') + '</div>';
+  }
+  kePratonton_();
+}
+
+function kePratonton_() {
+  const tahun = (tetapanSistem.Tahun || []).map(String);
+  const kumpul = function (senarai) {
+    const nama = senarai.map(function (n) { return String(n).trim(); }).filter(Boolean);
+    return nama.length ? nama.map(function (n) { return '<span class="ke-chip">' + escapeHtml(n) + '</span>'; }).join('') : '<span class="ke-kosong">belum diisi</span>';
+  };
+  const baris = keState.mod === 'sama'
+    ? '<div class="ke-pr-baris"><span class="ke-pil-tahun tb-all">Tahun ' + escapeHtml(tahun[0] || '1') + (tahun.length > 1 ? ' - ' + escapeHtml(tahun[tahun.length - 1]) : '') + '</span><div>' + kumpul(keState.sama) + '</div></div>'
+    : tahun.map(function (t) { return '<div class="ke-pr-baris"><span class="ke-pil-tahun tb-' + escapeHtml(t) + '">Tahun ' + escapeHtml(t) + '</span><div>' + kumpul(keState.tahun[t]) + '</div></div>'; }).join('');
+  document.getElementById('kePratonton').innerHTML = baris;
+}
+
+function keTetapBilangan_(kunci, n) {
+  const s = keSenaraiSemasa_(kunci);
+  n = Math.max(keBilMinimum_(kunci), Math.min(KE_MAKS, n));
+  while (s.length < n) s.push('');
+  while (s.length > n) s.pop();
+}
+
+function keIsiPantas_(kunci, jenis) {
+  const s = keSenaraiSemasa_(kunci);
+  const dipakai = {};
+  s.forEach(function (n) { if (n && keBilMuridKunci_(kunci, n) > 0) dipakai[n.toLowerCase()] = true; });
+  let c = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] && keBilMuridKunci_(kunci, s[i]) > 0) continue;             // kelas berkunci tidak diubah
+    if (jenis === 'kosong') { s[i] = ''; continue; }
+    let nama;
+    do { c++; nama = jenis === 'huruf' ? String.fromCharCode(64 + ((c - 1) % 26) + 1) : String(c); } while (dipakai[nama.toLowerCase()]);
+    s[i] = nama; dipakai[nama.toLowerCase()] = true;
+  }
+}
+
+function keBukaEditor_() {
+  const tahun = (tetapanSistem.Tahun || []).map(String);
+  const klon = function (a) { return (a || []).map(String); };
+  keState = { mod: kelasSamaSemuaTahun_() ? 'sama' : 'beza', sama: klon(kelasUntukTahun(tahun[0])), tahun: {} };
+  tahun.forEach(function (t) { keState.tahun[t] = klon(kelasUntukTahun(t)); });
+  document.getElementById('keRalat').textContent = '';
+  keRender_();
+  if (!modalSusunKelasInstance) modalSusunKelasInstance = new bootstrap.Modal(document.getElementById('modalSusunKelas'));
+  modalSusunKelasInstance.show();
+}
+
+let keAsal_ = null;      // 'tetapan' = editor dibuka daripada modal Tetapan Sekolah (Tetapan dibuka semula selepas editor ditutup; input belum disimpan kekal)
+['btnAturKelasGate', 'btnAturKelasTetapan'].forEach(function (id) {
+  document.getElementById(id).addEventListener('click', function () {
+    const peranan = currentUser && currentUser.Peranan;
+    if (peranan !== 'Admin' && peranan !== 'Ketua Panitia') { toastRalat('Hanya Admin atau Ketua Panitia boleh mengatur kelas.'); return; }
+    if (id === 'btnAturKelasTetapan') {
+      // Dua modal bertindan menggugat perangkap fokus Bootstrap: tutup Tetapan dahulu, buka editor selepas ia tertutup.
+      const m = document.getElementById('modalTetapanSijil');
+      keAsal_ = 'tetapan';
+      m.addEventListener('hidden.bs.modal', function sekali() { m.removeEventListener('hidden.bs.modal', sekali); keBukaEditor_(); });
+      modalTetapanSijilInstance.hide();
+    } else { keAsal_ = null; keBukaEditor_(); }
+  });
+});
+document.getElementById('modalSusunKelas').addEventListener('hidden.bs.modal', function () {
+  if (keAsal_ === 'tetapan') {
+    keAsal_ = null;
+    document.getElementById('tetapanKelasRingkas').innerHTML = ringkasKelasHtml_();
+    modalTetapanSijilInstance.show();
+  }
+});
+
+document.getElementById('keMod').addEventListener('click', function (e) {
+  const btn = e.target.closest('[data-mod]');
+  if (!btn || !keState || btn.dataset.mod === keState.mod) return;
+  const tahun = (tetapanSistem.Tahun || []).map(String);
+  if (btn.dataset.mod === 'beza') tahun.forEach(function (t) { keState.tahun[t] = keState.sama.slice(); });
+  else keState.sama = (keState.tahun[tahun[0]] || keState.sama).slice();
+  keState.mod = btn.dataset.mod;
+  document.getElementById('keRalat').textContent = '';
+  keRender_();
+});
+
+document.getElementById('keArea').addEventListener('click', function (e) {
+  if (!keState) return;
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const kump = btn.closest('.ke-kumpulan');
+  if (btn.dataset.aksi === 'salin') {
+    const tahun = (tetapanSistem.Tahun || []).map(String);
+    const asas = keState.tahun[tahun[0]].slice();
+    tahun.slice(1).forEach(function (t) {
+      const s = keState.tahun[t]; const kunci = s.filter(function (n) { return n && keBilMurid_(t, n) > 0; });
+      keState.tahun[t] = asas.slice();
+      kunci.forEach(function (n) { if (keState.tahun[t].map(function (x) { return x.toLowerCase(); }).indexOf(n.toLowerCase()) === -1) keState.tahun[t].push(n); });
+    });
+    keRender_(); return;
+  }
+  if (!kump) return;
+  const kunci = kump.dataset.kunci;
+  if (btn.dataset.bil) keTetapBilangan_(kunci, Number(btn.dataset.bil));
+  else if (btn.dataset.aksi === 'kurang') keTetapBilangan_(kunci, keSenaraiSemasa_(kunci).length - 1);
+  else if (btn.dataset.aksi === 'tambah') keTetapBilangan_(kunci, keSenaraiSemasa_(kunci).length + 1);
+  else if (btn.dataset.isi) keIsiPantas_(kunci, btn.dataset.isi);
+  else return;
+  keRender_();
+  document.getElementById('keRalat').textContent = '';
+  const kosong = document.querySelector('#keArea .ke-kumpulan[data-kunci="' + kunci + '"] .ke-nama:not([readonly])');
+  const pertamaKosong = Array.prototype.slice.call(document.querySelectorAll('#keArea .ke-kumpulan[data-kunci="' + kunci + '"] .ke-nama:not([readonly])')).filter(function (i) { return !i.value; })[0];
+  if (btn.dataset.bil || btn.dataset.aksi === 'tambah') (pertamaKosong || kosong) && (pertamaKosong || kosong).focus();
+});
+
+document.getElementById('keArea').addEventListener('input', function (e) {
+  const inp = e.target.closest('.ke-nama');
+  if (!inp || !keState) return;
+  const kunci = inp.closest('.ke-kumpulan').dataset.kunci;
+  keSenaraiSemasa_(kunci)[Number(inp.dataset.i)] = inp.value;
+  inp.classList.remove('ralat');
+  document.getElementById('keRalat').textContent = '';
+  kePratonton_();
+});
+document.getElementById('keArea').addEventListener('keydown', function (e) {
+  if (e.key !== 'Enter' || !e.target.classList.contains('ke-nama')) return;
+  e.preventDefault();
+  const semua = Array.prototype.slice.call(document.querySelectorAll('#keArea .ke-nama:not([readonly])'));
+  const seterusnya = semua[semua.indexOf(e.target) + 1];
+  if (seterusnya) seterusnya.focus(); else document.getElementById('btnSimpanKelas').focus();
+});
+
+/** Semak keadaan editor di pelayar; pulang { payload } atau { ralat }. Kotak bermasalah ditandakan. */
+function keSemak_() {
+  document.querySelectorAll('#keArea .ke-nama').forEach(function (i) { i.classList.remove('ralat'); });
+  const tandakan = function (kunci, indeks) {
+    const i = document.querySelector('#keArea .ke-kumpulan[data-kunci="' + kunci + '"] .ke-nama[data-i="' + indeks + '"]');
+    if (i) { i.classList.add('ralat'); if (!document.querySelector('#keArea .ke-nama.ralat:focus')) i.focus(); }
+  };
+  const semak = function (kunci, label) {
+    const s = keSenaraiSemasa_(kunci).map(function (n) { return String(n).replace(/\s+/g, ' ').trim(); });
+    const dilihat = {};
+    for (let i = 0; i < s.length; i++) {
+      if (!s[i]) { tandakan(kunci, i); return { ralat: 'Isi nama bagi semua kelas ' + label + ', atau kurangkan bilangannya.' }; }
+      if (/[|]/.test(s[i])) { tandakan(kunci, i); return { ralat: 'Nama kelas tidak boleh mengandungi aksara "|".' }; }
+      const k = s[i].toLowerCase();
+      if (dilihat[k] !== undefined) { tandakan(kunci, i); tandakan(kunci, dilihat[k]); return { ralat: 'Nama kelas "' + s[i] + '" berulang ' + label + '.' }; }
+      dilihat[k] = i;
+    }
+    return { senarai: s };
+  };
+  if (keState.mod === 'sama') {
+    const r = semak('sama', 'bagi semua tahun');
+    return r.ralat ? r : { payload: { sama: r.senarai } };
+  }
+  const mengikutTahun = {};
+  const tahun = (tetapanSistem.Tahun || []).map(String);
+  for (let j = 0; j < tahun.length; j++) {
+    const r = semak(tahun[j], 'bagi Tahun ' + tahun[j]);
+    if (r.ralat) return r;
+    mengikutTahun[tahun[j]] = r.senarai;
+  }
+  return { payload: { mengikutTahun: mengikutTahun } };
+}
+
+document.getElementById('btnSimpanKelas').addEventListener('click', async function () {
+  if (!keState) return;
+  const ralatEl = document.getElementById('keRalat');
+  ralatEl.textContent = '';
+  const s = keSemak_();
+  if (s.ralat) { ralatEl.textContent = s.ralat; return; }
+  tunjukLoading('Menyimpan kelas...');
+  try {
+    const hasil = await apiKemaskiniKelas(s.payload);
+    tutupLoading();
+    if (!hasil.success) { ralatEl.textContent = hasil.message || 'Gagal menyimpan kelas.'; return; }
+    if (hasil.tetapan) {
+      tetapanSistem = hasil.tetapan;
+      isiDropdownTetapan();
+      isiDropdownMurid();
+      terapkanPenjenamaan_();
+    }
+    modalSusunKelasInstance.hide();
+    toastKejayaan(hasil.message || 'Kelas dikemas kini!');
+  } catch (err) {
+    tutupLoading();
+    ralatEl.textContent = 'Gagal menyimpan kelas (' + ((err && err.message) || 'ralat tidak diketahui') + ').';
+  }
+});
+
+/** Ringkasan kelas dalam modal Tetapan Sekolah. */
+function ringkasKelasHtml_() {
+  const tahun = (tetapanSistem && tetapanSistem.Tahun ? tetapanSistem.Tahun : []).map(String);
+  const chip = function (a) { return a.map(function (n) { return '<span class="ke-chip">' + escapeHtml(n) + '</span>'; }).join(''); };
+  if (!tahun.length) return '';
+  if (kelasSamaSemuaTahun_()) return '<div class="ke-pr-baris"><span class="ke-pil-tahun tb-all">Semua tahun</span><div>' + chip(kelasUntukTahun(tahun[0])) + '</div></div>';
+  return tahun.map(function (t) { return '<div class="ke-pr-baris"><span class="ke-pil-tahun tb-' + escapeHtml(t) + '">Tahun ' + escapeHtml(t) + '</span><div>' + chip(kelasUntukTahun(t)) + '</div></div>'; }).join('');
+}
+
+/** Petua pada get Enrolmen: kelas masih lalai A, B, C dan belum ada murid -> ajak guru mengatur kelas. */
+function kemaskiniPetuaAturKelas_() {
+  const peranan = currentUser && currentUser.Peranan;
+  const boleh = peranan === 'Admin' || peranan === 'Ketua Panitia';
+  const wrap = document.getElementById('wrapAturKelasGate');
+  if (!wrap) return;
+  wrap.classList.toggle('d-none', !boleh);
+  const lalai = kelasSamaSemuaTahun_() && JSON.stringify(kelasUntukTahun((tetapanSistem.Tahun || ['1'])[0])) === JSON.stringify(['A', 'B', 'C']);
+  document.getElementById('petuaAturKelas').classList.toggle('d-none', !(boleh && lalai && (cacheSenaraiMurid || []).length === 0));
+}
 
 // ---------------------------------------------------------------
 // ALAT "DIAGNOSTIK JUZUK" (Admin sahaja) - SEMENTARA, utk siasat sebab
@@ -8640,9 +9086,13 @@ function terapkanPenjenamaan_() {
   if (t.Foto) document.documentElement.style.setProperty('--foto-sekolah', 'url("' + t.Foto + '")');
   else document.documentElement.style.removeProperty('--foto-sekolah');
   const sing = singkatanSemasa_() || 'ETasmik';
+  // Hashtag = #<Singkatan>Ku<kata>; kata datang daripada tetapan sekolah (Hashtag, atau moto 1-3 perkataan) - TIDAK lagi "Gemilang" tetap.
+  const kataHashtag = t.Hashtag || '';
   const hero = document.getElementById('heroHashtag');
   if (hero) hero.textContent = '#' + sing + 'Ku';
-  document.querySelectorAll('.hashtag-gemilang').forEach(function (el) { el.textContent = '#' + sing + 'KuGemilang'; });
+  const heroKata = document.getElementById('heroHashtagKata');
+  if (heroKata) { heroKata.textContent = kataHashtag; heroKata.classList.toggle('d-none', !kataHashtag); }
+  document.querySelectorAll('.hashtag-gemilang').forEach(function (el) { el.textContent = '#' + sing + 'Ku' + kataHashtag; });
 }
 
 (function praIsiKodSekolah_() {
@@ -8718,7 +9168,8 @@ function parseImportMurid_(teks) {
 }
 
 document.getElementById('btnImportMurid').addEventListener('click', async function () {
-  const kelas = (tetapanSistem && tetapanSistem.Kelas) ? tetapanSistem.Kelas.join(', ') : '';
+  const tahunImp = (tetapanSistem && tetapanSistem.Tahun ? tetapanSistem.Tahun : []).map(String);
+  const kelas = kelasSamaSemuaTahun_() ? kelasUntukTahun(tahunImp[0] || '1').join(', ') : tahunImp.map(function (th) { return 'Thn ' + th + ': ' + kelasUntukTahun(th).join('/'); }).join('; ');
   const { value: teks, isConfirmed } = await Swal.fire({
     title: 'Import Senarai Murid', width: 640,
     html:
