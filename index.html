@@ -3617,8 +3617,6 @@
   .kelas-gate-petua i { color: #E6CC85; margin-right: 4px; }
   @keyframes pentasHanyutKecil { from { transform: translateY(0); } to { transform: translateY(-2px); } }
 
-  /* get Pilih Kelas: sekolah dengan 1-2 kelas setahun - butang tidak melebar sepanjang baris */
-  .kelas-gate-kelas-list .kelas-gate-btn { max-width: 420px; }
   .tb-all { background: linear-gradient(160deg, #D9AE52, #8E661A); }
   .ke-pil-tahun { display: inline-block; padding: 3px 12px; border-radius: 999px; font-size: .72rem; font-weight: 800; color: #fff; letter-spacing: .02em; box-shadow: inset 0 1px 0 rgba(255,255,255,.4); white-space: nowrap; }
   .ke-chip { display: inline-block; margin: 2px 4px 2px 0; padding: 3px 11px; border-radius: 999px; background: rgba(31,79,158,.09); border: 1px solid rgba(31,79,158,.18); color: var(--green-1); font-size: .78rem; font-weight: 700; }
@@ -3678,7 +3676,227 @@
     .kelas-gate-petua { animation: none; }
     .btn-atur-kelas, .ke-bil-pil, .ke-stepper button, .ke-salin button { transition: none; }
   }
-</style>
+  /* =====================================================================
+     v7 - DUA RUPA PILIH KELAS (kad tahun):
+       (a) ENROLMEN MURID  = halaman CERAH: hero tengah malam + statistik, kad tahun berjalur warna (header berwarna, badan cerah),
+                             lalu kepala kelas berwarna + bar carian + senarai murid berkad.
+       (b) TASMIK/LAPORAN  = poster GELAP (.kelas-gate) dengan kad tahun kaca gelap + butang putih.
+     Susun atur: 1 kelas setahun -> 6 kad (3x2 desktop, 2x3 tablet, 1 lajur telefon), setiap kad ada SATU butang besar (tiada baris
+     panjang separuh kosong); banyak kelas -> butang berlajur-auto dalam kad. Warna ikut Tahun melalui [data-w] (tanpa ungu).
+  ===================================================================== */
+  .tahun-kad, .enrol-kelas-kepala { --w1: #3470C8; --w2: #143572; }
+  .tahun-kad[data-w="2"], .enrol-kelas-kepala[data-w="2"] { --w1: #14A98E; --w2: #0A5A50; }
+  .tahun-kad[data-w="3"], .enrol-kelas-kepala[data-w="3"] { --w1: #C4405F; --w2: #761630; }
+  .tahun-kad[data-w="4"], .enrol-kelas-kepala[data-w="4"] { --w1: #3B9AB5; --w2: #17566D; }
+  .tahun-kad[data-w="5"], .enrol-kelas-kepala[data-w="5"] { --w1: #D9AE52; --w2: #8E661A; }
+  .tahun-kad[data-w="6"], .enrol-kelas-kepala[data-w="6"] { --w1: #5B6F92; --w2: #232E47; }
+
+  .tahun-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  @media (min-width: 700px) { .tahun-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } }
+  @media (min-width: 1100px) { .tahun-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; } }
+  .kelas-gate-grid.tahun-grid { flex-direction: initial; }
+
+  .tahun-no {
+    flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 15px;
+    font-family: var(--font-display); font-weight: 800; font-size: 1.45rem; line-height: 1; color: #fff;
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.42);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 6px 14px -8px rgba(0,0,0,.5);
+  }
+  .tahun-no, .tahun-info b, .enrol-kelas-tajuk, .enrol-stat b, .kg-bil b { font-variant-numeric: lining-nums tabular-nums; }
+  .tahun-info { min-width: 0; line-height: 1.2; }
+  .tahun-info b { display: block; font-family: var(--font-display); font-size: 1.08rem; font-weight: 800; letter-spacing: .01em; }
+  .tahun-info small { display: block; margin-top: 2px; font-size: .72rem; font-weight: 600; opacity: .82; }
+  .tahun-kelas-senarai { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 8px; }
+  .tahun-kad .kelas-gate-btn {
+    /* banyak kelas: nama (boleh bungkus) di atas, bilangan murid di bawah - nama TIDAK terpotong dalam kad sempit */
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nama chev" "bil chev"; row-gap: 5px; column-gap: 8px;
+    align-items: center; width: 100%; text-align: left; cursor: pointer;
+    padding: 10px 12px; border-radius: 14px; font-weight: 800; font-size: .9rem;
+    transition: transform .4s var(--spring), box-shadow .25s ease, border-color .2s ease;
+  }
+  .tahun-kad .kg-nama { grid-area: nama; min-width: 0; display: flex; align-items: center; gap: 8px; }
+  .tahun-kad .kg-nama i { flex: none; font-size: .82rem; color: var(--w1); }
+  .tahun-kad .kg-teks { min-width: 0; line-height: 1.15; overflow-wrap: anywhere; }
+  .tahun-kad .kg-bil {
+    grid-area: bil; justify-self: start; display: inline-flex; align-items: baseline; gap: 3px; padding: 2px 9px; border-radius: 999px;
+    background: rgba(31,79,158,.09); color: var(--green-1); font-size: .82rem;
+  }
+  .tahun-kad .kg-bil b { font-family: var(--font-display); font-weight: 800; font-size: .95rem; font-variant-numeric: lining-nums tabular-nums; }
+  .tahun-kad .kg-bil small { font-size: .6rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .75; }
+  .tahun-kad .kg-bil.kosong { background: rgba(124,135,159,.14); color: var(--ink-faint); }
+  .tahun-kad .kelas-gate-btn-chev { grid-area: chev; margin: 0; font-size: .68rem; opacity: .45; transition: transform .35s var(--spring), opacity .2s; }
+  .tahun-kad .kelas-gate-btn:hover .kelas-gate-btn-chev { transform: translateX(3px); opacity: .9; }
+  .tahun-kad .kelas-gate-btn:hover { transform: translateY(-2px); }
+  .tahun-kad .kelas-gate-btn:active { transform: scale(.97); }
+  .tahun-kelas-senarai.satu-kelas .kelas-gate-btn { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "nama bil chev"; column-gap: 12px; min-height: 60px; font-size: 1.08rem; padding: 12px 16px; border-radius: 16px; }
+  .tahun-kelas-senarai.satu-kelas .kg-nama i { font-size: 1rem; }
+  .tahun-kelas-senarai.satu-kelas .kg-bil b { font-size: 1.15rem; }
+
+  /* ---------- (a) ENROLMEN: kad tahun cerah, header berwarna ---------- */
+  .enrol-gate { max-width: 1240px; margin: 0 auto; }
+  .enrol-hero {
+    position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;
+    padding: 24px 28px; border-radius: 28px; color: #fff;
+    background: linear-gradient(150deg, #071126 0%, #0F2856 56%, #1E4E9C 126%);
+    box-shadow: 0 30px 56px -30px rgba(7,17,38,.8), 0 0 0 1px rgba(214,178,94,.42), inset 0 1.5px 0 rgba(255,255,255,.26);
+  }
+  .enrol-hero::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--gold-shine); opacity: .95; }
+  .enrol-hero-corak {
+    position: absolute; inset: 0; pointer-events: none; opacity: .9;
+    background:
+      radial-gradient(480px 260px at 92% -10%, rgba(214,178,94,.28), transparent 64%),
+      radial-gradient(520px 320px at -6% 120%, rgba(62,120,204,.4), transparent 62%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='none' stroke='%23E6CC85' stroke-width='1' stroke-opacity='.11'%3E%3Crect x='14' y='14' width='44' height='44' transform='rotate(0 36 36)'/%3E%3Crect x='14' y='14' width='44' height='44' transform='rotate(45 36 36)'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: auto, auto, 72px 72px;
+  }
+  .enrol-hero-kiri { position: relative; z-index: 1; flex: 1 1 380px; min-width: 0; }
+  .enrol-jenama { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .enrol-jenama img { width: 46px; height: 46px; border-radius: 50%; background: #fff; padding: 2px; flex: none; box-shadow: 0 0 0 2px rgba(230,204,133,.75), 0 8px 16px -8px rgba(0,0,0,.6); object-fit: contain; }
+  .enrol-jenama-teks { min-width: 0; }
+  .enrol-jenama-nama { font-family: var(--font-display); font-weight: 800; font-size: .98rem; line-height: 1.2; }
+  .enrol-jenama-moto { font-size: .64rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--gold-light); margin-top: 2px; }
+  .enrol-eyebrow {
+    display: inline-flex; align-items: center; gap: 7px; padding: 4px 14px; border-radius: 999px;
+    font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #FFF4D2;
+    background: rgba(214,178,94,.16); border: 1px solid rgba(230,204,133,.55);
+  }
+  .enrol-tajuk { margin: 12px 0 4px; font-size: clamp(1.45rem, 3.6vw, 2.2rem); font-weight: 800; line-height: 1.15; color: #fff; }
+  .enrol-sub { margin: 0; max-width: 520px; font-size: .86rem; color: rgba(255,255,255,.78); }
+  .enrol-statistik { position: relative; z-index: 1; flex: 0 1 330px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .enrol-stat {
+    display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 10px; align-items: center;
+    padding: 10px 12px; border-radius: 18px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 1px 0 rgba(255,255,255,.22);
+  }
+  .enrol-stat i { grid-row: 1 / span 2; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; font-size: .95rem; color: #E6CC85; background: rgba(214,178,94,.16); }
+  .enrol-stat b { font-family: var(--font-display); font-size: 1.45rem; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+  .enrol-stat span { font-size: .62rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+
+  .enrol-tindakan { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 16px 2px 10px; }
+  .btn-enrol {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; cursor: pointer;
+    font-weight: 800; font-size: .85rem; color: var(--green-1); white-space: nowrap;
+    background: rgba(255,255,255,.88); border: 1px solid rgba(31,79,158,.22);
+    box-shadow: var(--kilau-atas), 0 8px 18px -12px rgba(15,39,80,.45);
+    transition: transform .4s var(--spring), box-shadow .25s ease, background .2s ease;
+  }
+  .btn-enrol:hover { transform: translateY(-2px); box-shadow: var(--kilau-atas), 0 14px 24px -12px rgba(15,39,80,.55); }
+  .btn-enrol:active { transform: scale(.96); }
+  .btn-enrol.utama { color: #fff; border-color: transparent; background: linear-gradient(180deg, #2E68C2, #173F82); box-shadow: inset 0 1px 0 rgba(255,255,255,.38), 0 12px 24px -12px rgba(23,63,130,.8); }
+  .btn-enrol.emas { color: #4A3508; border-color: rgba(181,139,52,.6); background: linear-gradient(180deg, #F4E3A8, #D3B36A); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 12px 22px -12px rgba(133,101,29,.7); }
+  .enrol-petua {
+    margin: 0 2px 14px; padding: 9px 14px; border-radius: 14px; font-size: .8rem; color: #6B4E10;
+    background: linear-gradient(180deg, rgba(244,230,184,.55), rgba(244,230,184,.28)); border: 1px dashed rgba(181,139,52,.6);
+  }
+  .enrol-petua i { color: var(--aksen-gelap); margin-right: 5px; }
+
+  .tahun-grid-enrolmen { margin-top: 14px; }
+  .tahun-grid-enrolmen .tahun-kad {
+    position: relative; overflow: hidden; border-radius: 24px; color: var(--ink);
+    background: rgba(255,255,255,.84); border: 1px solid rgba(31,79,158,.14);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
+    box-shadow: var(--kilau-atas), var(--bayang-1);
+    transition: transform .45s var(--spring), box-shadow .3s ease;
+  }
+  .tahun-grid-enrolmen .tahun-kad:hover { transform: translateY(-3px); box-shadow: var(--kilau-atas), var(--bayang-2); }
+  .tahun-grid-enrolmen .tahun-kad::after {
+    content: attr(data-tahun); position: absolute; top: -6px; right: 14px; pointer-events: none;
+    font-family: var(--font-display); font-weight: 800; font-size: 4.4rem; line-height: 1; color: rgba(255,255,255,.16);
+  }
+  .tahun-grid-enrolmen .tahun-kad-kepala {
+    position: relative; display: flex; align-items: center; gap: 12px; padding: 14px 16px; color: #fff;
+    background: linear-gradient(135deg, var(--w1), var(--w2));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .tahun-grid-enrolmen .tahun-kelas-senarai { padding: 14px; }
+  .tahun-grid-enrolmen .kelas-gate-btn { color: var(--ink); background: #fff; border: 1px solid rgba(31,79,158,.16); box-shadow: 0 1px 2px rgba(15,27,51,.05), 0 8px 16px -12px rgba(15,39,80,.4); }
+  .tahun-grid-enrolmen .kelas-gate-btn:hover { border-color: var(--w1); box-shadow: 0 0 0 3px rgba(31,79,158,.08), 0 14px 22px -14px rgba(15,39,80,.55); }
+
+  .enrol-kaki { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 18px 4px 6px; }
+  .enrol-quote { font-size: .76rem; font-style: italic; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 7px; }
+  .enrol-quote i { color: var(--aksen); }
+  .enrol-kaki .kelas-gate-hashtag { color: var(--green-1); background: rgba(31,79,158,.08); border-color: rgba(31,79,158,.2); }
+  .enrol-kaki .kelas-gate-hashtag:empty { display: none; }
+
+  /* ---------- selepas kelas dipilih: kepala berwarna + bar alat + senarai murid ---------- */
+  .enrol-kelas-kepala {
+    position: relative; overflow: hidden; display: flex; align-items: center; justify-content: flex-start; gap: 14px 22px; flex-wrap: wrap;
+    padding: 16px 20px; border-radius: 24px; color: #fff; margin-bottom: 14px;
+    background: linear-gradient(135deg, var(--w1), var(--w2));
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,.34), 0 24px 44px -26px rgba(7,17,38,.7), 0 0 0 1px rgba(214,178,94,.3);
+  }
+  .enrol-kelas-kepala::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--gold-shine); }
+  .enrol-kelas-info { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .enrol-kelas-kepala .tahun-no { width: 54px; height: 54px; font-size: 1.7rem; border-radius: 18px; }
+  .enrol-kelas-tajuk { font-family: var(--font-display); font-size: clamp(1.15rem, 3vw, 1.6rem); font-weight: 800; line-height: 1.15; }
+  .enrol-kelas-meta { margin-top: 3px; font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.82); }
+  .btn-kembali-kelas {
+    display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+    font-weight: 800; font-size: .78rem; color: #fff; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.4);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+    transition: transform .4s var(--spring), background .2s ease;
+  }
+  .btn-kembali-kelas:hover { transform: translateX(-2px); background: rgba(255,255,255,.26); }
+  .btn-kembali-kelas:active { transform: scale(.95); }
+  .enrol-bar-alat { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .enrol-carian { position: relative; flex: 1 1 240px; min-width: 0; }
+  .enrol-carian i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: .85rem; pointer-events: none; }
+  .enrol-carian input { padding-left: 40px; height: 44px; border-radius: 999px; border: 1px solid rgba(31,79,158,.2); background: rgba(255,255,255,.9); box-shadow: inset 0 1px 3px rgba(15,27,51,.06); font-weight: 600; }
+  .enrol-carian input:focus { border-color: var(--aksen); box-shadow: 0 0 0 3px rgba(201,162,77,.25); }
+
+  #senaraiMuridCard { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  @media (min-width: 1000px) { #senaraiMuridCard { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; } }
+  #senaraiMuridCard .murid-item { margin-bottom: 0; padding: 10px 14px; border-radius: 18px; }
+  #senaraiMuridCard .murid-bil { width: 28px; height: 28px; font-size: .74rem; background: rgba(31,79,158,.1); }
+  .murid-avatar { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; font-size: 1rem; color: var(--ink-soft); background: rgba(124,135,159,.14); }
+  .murid-avatar.l { color: #1F4F9E; background: rgba(31,79,158,.12); }
+  .murid-avatar.p { color: #B03452; background: rgba(196,64,95,.12); }
+  .murid-item-teks strong { display: block; font-size: .92rem; color: var(--ink); line-height: 1.25; overflow-wrap: anywhere; }
+  .murid-meta { display: block; margin-top: 2px; font-size: .72rem; color: var(--ink-faint); font-weight: 600; }
+  .murid-khas { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; padding: 1px 8px; border-radius: 999px; font-size: .66rem; font-weight: 800; color: #6B4E10; background: rgba(244,230,184,.7); border: 1px solid rgba(181,139,52,.45); }
+  .murid-tindakan { display: flex; gap: 6px; flex: none; }
+  .murid-tindakan .btn { width: 34px; height: 34px; padding: 0; border-radius: 50%; display: grid; place-items: center; }
+  .murid-kosong { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 30px 16px; border-radius: 22px; color: var(--ink-soft); background: rgba(255,255,255,.7); border: 1px dashed rgba(31,79,158,.28); }
+  .murid-kosong i { font-size: 1.8rem; color: var(--aksen); }
+  .murid-kosong b { color: var(--green-1); font-family: var(--font-display); font-size: 1.05rem; }
+  .murid-kosong span { font-size: .8rem; }
+
+  /* ---------- (b) TASMIK / LAPORAN: poster gelap, kad kaca gelap, butang putih ---------- */
+  .tahun-grid-poster .tahun-kad {
+    position: relative; padding: 14px; border-radius: 22px; color: #fff;
+    background: linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
+    border: 1px solid rgba(230,204,133,.3);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 20px 36px -24px rgba(0,0,0,.7);
+    transition: transform .45s var(--spring), border-color .25s ease, box-shadow .3s ease;
+  }
+  .tahun-grid-poster .tahun-kad:hover { transform: translateY(-3px); border-color: rgba(230,204,133,.62); box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 26px 44px -24px rgba(0,0,0,.75), 0 0 28px -8px rgba(214,178,94,.35); }
+  .tahun-grid-poster .tahun-kad-kepala { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .tahun-grid-poster .tahun-no { border-radius: 50%; border: 2px solid rgba(230,204,133,.85); background: linear-gradient(150deg, var(--w1), var(--w2)); }
+  .tahun-grid-poster .tahun-info b { color: #FFF4D2; }
+  .tahun-grid-poster .tahun-info small { color: rgba(255,255,255,.72); opacity: 1; }
+  .tahun-grid-poster .kelas-gate-btn { color: var(--ink); background: rgba(255,255,255,.95); border: 0; box-shadow: 0 6px 14px -8px rgba(0,0,0,.6); }
+  .tahun-grid-poster .kelas-gate-btn:hover { box-shadow: 0 0 0 2px rgba(230,204,133,.8), 0 12px 20px -10px rgba(0,0,0,.7); }
+  .tahun-grid-poster .kelas-gate-kosong { display: block; padding: 10px 2px; }
+
+  @media (max-width: 575px) {
+    .enrol-hero { padding: 18px 16px; border-radius: 22px; gap: 16px; }
+    .enrol-sub { display: none; }
+    .enrol-jenama { margin-bottom: 12px; }
+    .enrol-statistik { flex-basis: 100%; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .enrol-stat { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; row-gap: 2px; padding: 8px 4px; border-radius: 14px; }
+    .enrol-stat i { display: none; }
+    .enrol-stat b { font-size: 1.25rem; }
+    .enrol-stat span { font-size: .54rem; letter-spacing: .06em; }
+    .enrol-tindakan .btn-enrol { flex: 1 1 calc(50% - 5px); justify-content: center; padding: 10px 12px; font-size: .8rem; }
+    .enrol-tindakan .btn-enrol.utama { flex-basis: 100%; }
+    .enrol-kelas-kepala { padding: 14px 14px; border-radius: 20px; }
+    .tahun-kelas-senarai { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tahun-kad, .tahun-kad .kelas-gate-btn, .tahun-kad .kelas-gate-btn-chev, .btn-enrol, .btn-kembali-kelas { transition: none; }
+    .tahun-kad:hover, .tahun-kad .kelas-gate-btn:hover { transform: none; }
+  }</style>
 </head>
 <body>
 
@@ -4054,7 +4272,7 @@
                 <div class="kelas-gate-title-pill">Pilih Kelas</div>
               </div>
               <div class="kelas-gate-subtitle">Sila pilih tahun dan kelas untuk kemasukan tasmik</div>
-              <div class="kelas-gate-grid" id="gridKelasTasmik"></div>
+              <div class="kelas-gate-grid tahun-grid tahun-grid-poster" id="gridKelasTasmik"></div>
               <div class="kelas-gate-footer">
                 <div class="kelas-gate-quote"><i class="fa-solid fa-book-quran"></i> Al-Quran Panduan Sepanjang Hayat</div>
                 <span class="kelas-gate-hashtag hashtag-gemilang"></span>
@@ -4242,7 +4460,7 @@
                 <div class="kelas-gate-title-pill">Pilih Kelas</div>
               </div>
               <div class="kelas-gate-subtitle">Sila pilih tahun dan kelas untuk lihat laporan murid</div>
-              <div class="kelas-gate-grid" id="gridKelasLaporan"></div>
+              <div class="kelas-gate-grid tahun-grid tahun-grid-poster" id="gridKelasLaporan"></div>
               <div class="kelas-gate-footer">
                 <div class="kelas-gate-quote"><i class="fa-solid fa-book-quran"></i> Al-Quran Panduan Sepanjang Hayat</div>
                 <span class="kelas-gate-hashtag hashtag-gemilang"></span>
@@ -4334,62 +4552,59 @@
       <!-- ===================== MODUL: ENROLMEN MURID ===================== -->
       <section id="view-murid" class="top-view d-none">
         <div class="p-3">
-          <!-- --- GET "PILIH KELAS" (gaya poster Al-Quran + emas berganda) --- -->
-          <div class="kelas-gate" id="gateKelasEnrolmen">
-            <div class="kelas-gate-bgphoto" aria-hidden="true"></div>
-            <div class="kelas-gate-pattern" aria-hidden="true"></div>
-            <svg class="kelas-gate-palm" viewBox="0 0 130 160" fill="currentColor" aria-hidden="true">
-              <path d="M120 150 C 90 120, 60 90, 40 40 C 70 70, 90 100, 120 150 Z"/>
-              <path d="M125 150 C 100 110, 80 70, 75 20 C 95 60, 110 100, 125 150 Z"/>
-              <path d="M115 150 C 75 130, 45 110, 15 70 C 55 90, 90 110, 115 150 Z"/>
-              <path d="M128 150 C 112 100, 105 60, 110 15 C 120 55, 128 100, 128 150 Z"/>
-              <path d="M110 150 C 65 140, 30 130, 5 100 C 45 115, 80 130, 110 150 Z"/>
-            </svg>
-            <div class="kelas-gate-content">
-              <div class="kelas-gate-header">
-                <div class="kelas-gate-brand">
+          <!-- --- ENROLMEN: halaman cerah "kad tahun" (BERBEZA daripada get poster gelap Tasmik/Laporan) --- -->
+          <div class="enrol-gate" id="gateKelasEnrolmen">
+            <div class="enrol-hero">
+              <div class="enrol-hero-corak" aria-hidden="true"></div>
+              <div class="enrol-hero-kiri">
+                <div class="enrol-jenama">
                   <img data-logo-sekolah="1" alt="">
-                  <div class="kelas-gate-brand-text">
-                    <div class="kelas-gate-brand-name nama-sekolah"></div>
-                    <div class="kelas-gate-brand-tagline moto-sekolah"></div>
+                  <div class="enrol-jenama-teks">
+                    <div class="enrol-jenama-nama nama-sekolah"></div>
+                    <div class="enrol-jenama-moto moto-sekolah"></div>
                   </div>
                 </div>
-                <div class="kelas-gate-system">
-                  <div class="kelas-gate-system-name">Sistem E-Tasmik</div>
-                  <div class="kelas-gate-system-unit">Panitia Pendidikan Islam</div>
-                  <span class="kelas-gate-badge"><i class="fa-solid fa-user-plus"></i> Enrolmen Murid</span>
-                </div>
+                <div class="enrol-eyebrow"><i class="fa-solid fa-user-plus"></i> Enrolmen Murid</div>
+                <h2 class="enrol-tajuk">Pilih kelas untuk urus murid</h2>
+                <p class="enrol-sub">Tekan satu kelas untuk melihat, menambah atau menyunting murid.</p>
               </div>
-              <div class="kelas-gate-title-wrap">
-                <div class="kelas-gate-title-pill">Pilih Kelas</div>
-              </div>
-              <div class="kelas-gate-subtitle">Sila pilih tahun dan kelas untuk enrolmen murid</div>
-              <div class="kelas-gate-atur d-none" id="wrapAturKelasGate">
-                <div class="kelas-gate-petua d-none" id="petuaAturKelas"><i class="fa-solid fa-wand-magic-sparkles"></i> Kelas masih <b>A, B, C</b> (lalai). Sesuaikan dengan sekolah anda dalam beberapa saat.</div>
-                <button type="button" class="btn-atur-kelas" id="btnAturKelasGate"><i class="fa-solid fa-sliders"></i> Atur Kelas Sekolah</button>
-              </div>
-              <div class="kelas-gate-grid" id="gridKelasEnrolmen"></div>
-              <div class="kelas-gate-footer">
-                <div class="kelas-gate-quote"><i class="fa-solid fa-book-quran"></i> Al-Quran Panduan Sepanjang Hayat</div>
-                <span class="kelas-gate-hashtag hashtag-gemilang"></span>
-              </div>
+              <div class="enrol-statistik" id="enrolStatistik" aria-live="polite"></div>
+            </div>
+
+            <div class="enrol-tindakan">
+              <button type="button" class="btn-enrol utama" id="btnTambahMuridGate"><i class="fa-solid fa-user-plus"></i> Tambah Murid</button>
+              <button type="button" class="btn-enrol d-none" id="btnImportMuridGate"><i class="fa-solid fa-file-import"></i> Import Murid</button>
+              <button type="button" class="btn-enrol emas d-none" id="btnAturKelasGate"><i class="fa-solid fa-sliders"></i> Atur Kelas Sekolah</button>
+            </div>
+            <div class="enrol-petua d-none" id="petuaAturKelas"><i class="fa-solid fa-wand-magic-sparkles"></i> Kelas masih <b>A, B, C</b> (lalai). Tekan <b>Atur Kelas Sekolah</b> untuk menyesuaikannya dengan sekolah anda.</div>
+
+            <div class="tahun-grid tahun-grid-enrolmen" id="gridKelasEnrolmen"></div>
+
+            <div class="enrol-kaki">
+              <span class="enrol-quote"><i class="fa-solid fa-book-quran"></i> Al-Quran Panduan Sepanjang Hayat</span>
+              <span class="kelas-gate-hashtag hashtag-gemilang"></span>
             </div>
           </div>
-
           <div class="d-none">
             <select id="filterTahunMurid"><option value="">-- Semua Tahun --</option></select>
             <select id="filterKelasMurid"><option value="">-- Semua Kelas --</option></select>
           </div>
 
           <div id="wrapEnrolmenSelepasGate" class="d-none">
-            <div class="kelas-aktif-bar">
-              <span id="enrolmenKelasAktifLabel"></span>
-              <button type="button" class="btn-tukar-kelas" onclick="tukarKelasEnrolmen()"><i class="fa-solid fa-rotate-left"></i> Tukar Kelas</button>
+            <div class="enrol-kelas-kepala" id="enrolKelasKepala" data-w="1">
+              <button type="button" class="btn-kembali-kelas" onclick="tukarKelasEnrolmen()"><i class="fa-solid fa-arrow-left"></i> Semua kelas</button>
+              <div class="enrol-kelas-info">
+                <span class="tahun-no" id="enrolKelasNo">1</span>
+                <div>
+                  <div class="enrol-kelas-tajuk" id="enrolmenKelasAktifLabel"></div>
+                  <div class="enrol-kelas-meta" id="enrolKelasMeta"></div>
+                </div>
+              </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
-              <input type="text" class="form-control" id="carianMuridSenarai" placeholder="Cari nama murid...">
-              <button class="btn btn-sm btn-outline-success flex-shrink-0 d-none" id="btnImportMurid" title="Import senarai murid daripada Excel/CSV"><i class="fa-solid fa-file-import"></i> Import</button>
-              <button class="btn btn-sm btn-success flex-shrink-0" id="btnTambahMurid"><i class="fa-solid fa-plus"></i> Tambah</button>
+            <div class="enrol-bar-alat">
+              <div class="enrol-carian"><i class="fa-solid fa-magnifying-glass"></i><input type="search" class="form-control" id="carianMuridSenarai" placeholder="Cari nama murid..." autocomplete="off"></div>
+              <button class="btn-enrol d-none" id="btnImportMurid" title="Import senarai murid daripada Excel/CSV"><i class="fa-solid fa-file-import"></i> Import</button>
+              <button class="btn-enrol utama" id="btnTambahMurid"><i class="fa-solid fa-plus"></i> Tambah Murid</button>
             </div>
             <div id="senaraiMuridCard"></div>
           </div>
@@ -5752,7 +5967,7 @@ function bersihkanPaparanData_() {
   ['gridKelasTasmik', 'gridKelasLaporan', 'gridKelasEnrolmen', 'rosterMuridTasmik', 'rosterMuridLaporan', 'senaraiMuridCard',
     'senaraiBelumTasmik', 'rumusanKelasWrap', 'rumusanTahunWrap', 'areaTranskripCetak', 'areaLaporanKelasCetak', 'senaraiPerkasa',
     'senaraiAnalisisDashboard', 'hasilCarianLaporan', 'senaraiGuruList', 'rekodMuridRingkasan', 'formTasmikMuridChip',
-    'infoRekodTerakhir', 'rekodMuridChip'].forEach(function (id) { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
+    'infoRekodTerakhir', 'rekodMuridChip', 'enrolStatistik', 'enrolKelasMeta'].forEach(function (id) { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
   ['#tableLaporan tbody', '#tableRekodPenuhTasmik tbody', '#tableRekodPenuhHafazan tbody', '#tablePpdSekolah tbody'].forEach(function (s) {
     const el = document.querySelector(s); if (el) el.innerHTML = '';
   });
@@ -6004,7 +6219,9 @@ function isiDropdownMurid() {
   setupPilihanBertingkat('Transkrip');
   isiFilterKelasMurid();
   renderGridKelas('gridKelasEnrolmen', pilihKelasEnrolmen, true);
+  kemaskiniStatistikEnrolmen_();
   kemaskiniPetuaAturKelas_();
+  kemaskiniKepalaKelasEnrolmen_();
   renderGridKelas('gridKelasTasmik', pilihKelasTasmikDariGate);
   renderGridKelas('gridKelasLaporan', pilihKelasLaporanDariGate);
 }
@@ -6028,6 +6245,20 @@ function isiFilterKelasMurid() {
 // ---------------------------------------------------------------
 const WARNA_TAHUN_GATE = ['tb-1', 'tb-2', 'tb-3', 'tb-4', 'tb-5', 'tb-6'];
 
+/** Bilangan murid dalam satu Tahun+Kelas / satu Tahun (daripada cache enrolmen). */
+function bilMuridKelas_(tahun, kelas) {
+  return (cacheSenaraiMurid || []).filter(m => String(m.Tahun) === String(tahun) && String(m.Kelas) === String(kelas)).length;
+}
+function bilMuridTahun_(tahun) {
+  return (cacheSenaraiMurid || []).filter(m => String(m.Tahun) === String(tahun)).length;
+}
+
+/**
+ * Grid "KAD TAHUN" (bukan lagi baris panjang): setiap Tahun ialah satu kad dengan lencana Tahun, jumlah murid & kelas, dan
+ * butang kelas (nama + bilangan murid). 1 kelas setahun -> 6 kad tersusun 3x2 (desktop) / 2x3 / 1 lajur (telefon);
+ * banyak kelas -> butang disusun dua lajur dalam kad. Kulit ikut kelas bekas: .tahun-grid-enrolmen (cerah) atau
+ * .tahun-grid-poster (gelap, Tasmik/Laporan).
+ */
 function renderGridKelas(containerId, onPilih, semuaKelasTetapan) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -6037,33 +6268,64 @@ function renderGridKelas(containerId, onPilih, semuaKelasTetapan) {
     const kelasSenarai = semuaKelasTetapan
       ? [...new Set([...kelasUntukTahun(tahun), ...opsiKelasUntukTahun(tahun).map(String)])]
       : opsiKelasUntukTahun(tahun);
-    const warnaClass = WARNA_TAHUN_GATE[i % WARNA_TAHUN_GATE.length];
+    const w = (i % 6) + 1;
+    const th = escapeHtml(String(tahun));
     const butang = kelasSenarai.length
-      ? kelasSenarai.map(k => `
-          <button type="button" class="kelas-gate-btn ${warnaClass}" data-tahun="${escapeHtml(String(tahun))}" data-kelas="${escapeHtml(k)}">
-            <i class="fa-solid fa-book-open"></i><span>${escapeHtml(k)}</span><i class="fa-solid fa-chevron-right kelas-gate-btn-chev"></i>
-          </button>`).join('')
+      ? kelasSenarai.map(k => {
+          const bil = bilMuridKelas_(tahun, k);
+          return `
+          <button type="button" class="kelas-gate-btn" data-tahun="${th}" data-kelas="${escapeHtml(k)}" aria-label="Tahun ${th} ${escapeHtml(k)}, ${bil} murid">
+            <span class="kg-nama"><i class="fa-solid fa-book-open"></i><span class="kg-teks">${escapeHtml(k)}</span></span>
+            <span class="kg-bil${bil ? '' : ' kosong'}"><b>${bil}</b><small>murid</small></span>
+            <i class="fa-solid fa-chevron-right kelas-gate-btn-chev"></i>
+          </button>`;
+        }).join('')
       : '<span class="kelas-gate-kosong">Tiada murid didaftarkan</span>';
     return `
-      <div class="kelas-gate-row">
-        <div class="kelas-gate-tahun-badge ${warnaClass}">
-          <span class="kgt-label">TAHUN</span><span class="kgt-num">${escapeHtml(String(tahun))}</span>
-        </div>
-        <div class="kelas-gate-kelas-list">${butang}</div>
-      </div>`;
+      <section class="tahun-kad" data-w="${w}" data-tahun="${th}">
+        <header class="tahun-kad-kepala">
+          <span class="tahun-no" aria-hidden="true">${th}</span>
+          <div class="tahun-info"><b>Tahun ${th}</b><small>${bilMuridTahun_(tahun)} murid &middot; ${kelasSenarai.length} kelas</small></div>
+        </header>
+        <div class="tahun-kelas-senarai${kelasSenarai.length >= 3 ? ' dua-lajur' : (kelasSenarai.length === 1 ? ' satu-kelas' : '')}">${butang}</div>
+      </section>`;
   }).join('');
   container.querySelectorAll('.kelas-gate-btn').forEach(btn => {
     btn.addEventListener('click', function () { onPilih(this.dataset.tahun, this.dataset.kelas); });
   });
 }
 
+/** Statistik pada hero Enrolmen: jumlah murid, kelas, lelaki, perempuan. */
+function kemaskiniStatistikEnrolmen_() {
+  const el = document.getElementById('enrolStatistik');
+  if (!el) return;
+  const murid = cacheSenaraiMurid || [];
+  const jantina = j => murid.filter(m => String(m.Jantina || '').charAt(0).toUpperCase() === j).length;
+  const bilKelas = (tetapanSistem.Tahun || []).reduce((n, t) => n + new Set([...kelasUntukTahun(t), ...opsiKelasUntukTahun(t).map(String)]).size, 0);
+  const petak = (ikon, nilai, label) => `<div class="enrol-stat"><i class="fa-solid ${ikon}"></i><b>${nilai}</b><span>${label}</span></div>`;
+  el.innerHTML = petak('fa-children', murid.length, 'Murid') + petak('fa-layer-group', bilKelas, 'Kelas') +
+    petak('fa-person', jantina('L'), 'Lelaki') + petak('fa-person-dress', jantina('P'), 'Perempuan');
+}
+
+/** Tajuk, nombor, warna & ringkasan kelas yang sedang dibuka (selepas kelas dipilih). */
+function kemaskiniKepalaKelasEnrolmen_() {
+  if (!enrolmenKelasAktif) return;
+  const { Tahun, Kelas } = enrolmenKelasAktif;
+  const senarai = (cacheSenaraiMurid || []).filter(m => String(m.Tahun) === String(Tahun) && String(m.Kelas) === String(Kelas));
+  const jantina = j => senarai.filter(m => String(m.Jantina || '').charAt(0).toUpperCase() === j).length;
+  const idx = Math.max(0, (tetapanSistem.Tahun || []).map(String).indexOf(String(Tahun)));
+  document.getElementById('enrolKelasKepala').dataset.w = String((idx % 6) + 1);
+  document.getElementById('enrolKelasNo').textContent = Tahun;
+  document.getElementById('enrolmenKelasAktifLabel').textContent = 'Tahun ' + Tahun + ' ' + Kelas;
+  document.getElementById('enrolKelasMeta').textContent = senarai.length + ' murid \u00b7 ' + jantina('L') + ' lelaki \u00b7 ' + jantina('P') + ' perempuan';
+}
 function pilihKelasEnrolmen(tahun, kelas) {
   enrolmenKelasAktif = { Tahun: tahun, Kelas: kelas };
   document.getElementById('filterTahunMurid').value = tahun;
   document.getElementById('filterKelasMurid').value = kelas;
   terapkanFilterMurid();
   document.getElementById('gateKelasEnrolmen').classList.add('d-none');
-  document.getElementById('enrolmenKelasAktifLabel').textContent = 'Tahun ' + tahun + ' ' + kelas;
+  kemaskiniKepalaKelasEnrolmen_();
   document.getElementById('wrapEnrolmenSelepasGate').classList.remove('d-none');
 }
 function tukarKelasEnrolmen() {
@@ -6071,6 +6333,8 @@ function tukarKelasEnrolmen() {
   document.getElementById('wrapEnrolmenSelepasGate').classList.add('d-none');
   document.getElementById('gateKelasEnrolmen').classList.remove('d-none');
   document.getElementById('carianMuridSenarai').value = '';
+  renderGridKelas('gridKelasEnrolmen', pilihKelasEnrolmen, true);       // segarkan bilangan murid pada kad
+  kemaskiniStatistikEnrolmen_();
 }
 
 function pilihKelasTasmikDariGate(tahun, kelas) {
@@ -7930,7 +8194,7 @@ async function muatSenaraiMuridView() {
 function renderSenaraiMuridCard(senarai) {
   const container = document.getElementById('senaraiMuridCard');
   if (senarai.length === 0) {
-    container.innerHTML = '<p class="text-muted text-center">Tiada murid lagi. Sila tambah murid baharu.</p>';
+    container.innerHTML = '<div class="murid-kosong"><i class="fa-solid fa-users-slash"></i><b>Belum ada murid</b><span>Tekan <b>Tambah Murid</b> atau <b>Import</b> untuk mendaftarkan murid dalam kelas ini.</span></div>';
     return;
   }
   // NOTA (arahan tuan): "Letak nombor. Nombor bilangan di setiap nama.
@@ -7939,22 +8203,27 @@ function renderSenaraiMuridCard(senarai) {
   // yg sedia ada disusun abjad di Code.gs) supaya nombor 1..N bermakna &
   // konsisten spt senarai nama rasmi, bukan ikut urutan rekod disimpan.
   const tersusun = senarai.slice().sort((a, b) => String(a.Nama).localeCompare(String(b.Nama)));
-  container.innerHTML = tersusun.map((m, i) => `
+  container.innerHTML = tersusun.map((m, i) => {
+    const j = String(m.Jantina || '').charAt(0).toUpperCase();
+    const ikonJ = j === 'P' ? 'fa-person-dress' : 'fa-person';
+    const kelasJ = j === 'P' ? 'p' : (j === 'L' ? 'l' : '');
+    return `
         <div class="murid-item">
           <div class="murid-item-info">
             <span class="murid-bil">${i + 1}</span>
+            <span class="murid-avatar ${kelasJ}" title="${j === 'P' ? 'Perempuan' : (j === 'L' ? 'Lelaki' : '')}"><i class="fa-solid ${ikonJ}"></i></span>
             <div class="murid-item-teks">
-              <strong>${escapeHtml(m.Nama)}</strong><br>
-              <small class="text-muted">Thn ${m.Tahun} ${m.Kelas} ${m.Status_Keperluan_Khas ? '&middot; ' + escapeHtml(m.Status_Keperluan_Khas) : ''}</small>
+              <strong>${escapeHtml(m.Nama)}</strong>
+              <small class="murid-meta">Tahun ${escapeHtml(String(m.Tahun))} &middot; ${escapeHtml(String(m.Kelas))}${m.Status_Keperluan_Khas ? ' <span class="murid-khas"><i class="fa-solid fa-heart"></i> ' + escapeHtml(m.Status_Keperluan_Khas) + '</span>' : ''}</small>
             </div>
           </div>
-          <div>
-            <button class="btn btn-sm btn-outline-secondary" onclick="bukaModalMuridById('${m.ID_Murid}')"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn btn-sm btn-outline-danger" onclick="padamMuridUI('${m.ID_Murid}')"><i class="fa-solid fa-trash"></i></button>
+          <div class="murid-tindakan">
+            <button class="btn btn-sm btn-outline-secondary" onclick="bukaModalMuridById('${escapeHtml(m.ID_Murid)}')" title="Sunting"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn btn-sm btn-outline-danger" onclick="padamMuridUI('${escapeHtml(m.ID_Murid)}')" title="Padam"><i class="fa-solid fa-trash"></i></button>
           </div>
-        </div>`).join('');
-}
-/** Gabungkan penapis Tahun + Kelas + carian nama untuk senarai Enrolmen Murid */
+        </div>`;
+  }).join('');
+}/** Gabungkan penapis Tahun + Kelas + carian nama untuk senarai Enrolmen Murid */
 function terapkanFilterMurid() {
   const tahun = document.getElementById('filterTahunMurid').value;
   const kelas = document.getElementById('filterKelasMurid').value;
@@ -8994,17 +9263,19 @@ function ringkasKelasHtml_() {
   return tahun.map(function (t) { return '<div class="ke-pr-baris"><span class="ke-pil-tahun tb-' + escapeHtml(t) + '">Tahun ' + escapeHtml(t) + '</span><div>' + chip(kelasUntukTahun(t)) + '</div></div>'; }).join('');
 }
 
-/** Petua pada get Enrolmen: kelas masih lalai A, B, C dan belum ada murid -> ajak guru mengatur kelas. */
+/** Gate Enrolmen: butang Atur Kelas/Import hanya untuk Admin & Ketua Panitia; petua bila kelas masih lalai A, B, C dan belum ada murid. */
 function kemaskiniPetuaAturKelas_() {
   const peranan = currentUser && currentUser.Peranan;
   const boleh = peranan === 'Admin' || peranan === 'Ketua Panitia';
-  const wrap = document.getElementById('wrapAturKelasGate');
-  if (!wrap) return;
-  wrap.classList.toggle('d-none', !boleh);
+  ['btnAturKelasGate', 'btnImportMuridGate'].forEach(function (id) { const b = document.getElementById(id); if (b) b.classList.toggle('d-none', !boleh); });
+  const petua = document.getElementById('petuaAturKelas');
+  if (!petua) return;
   const lalai = kelasSamaSemuaTahun_() && JSON.stringify(kelasUntukTahun((tetapanSistem.Tahun || ['1'])[0])) === JSON.stringify(['A', 'B', 'C']);
-  document.getElementById('petuaAturKelas').classList.toggle('d-none', !(boleh && lalai && (cacheSenaraiMurid || []).length === 0));
+  petua.classList.toggle('d-none', !(boleh && lalai && (cacheSenaraiMurid || []).length === 0));
 }
 
+document.getElementById('btnTambahMuridGate').addEventListener('click', function () { bukaModalMurid(null); });
+document.getElementById('btnImportMuridGate').addEventListener('click', function () { document.getElementById('btnImportMurid').click(); });
 // ---------------------------------------------------------------
 // ALAT "DIAGNOSTIK JUZUK" (Admin sahaja) - SEMENTARA, utk siasat sebab
 // chip "Belum Direkod" (mod Rumusan "Ikut Tahun") tunjuk bilangan lebih
