@@ -3099,6 +3099,328 @@
   @media (max-width: 480px) {
     .menu-hero { padding-top: 66px; }
   }
+
+  /* =====================================================================
+     v3 - "PREMIUM + KACA CECAIR" (liquid glass). Lapisan reka bentuk TERAKHIR di atas semua yang lain.
+       - Aksen: champagne-emas (halus, jarang) di atas indigo tengah malam - menggantikan ungu terang.
+       - Kaca cecair ala iOS/macOS: permukaan lut-sinar berlapis, kabur + ketepuan, kilau tepi atas (specular),
+         jejari besar, bayang berlapis, gerakan "spring". Permukaan bertulisan kekal >=70% legap supaya mudah dibaca.
+       - Kabur (backdrop-filter) hanya pada skrin >=768px untuk kad; telefon guna permukaan legap-tinggi (laju & jelas).
+     Token lama kekal sebagai NAMA; hanya nilai berubah.
+  ===================================================================== */
+  :root {
+    --ink: #15132F; --ink-soft: #484B72; --ink-faint: #868BB0;
+    --paper: #F1F2FA; --paper-2: #E8EAF6;
+    --green-1: #1F1B5E; --green-2: #3B35C4; --green-3: #6A5FF0;
+    --gold: #D8B765; --gold-dark: #8A6A1F; --gold-light: #F3E5B8;
+    --aksen: #CDAB5A; --aksen-terang: #F5E6B6; --aksen-gelap: #8A6A1F;
+    --gold-shine: linear-gradient(100deg, #A9822F 0%, #E6CC85 22%, #FFF4D2 38%, #E4C877 54%, #B58B34 80%, #E6CC85 100%);
+    --card-line: rgba(99,102,241,.16); --card-line-strong: rgba(79,70,229,.36);
+
+    --kaca-tepi: rgba(255,255,255,.82);
+    --kaca-kabur: blur(24px) saturate(185%);
+    --spring: cubic-bezier(.34,1.56,.64,1);
+    --lembut: cubic-bezier(.22,1,.36,1);
+    --kilau-atas: inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 0 1px rgba(255,255,255,.35), inset 0 -1px 0 rgba(90,86,200,.10);
+    --bayang-1: 0 1px 2px rgba(22,20,70,.05), 0 14px 32px -18px rgba(38,34,140,.34);
+    --bayang-2: 0 2px 4px rgba(22,20,70,.06), 0 26px 56px -26px rgba(38,34,140,.46);
+
+    --glass-surface: rgba(255,255,255,.76);
+    --glass-surface-strong: rgba(255,255,255,.88);
+    --glass-border: rgba(255,255,255,.8);
+    --glass-shadow: var(--bayang-1);
+    --glass-blur: blur(24px) saturate(185%);
+    --glass-blur-soft: blur(16px) saturate(170%);
+    --shadow-card: var(--bayang-1);
+    --shadow-pop: var(--bayang-2);
+    --radius-lg: 28px; --radius-md: 20px; --radius-sm: 14px;
+  }
+
+  /* ---------------- kanvas aurora ---------------- */
+  body {
+    background:
+      radial-gradient(900px 620px at 6% -8%, rgba(112,104,255,.30), transparent 62%),
+      radial-gradient(860px 600px at 104% 2%, rgba(205,150,255,.26), transparent 60%),
+      radial-gradient(900px 700px at 72% 108%, rgba(255,196,150,.20), transparent 62%),
+      radial-gradient(760px 560px at -4% 96%, rgba(110,215,230,.20), transparent 62%),
+      linear-gradient(180deg, #F6F7FE 0%, #EDEFFA 100%);
+    background-attachment: fixed;
+  }
+  .bg-orbs .orb { filter: blur(90px); }
+  .orb-1 { opacity: .30; } .orb-2 { opacity: .24; } .orb-3 { opacity: .18; } .orb-4 { opacity: .16; }
+  ::selection { background: rgba(205,171,90,.35); color: #1F1B5E; }
+  h1, h2, h3, h4, h5, h6 { color: var(--green-1); }
+
+  /* ---------------- kad & permukaan kaca ---------------- */
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.72));
+    border: 1px solid var(--kaca-tepi);
+    border-radius: 24px;
+    box-shadow: var(--kilau-atas), var(--bayang-1);
+  }
+  .card-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(99,102,241,.12) !important;
+    padding: 14px 18px;
+    color: var(--green-1);
+  }
+  .card-header i { color: var(--aksen-gelap); margin-right: 4px; }
+  .card-body { padding: 18px; }
+  .table-responsive { background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.74)); border-radius: 24px; box-shadow: var(--kilau-atas), var(--bayang-1); }
+  .stat-card { border-radius: 22px; background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.74)) !important; box-shadow: var(--kilau-atas), var(--bayang-1); }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    @media (min-width: 768px) {
+      .card, .table-responsive, .ppd-kpi, .stat-card { -webkit-backdrop-filter: var(--kaca-kabur); backdrop-filter: var(--kaca-kabur); }
+    }
+  }
+
+  /* ---------------- bar atas & hero: kaca gelap berbingkai emas halus ---------------- */
+  .app-topbar {
+    background: linear-gradient(120deg, rgba(23,19,78,.82), rgba(50,44,168,.66));
+    -webkit-backdrop-filter: blur(26px) saturate(190%); backdrop-filter: blur(26px) saturate(190%);
+    border: 1px solid rgba(255,255,255,.30);
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(0,0,0,.18), 0 18px 38px -18px rgba(23,19,78,.72), 0 0 0 1px rgba(214,178,94,.20);
+  }
+  .menu-hero {
+    background: linear-gradient(150deg, rgba(22,18,82,.96) 0%, rgba(50,43,176,.90) 56%, rgba(103,56,222,.82) 124%);
+    box-shadow: 0 36px 64px -30px rgba(23,19,78,.82), 0 0 0 1px rgba(214,178,94,.42), inset 0 1.5px 0 rgba(255,255,255,.34), inset 0 -22px 34px -26px rgba(0,0,0,.38);
+  }
+  .hero-title-gold { filter: drop-shadow(0 2px 14px rgba(214,178,94,.45)); }
+  .hero-school-pill { border-color: rgba(230,204,133,.7); }
+  .hero-welcome { border-color: rgba(230,204,133,.5); }
+  .kelas-gate { box-shadow: 0 34px 60px -30px rgba(23,19,78,.78), 0 0 0 1px rgba(214,178,94,.38), inset 0 1px 0 rgba(255,255,255,.25); }
+  .kelas-gate-title-pill, .kelas-gate-badge { border-color: rgba(230,204,133,.65); }
+  .login-logo { box-shadow: 0 0 0 4px #fff, 0 0 0 5.5px rgba(205,171,90,.85), var(--shadow-card); }
+  .login-card .brand-sub { color: var(--aksen-gelap); }
+  #screenLogin .login-card {
+    border: 1px solid rgba(255,255,255,.85);
+    box-shadow: inset 0 1.5px 0 #fff, 0 40px 80px -34px rgba(12,9,60,.7), 0 0 0 1px rgba(214,178,94,.28);
+  }
+
+  .login-wrapper {
+    background:
+      radial-gradient(ellipse 720px 460px at 50% -10%, rgba(214,178,94,.24), transparent 62%),
+      radial-gradient(ellipse 820px 620px at 104% 112%, rgba(124,58,237,.46), transparent 60%),
+      radial-gradient(ellipse 700px 520px at -6% 100%, rgba(56,189,248,.16), transparent 62%),
+      linear-gradient(160deg, #0E0B3E 0%, #1D1976 50%, #37279F 100%);
+  }
+  /* ---------------- kad menu utama: jubin berkilau seperti ikon iOS ---------------- */
+  .menu-card { border-radius: 24px; border: 1px solid rgba(255,255,255,.42); transition: transform .45s var(--spring), box-shadow .3s ease; }
+  .menu-card:hover { transform: translateY(-4px) scale(1.015); }
+  .menu-card:active { transform: scale(.97); }
+  .menu-card.c-green, .menu-card.c-gold, .menu-card.c-red, .menu-card.c-blue, .menu-card.c-purple {
+    background-blend-mode: normal;
+  }
+  .menu-card.c-green { box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), 0 18px 32px -16px rgba(55,48,163,.78); }
+  .menu-card.c-gold  { box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), 0 18px 32px -16px rgba(91,33,182,.78); }
+  .menu-card.c-red   { box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), 0 18px 32px -16px rgba(157,23,77,.72); }
+  .menu-card.c-blue  { box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), 0 18px 32px -16px rgba(7,89,133,.72); }
+  .menu-card.c-purple{ box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), 0 18px 32px -16px rgba(180,83,9,.72); }
+
+  /* ---------------- butang ---------------- */
+  .btn { transition: transform .4s var(--spring), box-shadow .3s ease, background .25s ease, filter .25s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: scale(.96); }
+  .btn.btn-success {
+    background: linear-gradient(180deg, #6159F3 0%, #3B35C4 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.42), inset 0 -1px 0 rgba(0,0,0,.14), 0 12px 24px -10px rgba(59,53,196,.72);
+  }
+  .btn.btn-success:hover, .btn.btn-success:focus { background: linear-gradient(180deg, #6D66F6 0%, #433DCB 100%); filter: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.14), 0 16px 28px -10px rgba(59,53,196,.78); }
+  .btn.btn-outline-success, .btn.btn-outline-secondary {
+    background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.62));
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border: 1px solid rgba(99,102,241,.28);
+    color: var(--green-1);
+    box-shadow: inset 0 1px 0 #fff, 0 6px 14px -8px rgba(38,34,140,.3);
+  }
+  .btn.btn-outline-success:hover, .btn.btn-outline-secondary:hover { background: #fff; border-color: rgba(99,102,241,.5); color: var(--green-2); box-shadow: inset 0 1px 0 #fff, 0 10px 20px -10px rgba(38,34,140,.4); }
+  .btn.btn-outline-danger { background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.62)); box-shadow: inset 0 1px 0 #fff, 0 6px 14px -8px rgba(185,28,28,.3); }
+  .btn:focus-visible, .form-control:focus-visible, .form-select:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(205,171,90,.32); }
+
+  /* ---------------- borang ---------------- */
+  .form-control, .form-select {
+    border-radius: 14px;
+    background-color: rgba(255,255,255,.78);
+    border: 1px solid rgba(99,102,241,.22);
+    box-shadow: inset 0 1px 2px rgba(22,20,70,.06);
+    transition: border-color .25s ease, box-shadow .3s ease, background-color .25s ease;
+  }
+  .form-control:focus, .form-select:focus { background-color: #fff; border-color: rgba(205,171,90,.95); box-shadow: 0 0 0 4px rgba(205,171,90,.24), inset 0 1px 2px rgba(22,20,70,.05); }
+  .form-control-sm, .form-select-sm { border-radius: 12px; }
+  .form-label { color: var(--ink-soft); font-weight: 600; }
+
+  /* ---------------- modal & SweetAlert: lembaran kaca ---------------- */
+  .modal-backdrop { --bs-backdrop-bg: #15132F; --bs-backdrop-opacity: .42; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .modal.fade .modal-dialog { transform: translateY(14px) scale(.94); transition: transform .5s var(--spring), opacity .3s ease; }
+  .modal.show .modal-dialog { transform: none; }
+  .modal-content {
+    background: linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.80));
+    -webkit-backdrop-filter: blur(30px) saturate(190%); backdrop-filter: blur(30px) saturate(190%);
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 28px;
+    box-shadow: inset 0 1.5px 0 #fff, 0 44px 90px -34px rgba(23,19,78,.6);
+  }
+  .modal-header, .modal-footer { border-color: rgba(99,102,241,.12); }
+  .swal2-popup {
+    background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82)) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(190%); backdrop-filter: blur(30px) saturate(190%);
+    border: 1px solid rgba(255,255,255,.85) !important;
+    border-radius: 28px !important;
+    box-shadow: inset 0 1.5px 0 #fff, 0 44px 90px -34px rgba(23,19,78,.6) !important;
+    font-family: var(--font-body);
+  }
+  .swal2-title { font-family: var(--font-display) !important; }
+  .swal2-styled.swal2-confirm { border-radius: 999px !important; background: linear-gradient(180deg, #6159F3, #3B35C4) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 10px 20px -8px rgba(59,53,196,.7) !important; }
+  .swal2-styled.swal2-cancel { border-radius: 999px !important; }
+  .swal2-container.swal2-backdrop-show { background: rgba(21,19,47,.38) !important; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+  /* ---------------- jadual ---------------- */
+  .table thead th { color: var(--ink-soft); border-bottom-width: 1px; font-size: .7rem; letter-spacing: .07em; }
+  .table { --bs-table-hover-bg: rgba(99,102,241,.07); --bs-table-striped-bg: rgba(99,102,241,.035); }
+
+  /* ---------------- tab tersegmen (iOS) ---------------- */
+  .module-subtabs { background: rgba(120,120,190,.14); box-shadow: inset 0 1px 3px rgba(22,20,70,.10); border: 1px solid rgba(255,255,255,.6); }
+  .subtab-btn { transition: all .4s var(--spring); }
+  .subtab-btn.active { background: #fff; box-shadow: 0 6px 14px -6px rgba(22,20,70,.38), inset 0 1px 0 #fff; color: var(--green-1); }
+
+  /* =====================================================================
+     KONSOL PPD - komponen
+  ===================================================================== */
+  .ppd-konsol { max-width: 1320px; margin: 0 auto; }
+  .ppd-kepala { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .ppd-tindakan { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ppd-nota { min-height: 1.2em; margin: 0 0 12px; }
+  .ppd-pane { animation: fadeIn .4s var(--lembut); }
+  .ppd-bil { font-size: .72rem; font-weight: 700; color: var(--ink-soft); background: rgba(99,102,241,.1); padding: 2px 9px; border-radius: 999px; margin-left: 4px; }
+
+  .ppd-segmen {
+    display: flex; gap: 4px; padding: 4px; width: max-content; max-width: 100%; overflow-x: auto; margin: 0 0 16px;
+    background: rgba(120,120,190,.14); border: 1px solid rgba(255,255,255,.6); border-radius: 999px; box-shadow: inset 0 1px 3px rgba(22,20,70,.10);
+    scrollbar-width: none;
+  }
+  .ppd-segmen::-webkit-scrollbar { display: none; }
+  .ppd-segmen-btn { border: 0; background: transparent; padding: 9px 16px; border-radius: 999px; font-weight: 700; font-size: .84rem; color: var(--ink-soft); white-space: nowrap; transition: all .4s var(--spring); }
+  .ppd-segmen-btn i { margin-right: 6px; color: var(--aksen-gelap); }
+  .ppd-segmen-btn:hover { color: var(--green-1); }
+  .ppd-segmen-btn.active { background: #fff; color: var(--green-1); box-shadow: 0 6px 14px -6px rgba(22,20,70,.38), inset 0 1px 0 #fff; }
+
+  .ppd-kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 1199px) { .ppd-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .ppd-kpi-grid.ppd-kpi-grid-kecil { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+  .ppd-kpi {
+    position: relative; overflow: hidden; display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.74)); border: 1px solid var(--kaca-tepi);
+    box-shadow: var(--kilau-atas), var(--bayang-1); transition: transform .45s var(--spring), box-shadow .3s ease;
+  }
+  .ppd-kpi:hover { transform: translateY(-3px); box-shadow: var(--kilau-atas), var(--bayang-2); }
+  .ppd-kpi::after { content: ''; position: absolute; right: -34px; top: -34px; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, var(--n1, rgba(99,102,241,.18)), transparent 70%); pointer-events: none; }
+  .ppd-kpi-ikon {
+    width: 46px; height: 46px; flex: 0 0 46px; border-radius: 16px; display: grid; place-items: center; color: #fff; font-size: 1.1rem;
+    background: linear-gradient(150deg, var(--a, #6A6BF5), var(--b, #3730A3));
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,.5), 0 10px 18px -8px var(--b, #3730A3);
+  }
+  .ppd-kpi[data-nada="indigo"] { --a: #6A6BF5; --b: #3730A3; --n1: rgba(99,102,241,.2); }
+  .ppd-kpi[data-nada="violet"] { --a: #A78BFA; --b: #6D28D9; --n1: rgba(139,92,246,.2); }
+  .ppd-kpi[data-nada="teal"]   { --a: #2DD4BF; --b: #0F766E; --n1: rgba(20,184,166,.2); }
+  .ppd-kpi[data-nada="rose"]   { --a: #F472B6; --b: #BE185D; --n1: rgba(236,72,153,.18); }
+  .ppd-kpi[data-nada="gold"]   { --a: #E9D08A; --b: #A87F26; --n1: rgba(205,171,90,.28); }
+  .ppd-kpi-isi { min-width: 0; }
+  .ppd-kpi-nilai { font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; line-height: 1.05; color: var(--green-1); font-variant-numeric: lining-nums tabular-nums; font-feature-settings: "lnum" 1, "tnum" 1; }
+  .ppd-kpi-label { font-size: .76rem; font-weight: 700; color: var(--ink-soft); letter-spacing: .01em; }
+  .ppd-kpi-sub { font-size: .7rem; color: var(--ink-faint); margin-top: 1px; }
+  .ppd-kpi-sub.ppd-sasaran { color: var(--aksen-gelap); font-weight: 700; font-size: .72rem; }
+
+  .ppd-sasaran-bar { display: flex; flex-direction: row; gap: 22px; padding: 20px 24px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .ppd-sasaran-isi { flex: 1 1 340px; min-width: 0; }
+  .ppd-sasaran-tajuk { font-weight: 800; color: var(--green-1); margin-bottom: 4px; }
+  .ppd-trek { position: relative; height: 16px; margin: 24px 0 8px; border-radius: 999px; background: rgba(99,102,241,.12); box-shadow: inset 0 1px 3px rgba(22,20,70,.14); }
+  .ppd-trek-isi { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #6A6BF5, #14B8A6); box-shadow: inset 0 1px 0 rgba(255,255,255,.5); transition: width 1s var(--lembut); }
+  .ppd-trek-isi.tercapai { background: linear-gradient(90deg, #10B981, #047857); }
+  .ppd-trek-penanda { position: absolute; top: -7px; bottom: -7px; width: 3px; border-radius: 2px; background: var(--aksen); box-shadow: 0 0 0 2px rgba(255,255,255,.95); transform: translateX(-1.5px); }
+  .ppd-trek-penanda::after { content: attr(data-sasaran); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: .68rem; font-weight: 800; color: var(--aksen-gelap); white-space: nowrap; }
+  .ppd-tahap-mini { display: flex; gap: 12px; flex-wrap: wrap; }
+  .ppd-mini { text-align: center; padding: 10px 18px; border-radius: 18px; background: rgba(255,255,255,.66); border: 1px solid rgba(99,102,241,.12); min-width: 132px; box-shadow: inset 0 1px 0 #fff; }
+  .ppd-mini-nilai { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--green-1); line-height: 1.1; }
+  .ppd-mini-label { font-size: .72rem; font-weight: 700; color: var(--ink-soft); }
+  .ppd-mini-sub { font-size: .68rem; color: var(--ink-faint); }
+
+  .ppd-carta-doughnut { height: 268px; }
+  .ppd-carta-bar { height: 288px; }
+  .ppd-carta-kosong { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--ink-faint); font-size: .86rem; padding: 12px; }
+  .ppd-besar { font-family: var(--font-display); font-size: 2.4rem; font-weight: 800; color: var(--green-1); line-height: 1.1; }
+  .ppd-senarai-info { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .ppd-senarai-info li { padding: 8px 12px; border-radius: 14px; background: rgba(99,102,241,.06); font-size: .88rem; }
+  .ppd-senarai-info b { color: var(--green-1); font-size: 1.05rem; margin-right: 2px; }
+
+  .ppd-perhatian { height: 100%; padding: 14px; border-radius: 20px; background: rgba(255,255,255,.66); border: 1px solid rgba(99,102,241,.12); box-shadow: inset 0 1px 0 #fff; }
+  .ppd-perhatian[data-nada="amaran"] { background: linear-gradient(180deg, rgba(255,247,222,.9), rgba(255,255,255,.7)); border-color: rgba(245,158,11,.3); }
+  .ppd-perhatian[data-nada="rose"] { background: linear-gradient(180deg, rgba(255,238,246,.9), rgba(255,255,255,.7)); border-color: rgba(236,72,153,.26); }
+  .ppd-perhatian-tajuk { font-weight: 800; font-size: .86rem; color: var(--green-1); margin-bottom: 10px; }
+  .ppd-perhatian-tajuk i { color: var(--aksen-gelap); margin-right: 4px; }
+  .ppd-chip-senarai { display: flex; flex-wrap: wrap; gap: 6px; max-height: 190px; overflow: auto; }
+  .ppd-chip { border: 1px solid rgba(99,102,241,.2); background: rgba(255,255,255,.9); border-radius: 999px; padding: 5px 12px; font-size: .78rem; color: var(--ink); text-align: left; transition: transform .35s var(--spring), box-shadow .25s ease, border-color .2s; box-shadow: inset 0 1px 0 #fff; }
+  .ppd-chip:hover { transform: translateY(-1px); border-color: var(--aksen); box-shadow: 0 8px 16px -10px rgba(138,106,31,.6); }
+  .ppd-chip b { color: var(--green-1); }
+  .ppd-chip-sub { margin-left: 6px; font-weight: 800; color: var(--aksen-gelap); }
+  .ppd-kosong-baik { color: var(--ok-gelap); font-size: .84rem; font-weight: 600; }
+
+  .ppd-alat-cari { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .ppd-alat-cari .form-control, .ppd-alat-cari .form-select { width: auto; min-width: 140px; }
+  .ppd-jadual { font-size: .84rem; }
+  .ppd-jadual thead th { position: sticky; top: 0; z-index: 1; background: rgba(247,247,255,.97); white-space: nowrap; }
+  .ppd-baris { cursor: pointer; transition: background .2s ease; }
+  .ppd-baris:hover > * { background: rgba(99,102,241,.075); }
+  .ppd-baris:focus-visible { outline: 2px solid var(--aksen); outline-offset: -2px; }
+  .ppd-nama-sekolah, .ppd-nama-murid { font-weight: 700; color: var(--green-1); }
+  .ppd-murid-bingkai { max-height: 560px; overflow: auto; }
+  .ppd-log-bingkai { max-height: 420px; overflow: auto; }
+  .ppd-mini-trek { display: inline-block; vertical-align: middle; width: 70px; height: 8px; border-radius: 999px; background: rgba(99,102,241,.14); overflow: hidden; margin-right: 6px; }
+  .ppd-mini-trek-isi { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #F59E0B, #FBBF24); }
+  .ppd-mini-trek-isi.tercapai { background: linear-gradient(90deg, #10B981, #047857); }
+  .ppd-mini-trek-teks { font-weight: 700; font-size: .8rem; }
+  .ppd-tanda { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; font-size: .62rem; font-weight: 800; color: #fff; vertical-align: middle; margin-left: 3px; }
+  .ppd-tanda.perkasa { background: linear-gradient(150deg, #F472B6, #BE185D); }
+  .ppd-tanda.khas { background: linear-gradient(150deg, #2DD4BF, #0F766E); }
+  .ppd-mutu { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; color: var(--ink-soft); }
+  .ppd-mutu i { width: 9px; height: 9px; border-radius: 50%; background: var(--w); box-shadow: 0 0 0 3px color-mix(in srgb, var(--w) 22%, transparent); }
+  .ppd-tindakan-lencana { font-size: .72rem; font-weight: 700; text-transform: capitalize; padding: 3px 10px; border-radius: 999px; background: rgba(205,171,90,.18); color: var(--aksen-gelap); }
+
+  #tablePpdSkKelas td:nth-child(3) { width: 46%; }
+  .ppd-seg-bar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; min-width: 220px; background: rgba(99,102,241,.1); box-shadow: inset 0 1px 2px rgba(22,20,70,.12); }
+  .ppd-seg { display: block; min-width: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,.35); transition: flex .6s var(--lembut); }
+  .ppd-legenda { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 4px 6px 12px; font-size: .76rem; color: var(--ink-soft); font-weight: 600; }
+  .ppd-legenda-item i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+
+  .ppd-sk-kepala { position: relative; overflow: hidden; }
+  .ppd-sk-kepala::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--gold-shine); }
+  .ppd-sk-baris { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+  .ppd-sk-nama { font-family: var(--font-display); font-weight: 800; color: var(--green-1); margin: 4px 0 2px; font-size: 1.55rem; }
+  .ppd-sk-kod code { font-family: var(--font-mono); color: var(--aksen-gelap); background: rgba(205,171,90,.16); padding: 2px 9px; border-radius: 8px; font-weight: 700; }
+  #tablePpdSekolah code, #tablePpdLog code { color: var(--aksen-gelap); background: rgba(205,171,90,.16); }
+
+  @media (max-width: 575px) {
+    .ppd-segmen { width: 100%; }
+    .ppd-segmen-btn { flex: 1 1 auto; padding: 9px 8px; font-size: .78rem; }
+    .ppd-segmen-btn i { display: none; }
+    .ppd-kpi { padding: 12px 14px; gap: 10px; }
+    .ppd-kpi-ikon { width: 40px; height: 40px; flex-basis: 40px; border-radius: 14px; }
+    .ppd-kpi-nilai { font-size: 1.45rem; }
+    .ppd-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .ppd-kpi-ikon { display: none; }
+    .ppd-sasaran-bar { padding: 16px; }
+    .ppd-sk-nama { font-size: 1.25rem; }
+    .ppd-alat-cari .form-control, .ppd-alat-cari .form-select { flex: 1 1 130px; }
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .card, .modal-content, .swal2-popup { background: rgba(255,255,255,.96) !important; }
+    .app-topbar { background: linear-gradient(120deg, #17134E, #322CA8); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn, .card, .ppd-kpi, .ppd-segmen-btn, .ppd-chip, .menu-card, .subtab-btn { transition: none !important; }
+    .ppd-trek-isi, .ppd-seg { transition: none !important; }
+    .ppd-pane { animation: none; }
+    .modal.fade .modal-dialog { transition: none; transform: none; }
+  }
 </style>
 </head>
 <body>
@@ -3877,56 +4199,235 @@
 
       <!-- ===================== MODUL: KONSOL PPD (DAERAH) ===================== -->
       <!-- Hanya dicapai oleh akaun peranan PPD (log masuk dengan Kod Sekolah "PPD"); kebenaran sebenar
-           disemak di pelayan (panggilApi). PPD hanya melihat RINGKASAN - bukan senarai nama murid. -->
+           disemak di pelayan (panggilApi). Paparan DAERAH = angka & graf sahaja (tanpa nama murid). Paparan SEKOLAH
+           (butiran) memaparkan nama murid/guru dan setiap capaian dicatat dalam Log_Akses di pelayan. -->
       <section id="view-ppd" class="top-view d-none">
-        <div class="p-3">
-          <h5 class="fw-bold mb-1 section-title"><i class="fa-solid fa-building-columns"></i> Konsol PPD</h5>
-          <p class="text-muted small mb-3" id="ppdNamaDaerah"></p>
+        <div class="p-3 ppd-konsol">
 
-          <div class="row g-2 mb-3">
-            <div class="col-6 col-md-3"><div class="stat-card bg-success-subtle"><div class="stat-value" id="ppdStatSekolah">0</div><div class="stat-label">Sekolah Aktif</div></div></div>
-            <div class="col-6 col-md-3"><div class="stat-card bg-info-subtle"><div class="stat-value" id="ppdStatMurid">0</div><div class="stat-label">Jumlah Murid</div></div></div>
-            <div class="col-6 col-md-3"><div class="stat-card bg-warning-subtle"><div class="stat-value" id="ppdStatTahun6">0%</div><div class="stat-label">Thn 6 Menguasai Al-Quran<span class="d-block ppd-sasaran" id="ppdStatSasaran"></span></div></div></div>
-            <div class="col-6 col-md-3"><div class="stat-card bg-danger-subtle"><div class="stat-value" id="ppdStatPerkasa">0</div><div class="stat-label">PERKASA (Thn 6, Iqra 1-3)</div></div></div>
-          </div>
-
-          <div class="card mb-3">
-            <div class="card-header fw-bold with-star d-flex justify-content-between align-items-center flex-wrap gap-2">
-              <span><i class="fa-solid fa-school"></i> Senarai Sekolah</span>
-              <span class="d-flex gap-2">
+          <!-- ============ PAPARAN DAERAH ============ -->
+          <div id="ppdPaparanDaerah">
+            <div class="ppd-kepala">
+              <div>
+                <h5 class="fw-bold mb-1 section-title"><i class="fa-solid fa-building-columns"></i> Konsol PPD</h5>
+                <p class="text-muted small mb-0" id="ppdNamaDaerah"></p>
+              </div>
+              <div class="ppd-tindakan">
                 <button type="button" class="btn btn-sm btn-outline-success" id="btnPpdSegarkan"><i class="fa-solid fa-rotate"></i> Segar Ringkasan</button>
                 <button type="button" class="btn btn-sm btn-success" id="btnPpdDaftar"><i class="fa-solid fa-plus"></i> Daftar Sekolah</button>
-              </span>
+              </div>
             </div>
-            <div class="table-responsive">
-              <table class="table table-sm table-striped align-middle mb-0" id="tablePpdSekolah">
-                <thead>
-                  <tr><th>Kod</th><th>Sekolah</th><th>Status</th><th class="text-end">Murid</th><th class="text-end">Thn 6 Al-Quran</th><th class="text-end">PERKASA</th><th>Dikemas kini</th><th></th></tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+            <p class="ppd-nota small text-muted" id="ppdNotaSegar"></p>
+
+            <div class="ppd-segmen" id="ppdSegmenDaerah" role="tablist">
+              <button type="button" class="ppd-segmen-btn active" data-pane="gambaran"><i class="fa-solid fa-chart-pie"></i> Gambaran Daerah</button>
+              <button type="button" class="ppd-segmen-btn" data-pane="sekolah"><i class="fa-solid fa-school"></i> Senarai Sekolah</button>
+              <button type="button" class="ppd-segmen-btn" data-pane="tetapan"><i class="fa-solid fa-sliders"></i> Tetapan &amp; Log</button>
+            </div>
+
+            <!-- ---- Gambaran daerah ---- -->
+            <div class="ppd-pane" id="ppdPaneGambaran">
+              <div class="ppd-kpi-grid">
+                <div class="ppd-kpi" data-nada="indigo"><div class="ppd-kpi-ikon"><i class="fa-solid fa-school"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatSekolah">0</div><div class="ppd-kpi-label">Sekolah Aktif</div><div class="ppd-kpi-sub" id="ppdStatSekolahSub"></div></div></div>
+                <div class="ppd-kpi" data-nada="violet"><div class="ppd-kpi-ikon"><i class="fa-solid fa-children"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatMurid">0</div><div class="ppd-kpi-label">Jumlah Murid</div><div class="ppd-kpi-sub" id="ppdStatMuridSub"></div></div></div>
+                <div class="ppd-kpi" data-nada="teal"><div class="ppd-kpi-ikon"><i class="fa-solid fa-book-quran"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatTahun6">0%</div><div class="ppd-kpi-label">Thn 6 Menguasai Al-Quran</div><div class="ppd-kpi-sub ppd-sasaran" id="ppdStatSasaran"></div></div></div>
+                <div class="ppd-kpi" data-nada="rose"><div class="ppd-kpi-ikon"><i class="fa-solid fa-life-ring"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatPerkasa">0</div><div class="ppd-kpi-label">PERKASA (Thn 6, Iqra 1-3)</div></div></div>
+                <div class="ppd-kpi" data-nada="gold"><div class="ppd-kpi-ikon"><i class="fa-solid fa-award"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatKhatam">0</div><div class="ppd-kpi-label">Murid Khatam</div></div></div>
+                <div class="ppd-kpi" data-nada="indigo"><div class="ppd-kpi-ikon"><i class="fa-solid fa-chalkboard-user"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatGuru">0</div><div class="ppd-kpi-label">Guru &amp; Pentadbir</div></div></div>
+                <div class="ppd-kpi" data-nada="teal"><div class="ppd-kpi-ikon"><i class="fa-solid fa-bolt"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatAktif">-</div><div class="ppd-kpi-label">Murid Ditasmik (30 hari)</div></div></div>
+                <div class="ppd-kpi" data-nada="violet"><div class="ppd-kpi-ikon"><i class="fa-solid fa-clipboard-list"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai" id="ppdStatRekod30">0</div><div class="ppd-kpi-label">Rekod Tasmik (30 hari)</div></div></div>
+              </div>
+
+              <div class="ppd-sasaran-bar card" id="ppdKadSasaran">
+                <div class="ppd-sasaran-isi">
+                  <div class="ppd-sasaran-tajuk">Pencapaian Sasaran PPD <span class="text-muted fw-normal">- murid Tahun 6 menguasai Al-Quran</span></div>
+                  <div class="ppd-trek" aria-hidden="true"><div class="ppd-trek-isi" id="ppdTrekIsi"></div><div class="ppd-trek-penanda" id="ppdTrekPenanda"></div></div>
+                  <div class="ppd-sasaran-kaki small text-muted" id="ppdSasaranKaki"></div>
+                </div>
+                <div class="ppd-tahap-mini" id="ppdTahapMini"></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-lg-4"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-chart-pie"></i> Agihan Tahap Bacaan</div><div class="card-body"><div class="chart-frame ppd-carta-doughnut"><canvas id="ppdChartKategori"></canvas></div></div></div></div>
+                <div class="col-12 col-lg-8"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-chart-column"></i> Penguasaan Al-Quran Mengikut Tahun</div><div class="card-body"><div class="chart-frame ppd-carta-bar"><canvas id="ppdChartTahun"></canvas></div></div></div></div>
+                <div class="col-12 col-lg-7"><div class="card h-100"><div class="card-header fw-bold d-flex justify-content-between flex-wrap gap-1"><span><i class="fa-solid fa-ranking-star"></i> Kedudukan Sekolah - Thn 6 Menguasai Al-Quran</span><span class="small text-muted fw-normal">garis = sasaran</span></div><div class="card-body"><div class="chart-frame" id="ppdKedudukanBingkai"><canvas id="ppdChartKedudukan"></canvas></div></div></div></div>
+                <div class="col-12 col-lg-5"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-chart-line"></i> Aktiviti Tasmik 6 Bulan</div><div class="card-body"><div class="chart-frame ppd-carta-bar"><canvas id="ppdChartAktiviti"></canvas></div></div></div></div>
+              </div>
+
+              <div class="card mb-3">
+                <div class="card-header fw-bold"><i class="fa-solid fa-flag"></i> Perlu Perhatian</div>
+                <div class="card-body">
+                  <div class="row g-3" id="ppdPerhatian"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ---- Senarai sekolah ---- -->
+            <div class="ppd-pane d-none" id="ppdPaneSekolah">
+              <div class="card mb-3">
+                <div class="card-header fw-bold with-star d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <span><i class="fa-solid fa-school"></i> Senarai Sekolah <span class="ppd-bil" id="ppdBilSekolah"></span></span>
+                  <span class="ppd-alat-cari">
+                    <input type="search" class="form-control form-control-sm" id="ppdCariSekolah" placeholder="Cari kod / nama..." autocomplete="off" aria-label="Cari sekolah">
+                    <select class="form-select form-select-sm" id="ppdTapisStatus" aria-label="Tapis status"><option value="">Semua status</option><option value="Aktif">Aktif</option><option value="Digantung">Digantung</option></select>
+                    <select class="form-select form-select-sm" id="ppdSusunSekolah" aria-label="Susun">
+                      <option value="kod">Susun: Kod</option><option value="nama">Susun: Nama</option><option value="murid">Susun: Murid (ramai)</option>
+                      <option value="t6-turun">Susun: Thn 6 % (tinggi)</option><option value="t6-naik">Susun: Thn 6 % (rendah)</option><option value="aktif">Susun: Paling aktif</option>
+                    </select>
+                  </span>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-0 ppd-jadual" id="tablePpdSekolah">
+                    <thead>
+                      <tr><th>Kod</th><th>Sekolah</th><th>Status</th><th class="text-end">Murid</th><th>Thn 6 Al-Quran</th><th class="text-end">PERKASA</th><th class="text-end">Ditasmik 30h</th><th>Rekod terakhir</th><th>Dikemas kini</th><th></th></tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <p class="small text-muted"><i class="fa-solid fa-hand-pointer"></i> Klik mana-mana baris untuk melihat <b>butiran penuh</b> sekolah itu: murid, kelas, guru, graf dan aktiviti.</p>
+            </div>
+
+            <!-- ---- Tetapan & log ---- -->
+            <div class="ppd-pane d-none" id="ppdPaneTetapan">
+              <div class="card mb-3">
+                <div class="card-header fw-bold"><i class="fa-solid fa-sliders"></i> Tetapan Daerah</div>
+                <div class="card-body">
+                  <form id="formTetapanDaerah">
+                    <div class="row g-2">
+                      <div class="col-12 col-md-7">
+                        <label class="form-label small mb-1">Nama Daerah / PPD</label>
+                        <input type="text" class="form-control" id="inputDaerahNama" maxlength="80" placeholder="cth: PPD Daerah Anda" autocomplete="off">
+                      </div>
+                      <div class="col-12 col-md-5">
+                        <label class="form-label small mb-1">Sasaran Thn 6 menguasai Al-Quran (%)</label>
+                        <input type="number" class="form-control" id="inputDaerahSasaran" min="1" max="100" required>
+                      </div>
+                    </div>
+                    <div id="tetapanDaerahRalat" class="text-danger small mt-2"></div>
+                    <button type="submit" class="btn btn-success mt-2"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                  </form>
+                </div>
+              </div>
+              <div class="card mb-3">
+                <div class="card-header fw-bold d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <span><i class="fa-solid fa-user-shield"></i> Log Capaian PPD</span>
+                  <button type="button" class="btn btn-sm btn-outline-success" id="btnPpdMuatLog"><i class="fa-solid fa-rotate"></i> Muat log</button>
+                </div>
+                <div class="card-body pb-2"><p class="small text-muted mb-2">Setiap kali butiran sekolah / rekod murid dibuka, atau sesuatu tindakan pentadbiran dibuat (daftar, gantung, tetap semula kata laluan Admin, tetapan), ia dicatat di sini (300 terkini).</p></div>
+                <div class="table-responsive ppd-log-bingkai">
+                  <table class="table table-sm align-middle mb-0 ppd-jadual" id="tablePpdLog">
+                    <thead><tr><th>Masa</th><th>Pengguna</th><th>Tindakan</th><th>Sekolah</th><th>Butiran</th></tr></thead>
+                    <tbody><tr><td colspan="5" class="text-center text-muted">Tekan "Muat log".</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="card mb-3">
-            <div class="card-header fw-bold"><i class="fa-solid fa-sliders"></i> Tetapan Daerah</div>
-            <div class="card-body">
-              <form id="formTetapanDaerah">
-                <div class="row g-2">
-                  <div class="col-12 col-md-7">
-                    <label class="form-label small mb-1">Nama Daerah / PPD</label>
-                    <input type="text" class="form-control" id="inputDaerahNama" maxlength="80" placeholder="cth: PPD Daerah Anda" autocomplete="off">
+          <!-- ============ PAPARAN BUTIRAN SEKOLAH ============ -->
+          <div id="ppdPaparanSekolah" class="d-none">
+            <button type="button" class="btn btn-sm btn-outline-secondary mb-2" id="btnPpdKembali"><i class="fa-solid fa-arrow-left"></i> Semua Sekolah</button>
+
+            <div class="card ppd-sk-kepala mb-3">
+              <div class="card-body">
+                <div class="ppd-sk-baris">
+                  <div class="ppd-sk-tajuk">
+                    <div class="ppd-sk-kod"><code id="ppdSkKod"></code> <span id="ppdSkStatus"></span></div>
+                    <h4 class="ppd-sk-nama" id="ppdSkNama"></h4>
+                    <div class="small text-muted" id="ppdSkMeta"></div>
                   </div>
-                  <div class="col-12 col-md-5">
-                    <label class="form-label small mb-1">Sasaran Thn 6 menguasai Al-Quran (%)</label>
-                    <input type="number" class="form-control" id="inputDaerahSasaran" min="1" max="100" required>
+                  <div class="ppd-tindakan">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPpdSkMuat"><i class="fa-solid fa-rotate"></i> Muat semula</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPpdSkReset"><i class="fa-solid fa-key"></i> Tetap semula Admin</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" id="btnPpdSkStatus"><i class="fa-solid fa-pause"></i> Gantung</button>
                   </div>
                 </div>
-                <div id="tetapanDaerahRalat" class="text-danger small mt-2"></div>
-                <button type="submit" class="btn btn-success mt-2"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-              </form>
+              </div>
+            </div>
+
+            <div class="ppd-kpi-grid" id="ppdSkKpi"></div>
+
+            <div class="ppd-segmen" id="ppdSegmenSekolah" role="tablist">
+              <button type="button" class="ppd-segmen-btn active" data-pane="ringkasan"><i class="fa-solid fa-chart-pie"></i> Ringkasan</button>
+              <button type="button" class="ppd-segmen-btn" data-pane="kelas"><i class="fa-solid fa-layer-group"></i> Kelas</button>
+              <button type="button" class="ppd-segmen-btn" data-pane="murid"><i class="fa-solid fa-children"></i> Murid</button>
+              <button type="button" class="ppd-segmen-btn" data-pane="guru"><i class="fa-solid fa-chalkboard-user"></i> Guru</button>
+              <button type="button" class="ppd-segmen-btn" data-pane="aktiviti"><i class="fa-solid fa-clock-rotate-left"></i> Aktiviti</button>
+            </div>
+
+            <div class="ppd-pane" id="ppdSkPaneRingkasan">
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-lg-4"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-chart-pie"></i> Agihan Tahap Bacaan</div><div class="card-body"><div class="chart-frame ppd-carta-doughnut"><canvas id="ppdSkChartKategori"></canvas></div></div></div></div>
+                <div class="col-12 col-lg-8"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-chart-column"></i> Penguasaan Al-Quran Mengikut Tahun</div><div class="card-body"><div class="chart-frame ppd-carta-bar"><canvas id="ppdSkChartTahun"></canvas></div></div></div></div>
+                <div class="col-12 col-lg-6"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-chart-line"></i> Aktiviti Tasmik 6 Bulan</div><div class="card-body"><div class="chart-frame ppd-carta-bar"><canvas id="ppdSkChartAktiviti"></canvas></div></div></div></div>
+                <div class="col-12 col-md-6 col-lg-3"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-face-smile"></i> Mutu Bacaan (90 hari)</div><div class="card-body"><div class="chart-frame ppd-carta-doughnut"><canvas id="ppdSkChartStatus"></canvas></div></div></div></div>
+                <div class="col-12 col-md-6 col-lg-3"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid fa-triangle-exclamation"></i> Ralat Tajwid (90 hari)</div><div class="card-body"><div class="chart-frame ppd-carta-doughnut"><canvas id="ppdSkChartRalat"></canvas></div></div></div></div>
+              </div>
+              <div class="row g-3 mb-3" id="ppdSkInfoTambahan"></div>
+            </div>
+
+            <div class="ppd-pane d-none" id="ppdSkPaneKelas">
+              <div class="card mb-3">
+                <div class="card-header fw-bold"><i class="fa-solid fa-layer-group"></i> Prestasi Mengikut Kelas</div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-0 ppd-jadual" id="tablePpdSkKelas">
+                    <thead><tr><th>Kelas</th><th class="text-end">Murid</th><th>Agihan tahap bacaan</th><th class="text-end">Al-Quran/Khatam</th><th class="text-end">Ditasmik 30h</th><th class="text-end">Tiada rekod</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="ppd-legenda" id="ppdLegendaKategori"></div>
+            </div>
+
+            <div class="ppd-pane d-none" id="ppdSkPaneMurid">
+              <div class="card mb-3">
+                <div class="card-header fw-bold d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <span><i class="fa-solid fa-children"></i> Senarai Murid <span class="ppd-bil" id="ppdBilMurid"></span></span>
+                  <span class="ppd-alat-cari">
+                    <input type="search" class="form-control form-control-sm" id="ppdCariMurid" placeholder="Cari nama murid..." autocomplete="off" aria-label="Cari murid">
+                    <select class="form-select form-select-sm" id="ppdTapisTahun" aria-label="Tapis tahun"><option value="">Semua tahun</option></select>
+                    <select class="form-select form-select-sm" id="ppdTapisKelas" aria-label="Tapis kelas"><option value="">Semua kelas</option></select>
+                    <select class="form-select form-select-sm" id="ppdTapisKategori" aria-label="Tapis tahap"><option value="">Semua tahap</option></select>
+                    <select class="form-select form-select-sm" id="ppdTapisKhas" aria-label="Tapis khas">
+                      <option value="">Semua murid</option><option value="perkasa">PERKASA sahaja</option><option value="tidak-aktif">Tidak ditasmik &gt;30 hari</option><option value="tiada-rekod">Tiada rekod</option><option value="khas">Keperluan khas</option>
+                    </select>
+                  </span>
+                </div>
+                <div class="table-responsive ppd-murid-bingkai">
+                  <table class="table table-sm align-middle mb-0 ppd-jadual ppd-jadual-murid" id="tablePpdSkMurid">
+                    <thead><tr><th>Nama</th><th>Kelas</th><th>Tahap semasa</th><th>Muka / Juzuk</th><th>Bacaan terakhir</th><th class="text-end">Hari</th><th class="text-end">Rekod</th><th>Mutu</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <p class="small text-muted"><i class="fa-solid fa-hand-pointer"></i> Klik nama murid untuk melihat sejarah bacaan. Capaian ini dicatat dalam Log Capaian PPD.</p>
+            </div>
+
+            <div class="ppd-pane d-none" id="ppdSkPaneGuru">
+              <div class="card mb-3">
+                <div class="card-header fw-bold"><i class="fa-solid fa-chalkboard-user"></i> Guru &amp; Pentadbir</div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-0 ppd-jadual" id="tablePpdSkGuru">
+                    <thead><tr><th>ID</th><th>Nama</th><th>Peranan</th><th class="text-end">Rekod disimpan</th><th class="text-end">30 hari</th><th>Aktif terakhir</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="ppd-pane d-none" id="ppdSkPaneAktiviti">
+              <div class="card mb-3">
+                <div class="card-header fw-bold"><i class="fa-solid fa-clock-rotate-left"></i> 40 Rekod Tasmik Terkini</div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-0 ppd-jadual" id="tablePpdSkAktiviti">
+                    <thead><tr><th>Masa</th><th>Murid</th><th>Tahap</th><th>Muka</th><th>Mutu</th><th>Guru</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -4261,6 +4762,23 @@
     </div>
   </div>
 
+  <!-- Modal "Sejarah bacaan murid" (PPD sahaja; capaian dicatat di pelayan). Di luar <main> atas sebab stacking context yang sama. -->
+  <div class="modal fade" id="modalPpdMurid" tabindex="-1" aria-labelledby="modalPpdMuridLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title" id="modalPpdMuridLabel"><i class="fa-solid fa-user-graduate"></i> <span id="ppdMuridNama"></span></h5>
+            <div class="small text-muted" id="ppdMuridMeta"></div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <div id="ppdMuridIsi"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modal Tambah/Edit Murid -->
   <div class="modal fade" id="modalMurid" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -4757,6 +5275,9 @@ const apiPpdTetapStatusSekolah = gs('ppdTetapStatusSekolah');
 const apiPpdTetapSemulaAdminSekolah = gs('ppdTetapSemulaAdminSekolah');
 const apiPpdSegarkanRingkasan = gs('ppdSegarkanRingkasan');
 const apiPpdKemaskiniTetapanDaerah = gs('ppdKemaskiniTetapanDaerah');
+const apiPpdButiranSekolah = gs('ppdButiranSekolah');
+const apiPpdRekodMurid = gs('ppdRekodMurid');
+const apiPpdLogAkses = gs('ppdLogAkses');
 
 // ---------------------------------------------------------------
 // UTILITI UMUM
@@ -4915,7 +5436,8 @@ function padamSesiTempatan_() {
 function bersihkanPaparanData_() {
   cacheSenaraiMurid = []; tetapanSistem = null; ralatDipilih = []; laporanTerkini = []; sijilSemasa = [];
   rekodPenuhSemasa = null; rosterMuridLaporanCache = []; rosterMuridTasmikCache = []; enrolmenKelasAktif = null;
-  cacheRumusanKelas_ = []; cacheRumusanTahun_ = []; cachePerkasa = []; senaraiGuruCache = []; cachePpd = null;
+  cacheRumusanKelas_ = []; cacheRumusanTahun_ = []; cachePerkasa = []; senaraiGuruCache = [];
+  try { bersihkanPaparanPpd_(); } catch (e) { /* abaikan */ }
   elemenAnalisisAktif_ = null; analisisSemasa_ = null;
   if (chartIqraQuranInstance) { try { chartIqraQuranInstance.destroy(); } catch (e) { /* abaikan */ } chartIqraQuranInstance = null; }
   if (chartPerkasaInstance) { try { chartPerkasaInstance.destroy(); } catch (e) { /* abaikan */ } chartPerkasaInstance = null; }
@@ -8047,11 +8569,228 @@ document.getElementById('btnImportMurid').addEventListener('click', async functi
 });
 
 // ---------------------------------------------------------------
-// KONSOL PPD (daerah) - daftar/gantung sekolah, tetap semula Admin sekolah, ringkasan daerah
+// KONSOL PPD (daerah) - gambaran daerah, senarai sekolah, butiran sekolah (murid/kelas/guru/aktiviti),
+// daftar/gantung sekolah, tetap semula Admin sekolah, tetapan & log capaian.
+// Paparan DAERAH hanya angka & graf (daripada ringkasan di registri). Paparan SEKOLAH membaca terus pangkalan data
+// sekolah itu di pelayan dan memaparkan nama murid/guru; setiap capaian dicatat dalam Log_Akses (pelayan).
 // ---------------------------------------------------------------
 let cachePpd = null;
+let cacheButiranSekolah_ = null;
 let modalDaftarSekolahInstance = null;
+let modalPpdMuridInstance = null;
+let chartPpd_ = {};                    // nama -> instans Chart.js (dimusnahkan sebelum dilukis semula)
 
+const WARNA_KATEGORI_ = {
+  'Belum Mula': '#94A3B8', 'Iqra 1': '#FCD34D', 'Iqra 2': '#FBBF24', 'Iqra 3': '#F59E0B', 'Iqra 4': '#F97316',
+  'Iqra 5': '#EA580C', 'Iqra 6': '#C2410C', 'Al-Quran': '#14B8A6', 'Khatam': '#7C3AED'
+};
+const URUTAN_KATEGORI_ = ['Belum Mula', 'Iqra 1', 'Iqra 2', 'Iqra 3', 'Iqra 4', 'Iqra 5', 'Iqra 6', 'Al-Quran', 'Khatam'];
+const WARNA_MUTU_ = { 'Lancar': '#10B981', 'Sederhana': '#F59E0B', 'Ulang': '#EF4444' };
+const NAMA_BULAN_ = ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
+
+function musnahkanCartaPpd_(nama) {
+  if (chartPpd_[nama]) { try { chartPpd_[nama].destroy(); } catch (e) { /* abaikan */ } delete chartPpd_[nama]; }
+}
+function musnahkanSemuaCartaPpd_() { Object.keys(chartPpd_).slice().forEach(musnahkanCartaPpd_); }
+
+function labelBulan_(kunci) {
+  const m = /^(\d{4})-(\d{2})$/.exec(String(kunci));
+  return m ? NAMA_BULAN_[Number(m[2]) - 1] + ' ' + m[1].slice(2) : String(kunci);
+}
+function formatNombor_(n) { return (Number(n) || 0).toLocaleString('ms-MY'); }
+function peratusTeks_(n) { return n === null || n === undefined ? '-' : n + '%'; }
+function tarikhTeksPpd_(iso) {
+  if (!iso) return '-';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '-';
+  return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+}
+function hariTeks_(h) { return h === null || h === undefined ? 'Tiada rekod' : (h === 0 ? 'Hari ini' : h + ' hari lalu'); }
+function lencanaKategori_(kat) {
+  const k = String(kat);
+  const kelas = k === 'Belum Mula' ? 'bk-belum' : k === 'Khatam' ? 'bk-khatam' : k === 'Al-Quran' ? 'bk-quran' : 'bk-iqra';
+  return '<span class="badge-kategori ' + kelas + '">' + escapeHtml(k) + '</span>';
+}
+function lencanaMutu_(m) {
+  if (!m) return '<span class="text-muted">-</span>';
+  const w = WARNA_MUTU_[m] || '#94A3B8';
+  return '<span class="ppd-mutu" style="--w:' + w + '"><i></i>' + escapeHtml(m) + '</span>';
+}
+function lencanaStatusPpd_(status) {
+  const aktif = status === 'Aktif';
+  return '<span class="ppd-status ' + (aktif ? 'ppd-status-aktif' : 'ppd-status-gantung') + '">' + escapeHtml(status) + '</span>';
+}
+
+/** Pilihan umum Chart.js untuk tema kaca: fon sama, grid halus, tooltip kemas. */
+function pilihanCartaPpd_(tambahan) {
+  const asas = {
+    responsive: true, maintainAspectRatio: false,
+    animation: { duration: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 650, easing: 'easeOutQuart' },
+    plugins: {
+      legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', boxWidth: 8, boxHeight: 8, padding: 14, color: '#2B2A5E', font: { family: "'Source Sans 3', sans-serif", weight: '600', size: 12 } } },
+      tooltip: { backgroundColor: 'rgba(20,18,60,.92)', padding: 10, cornerRadius: 12, titleFont: { family: "'Source Sans 3', sans-serif", weight: '700' }, bodyFont: { family: "'Source Sans 3', sans-serif" }, boxPadding: 4 }
+    }
+  };
+  return Object.assign(asas, tambahan || {});
+}
+const SKALA_HALUS_ = {
+  x: { grid: { display: false }, ticks: { color: '#5B5F86', font: { family: "'Source Sans 3', sans-serif", weight: '600' } }, border: { display: false } },
+  y: { beginAtZero: true, grid: { color: 'rgba(99,102,241,.1)' }, ticks: { color: '#5B5F86', precision: 0, font: { family: "'Source Sans 3', sans-serif" } }, border: { display: false } }
+};
+
+/** Plugin: jumlah di tengah gelang (doughnut) - angka besar + label kecil. */
+function pluginTengahGelang_(jumlah, label) {
+  return {
+    id: 'tengahGelang',
+    afterDraw: function (chart) {
+      const a = chart.chartArea; const c = chart.ctx;
+      const x = (a.left + a.right) / 2, y = (a.top + a.bottom) / 2;
+      c.save(); c.textAlign = 'center'; c.textBaseline = 'middle';
+      c.fillStyle = '#1F1B5E'; c.font = "800 26px 'Playfair Display', Georgia, serif";
+      c.fillText(formatNombor_(jumlah), x, y - 6);
+      c.fillStyle = '#868BB0'; c.font = "600 11px 'Source Sans 3', sans-serif";
+      c.fillText(label, x, y + 16);
+      c.restore();
+    }
+  };
+}
+
+function lukisDoughnutPpd_(nama, idKanvas, label, nilaiObj, urutan, warna) {
+  musnahkanCartaPpd_(nama);
+  const kanvas = document.getElementById(idKanvas);
+  if (!kanvas) return;
+  const kunci = urutan.filter(function (k) { return (nilaiObj[k] || 0) > 0; });
+  const bingkai = kanvas.parentElement;
+  const nota = bingkai.querySelector('.ppd-carta-kosong');
+  if (nota) nota.remove();
+  if (!kunci.length) {
+    kanvas.classList.add('d-none');
+    bingkai.insertAdjacentHTML('beforeend', '<div class="ppd-carta-kosong">Tiada data lagi</div>');
+    return;
+  }
+  kanvas.classList.remove('d-none');
+  const jumlah = kunci.reduce(function (n, k) { return n + nilaiObj[k]; }, 0);
+  chartPpd_[nama] = new Chart(kanvas, {
+    type: 'doughnut',
+    data: { labels: kunci, datasets: [{ label: label, data: kunci.map(function (k) { return nilaiObj[k]; }), backgroundColor: kunci.map(function (k) { return warna[k] || '#94A3B8'; }), borderColor: 'rgba(255,255,255,.95)', borderWidth: 3, hoverOffset: 6, borderRadius: 4 }] },
+    options: pilihanCartaPpd_({
+      cutout: '64%',
+      plugins: Object.assign({}, pilihanCartaPpd_().plugins, {
+        tooltip: Object.assign({}, pilihanCartaPpd_().plugins.tooltip, { callbacks: { label: function (c) { return ' ' + c.label + ': ' + formatNombor_(c.parsed) + ' (' + Math.round(c.parsed / jumlah * 100) + '%)'; } } })
+      })
+    }),
+    plugins: [pluginTengahGelang_(jumlah, label.toLowerCase())]
+  });
+}
+
+function lukisTahunPpd_(nama, idKanvas, tahunObj) {
+  musnahkanCartaPpd_(nama);
+  const kanvas = document.getElementById(idKanvas);
+  if (!kanvas) return;
+  const tahun = Object.keys(tahunObj).filter(function (t) { return tahunObj[t].j > 0 || ['1', '2', '3', '4', '5', '6'].indexOf(t) !== -1; }).sort(function (a, b) { return Number(a) - Number(b); });
+  chartPpd_[nama] = new Chart(kanvas, {
+    type: 'bar',
+    data: {
+      labels: tahun.map(function (t) { return 'Tahun ' + t; }),
+      datasets: [
+        { label: 'Menguasai Al-Quran', data: tahun.map(function (t) { return tahunObj[t].m; }), backgroundColor: '#14B8A6', borderRadius: 8, borderSkipped: false, stack: 's' },
+        { label: 'Belum menguasai', data: tahun.map(function (t) { return Math.max(0, tahunObj[t].j - tahunObj[t].m); }), backgroundColor: '#FBBF24', borderRadius: 8, borderSkipped: false, stack: 's' }
+      ]
+    },
+    options: pilihanCartaPpd_({
+      scales: { x: Object.assign({}, SKALA_HALUS_.x, { stacked: true }), y: Object.assign({}, SKALA_HALUS_.y, { stacked: true }) },
+      plugins: Object.assign({}, pilihanCartaPpd_().plugins, {
+        tooltip: Object.assign({}, pilihanCartaPpd_().plugins.tooltip, {
+          callbacks: {
+            footer: function (items) {
+              const t = tahun[items[0].dataIndex]; const o = tahunObj[t];
+              return o.j ? 'Penguasaan: ' + Math.round(o.m / o.j * 100) + '% daripada ' + formatNombor_(o.j) + ' murid' : '';
+            }
+          }
+        })
+      })
+    })
+  });
+}
+
+function lukisAktivitiPpd_(nama, idKanvas, bulanan) {
+  musnahkanCartaPpd_(nama);
+  const kanvas = document.getElementById(idKanvas);
+  if (!kanvas) return;
+  const b = bulanan || [];
+  chartPpd_[nama] = new Chart(kanvas, {
+    type: 'bar',
+    data: {
+      labels: b.map(function (x) { return labelBulan_(x.b); }),
+      datasets: [
+        { type: 'bar', label: 'Rekod tasmik', data: b.map(function (x) { return x.r; }), backgroundColor: 'rgba(99,102,241,.78)', borderRadius: 8, borderSkipped: false, yAxisID: 'y' },
+        { type: 'line', label: 'Murid ditasmik', data: b.map(function (x) { return x.m; }), borderColor: '#14B8A6', backgroundColor: '#14B8A6', pointRadius: 4, pointHoverRadius: 6, borderWidth: 3, tension: .35, yAxisID: 'y' }
+      ]
+    },
+    options: pilihanCartaPpd_({ scales: SKALA_HALUS_ })
+  });
+}
+
+/** Plugin ringkas: garisan menegak "sasaran" pada carta bar mendatar (tanpa pustaka anotasi). */
+function pluginGarisSasaran_(sasaran) {
+  return {
+    id: 'garisSasaran',
+    afterDatasetsDraw: function (chart) {
+      const x = chart.scales.x.getPixelForValue(sasaran);
+      const a = chart.chartArea; const c = chart.ctx;
+      c.save();
+      c.strokeStyle = '#BE185D'; c.lineWidth = 2; c.setLineDash([6, 4]);
+      c.beginPath(); c.moveTo(x, a.top); c.lineTo(x, a.bottom); c.stroke();
+      c.setLineDash([]); c.fillStyle = '#BE185D'; c.font = "700 11px 'Source Sans 3', sans-serif"; c.textAlign = 'center';
+      c.fillText(sasaran + '%', x, a.top - 4);
+      c.restore();
+    }
+  };
+}
+
+function lukisKedudukanPpd_(sekolah, sasaran) {
+  musnahkanCartaPpd_('kedudukan');
+  const kanvas = document.getElementById('ppdChartKedudukan');
+  const bingkai = document.getElementById('ppdKedudukanBingkai');
+  if (!kanvas) return;
+  const nota = bingkai.querySelector('.ppd-carta-kosong');
+  if (nota) nota.remove();
+  const senarai = sekolah.filter(function (s) { return s.status === 'Aktif' && s.t6Peratus !== null && s.t6Murid > 0; })
+    .sort(function (a, b) { return b.t6Peratus - a.t6Peratus || a.nama.localeCompare(b.nama); });
+  if (!senarai.length) {
+    kanvas.classList.add('d-none'); bingkai.style.height = '120px';
+    bingkai.insertAdjacentHTML('beforeend', '<div class="ppd-carta-kosong">Belum ada sekolah dengan murid Tahun 6 dan ringkasan terkini</div>');
+    return;
+  }
+  kanvas.classList.remove('d-none');
+  bingkai.style.height = Math.max(200, senarai.length * 30 + 56) + 'px';
+  chartPpd_.kedudukan = new Chart(kanvas, {
+    type: 'bar',
+    data: {
+      labels: senarai.map(function (s) { return s.nama.length > 34 ? s.nama.slice(0, 33) + '…' : s.nama; }),
+      datasets: [{ label: 'Thn 6 menguasai Al-Quran (%)', data: senarai.map(function (s) { return s.t6Peratus; }), backgroundColor: senarai.map(function (s) { return s.t6Peratus >= sasaran ? '#10B981' : '#F59E0B'; }), borderRadius: 8, borderSkipped: false, barThickness: 18 }]
+    },
+    options: pilihanCartaPpd_({
+      indexAxis: 'y', layout: { padding: { top: 16, right: 12 } },
+      scales: {
+        x: { min: 0, max: 100, grid: { color: 'rgba(99,102,241,.1)' }, ticks: { color: '#5B5F86', callback: function (v) { return v + '%'; } }, border: { display: false } },
+        y: { grid: { display: false }, ticks: { color: '#2B2A5E', font: { family: "'Source Sans 3', sans-serif", weight: '600' } }, border: { display: false } }
+      },
+      plugins: Object.assign({}, pilihanCartaPpd_().plugins, {
+        legend: { display: false },
+        tooltip: Object.assign({}, pilihanCartaPpd_().plugins.tooltip, {
+          callbacks: {
+            label: function (c) { const s = senarai[c.dataIndex]; return ' ' + s.t6Peratus + '% (' + s.t6Menguasai + ' / ' + s.t6Murid + ' murid Tahun 6)'; }
+          }
+        })
+      }),
+      onClick: function (e, el) { if (el.length) bukaButiranSekolah_(senarai[el[0].index].kod); }
+    }),
+    plugins: [pluginGarisSasaran_(sasaran)]
+  });
+}
+
+// ------------------------- memuat & memapar daerah -------------------------
 async function mulakanAppPPD() {
   kunciQueueTerakhir_ = null;
   document.getElementById('screenLogin').classList.add('d-none');
@@ -8059,57 +8798,144 @@ async function mulakanAppPPD() {
   document.getElementById('navNamaGuru').textContent = currentUser.Nama + ' (PPD)';
   document.querySelectorAll('.btn-urus-pengguna, .btn-tetapan-sijil, .btn-diagnostik-juzuk').forEach(function (el) { el.classList.add('d-none'); });
   terapkanPenjenamaan_();
+  tunjukPaparanDaerahPpd_();
   navigasi('ppd');
+}
+
+function tunjukPaparanDaerahPpd_() {
+  document.getElementById('ppdPaparanSekolah').classList.add('d-none');
+  document.getElementById('ppdPaparanDaerah').classList.remove('d-none');
 }
 
 async function muatPpd() {
   const badan = document.querySelector('#tablePpdSekolah tbody');
-  badan.innerHTML = '<tr><td colspan="8">' + skeletonSenarai_(3) + '</td></tr>';
+  badan.innerHTML = '<tr><td colspan="10">' + skeletonSenarai_(3) + '</td></tr>';
   try {
     const hasil = await cubaSemulaClient_(function () { return apiPpdSenaraiSekolah(); });
-    if (!hasil.success) { badan.innerHTML = '<tr><td colspan="8" class="text-danger">' + escapeHtml(hasil.message || 'Gagal memuatkan senarai sekolah.') + '</td></tr>'; return; }
+    if (!hasil.success) { badan.innerHTML = '<tr><td colspan="10" class="text-danger">' + escapeHtml(hasil.message || 'Gagal memuatkan senarai sekolah.') + '</td></tr>'; return; }
     cachePpd = hasil;
     renderPpd(hasil);
   } catch (err) {
-    badan.innerHTML = '<tr><td colspan="8" class="text-danger">Gagal memuatkan senarai sekolah (' + escapeHtml((err && err.message) || 'ralat') + ').</td></tr>';
+    badan.innerHTML = '<tr><td colspan="10" class="text-danger">Gagal memuatkan senarai sekolah (' + escapeHtml((err && err.message) || 'ralat') + ').</td></tr>';
   }
 }
 
+function setTeks_(id, nilai) { const el = document.getElementById(id); if (el) el.textContent = nilai; }
+
 function renderPpd(hasil) {
-  const senarai = hasil.senarai;
   const daerah = hasil.daerah || {};
-  document.getElementById('ppdNamaDaerah').textContent = daerah.Nama_Daerah || 'Nama daerah belum ditetapkan (lihat Tetapan Daerah di bawah).';
+  const a = hasil.analisis;
+  const sasaran = daerah.Sasaran_PPD_Tahun6 || 65;
+  setTeks_('ppdNamaDaerah', daerah.Nama_Daerah || 'Nama daerah belum ditetapkan (lihat Tetapan & Log).');
   document.getElementById('inputDaerahNama').value = daerah.Nama_Daerah || '';
-  document.getElementById('inputDaerahSasaran').value = daerah.Sasaran_PPD_Tahun6 || 65;
+  document.getElementById('inputDaerahSasaran').value = sasaran;
 
-  let aktif = 0, murid = 0, t6 = 0, t6m = 0, perkasa = 0;
-  senarai.forEach(function (s) {
-    if (s.Status === 'Aktif') aktif++;
-    if (s.Ringkasan) { murid += s.Ringkasan.Jumlah_Murid; t6 += s.Ringkasan.Tahun6_Murid; t6m += s.Ringkasan.Tahun6_Menguasai; perkasa += s.Ringkasan.Perkasa; }
-  });
-  const peratus = t6 ? Math.round((t6m / t6) * 100) : 0;
-  document.getElementById('ppdStatSekolah').textContent = aktif;
-  document.getElementById('ppdStatMurid').textContent = murid;
-  document.getElementById('ppdStatTahun6').textContent = peratus + '%';
-  document.getElementById('ppdStatSasaran').textContent = 'Sasaran: ' + (daerah.Sasaran_PPD_Tahun6 || 65) + '%';
-  document.getElementById('ppdStatPerkasa').textContent = perkasa;
+  // KPI
+  setTeks_('ppdStatSekolah', a.sekolah.aktif);
+  setTeks_('ppdStatSekolahSub', a.sekolah.digantung ? a.sekolah.digantung + ' digantung' : (a.sekolah.jumlah ? 'semua aktif' : ''));
+  setTeks_('ppdStatMurid', formatNombor_(a.murid));
+  setTeks_('ppdStatMuridSub', a.jantina && (a.jantina.Lelaki + a.jantina.Perempuan) ? formatNombor_(a.jantina.Lelaki) + ' lelaki, ' + formatNombor_(a.jantina.Perempuan) + ' perempuan' : '');
+  setTeks_('ppdStatTahun6', a.tahun6.peratus === null ? '-' : a.tahun6.peratus + '%');
+  setTeks_('ppdStatSasaran', 'Sasaran: ' + sasaran + '%');
+  setTeks_('ppdStatPerkasa', formatNombor_(a.perkasa));
+  setTeks_('ppdStatKhatam', formatNombor_(a.khatam));
+  setTeks_('ppdStatGuru', formatNombor_(a.guru));
+  setTeks_('ppdStatAktif', a.aktiviti.peratusAktif === null ? '-' : a.aktiviti.peratusAktif + '%');
+  setTeks_('ppdStatRekod30', formatNombor_(a.aktiviti.rekod30));
 
+  // nota kesegaran
+  const nota = [];
+  if (a.kemaskiniTertua) nota.push('Ringkasan paling lama dikemas kini: ' + a.kemaskiniTertua);
+  if (a.belumRingkasan.length) nota.push(a.belumRingkasan.length + ' sekolah belum ada analisis penuh - tekan "Segar Ringkasan".');
+  setTeks_('ppdNotaSegar', nota.join(' · '));
+
+  // bar sasaran
+  const t6 = a.tahun6;
+  document.getElementById('ppdTrekIsi').style.width = (t6.peratus || 0) + '%';
+  document.getElementById('ppdTrekIsi').classList.toggle('tercapai', t6.peratus !== null && t6.peratus >= sasaran);
+  document.getElementById('ppdTrekPenanda').style.left = Math.min(100, sasaran) + '%';
+  document.getElementById('ppdTrekPenanda').setAttribute('data-sasaran', sasaran + '%');
+  setTeks_('ppdSasaranKaki', t6.j ? formatNombor_(t6.m) + ' daripada ' + formatNombor_(t6.j) + ' murid Tahun 6 menguasai Al-Quran' +
+    (t6.jurang === null ? '' : (t6.jurang >= 0 ? ' - melepasi sasaran ' + t6.jurang + ' mata' : ' - kurang ' + Math.abs(t6.jurang) + ' mata daripada sasaran')) : 'Belum ada murid Tahun 6.');
+  document.getElementById('ppdTahapMini').innerHTML = [
+    ['Tahap 1 (Thn 1-3)', a.tahap1], ['Tahap 2 (Thn 4-6)', a.tahap2]
+  ].map(function (p) {
+    return '<div class="ppd-mini"><div class="ppd-mini-nilai">' + peratusTeks_(p[1].peratus) + '</div><div class="ppd-mini-label">' + p[0] + '</div><div class="ppd-mini-sub">' + formatNombor_(p[1].m) + ' / ' + formatNombor_(p[1].j) + '</div></div>';
+  }).join('');
+
+  // carta
+  lukisDoughnutPpd_('kategori', 'ppdChartKategori', 'Murid', a.kategori, URUTAN_KATEGORI_, WARNA_KATEGORI_);
+  lukisTahunPpd_('tahun', 'ppdChartTahun', a.tahun);
+  lukisKedudukanPpd_(a.sekolahSenarai, sasaran);
+  lukisAktivitiPpd_('aktiviti', 'ppdChartAktiviti', a.aktiviti.bulanan);
+
+  // perlu perhatian
+  const peta = {}; a.sekolahSenarai.forEach(function (s) { peta[s.kod] = s; });
+  const blok = function (tajuk, ikon, nada, kodList, kosong, sub) {
+    const isi = kodList.length ? kodList.map(function (k) {
+      const s = peta[k];
+      return '<button type="button" class="ppd-chip" data-buka="' + escapeHtml(k) + '"><b>' + escapeHtml(k) + '</b> ' + escapeHtml(s ? s.nama : '') + (sub ? '<span class="ppd-chip-sub">' + escapeHtml(sub(s)) + '</span>' : '') + '</button>';
+    }).join('') : '<div class="ppd-kosong-baik"><i class="fa-solid fa-circle-check"></i> ' + kosong + '</div>';
+    return '<div class="col-12 col-lg-4"><div class="ppd-perhatian" data-nada="' + nada + '"><div class="ppd-perhatian-tajuk"><i class="fa-solid ' + ikon + '"></i> ' + tajuk + ' <span class="ppd-bil">' + kodList.length + '</span></div><div class="ppd-chip-senarai">' + isi + '</div></div></div>';
+  };
+  document.getElementById('ppdPerhatian').innerHTML =
+    blok('Bawah sasaran Tahun 6', 'fa-arrow-trend-down', 'amaran', a.bawahSasaran, 'Semua sekolah mencapai sasaran', function (s) { return s.t6Peratus + '%'; }) +
+    blok('Tidak aktif (&gt;30 hari)', 'fa-moon', 'rose', a.tidakAktif, 'Semua sekolah aktif menggunakan sistem', function (s) { return s.hariSejak === null ? 'tiada rekod' : s.hariSejak + ' hari'; }) +
+    blok('Belum ada analisis', 'fa-hourglass-half', 'neutral', a.belumRingkasan, 'Semua sekolah ada analisis', null);
+
+  renderSenaraiSekolahPpd_();
+}
+
+function sekolahTertapis_() {
+  const a = cachePpd && cachePpd.analisis;
+  if (!a) return [];
+  const q = document.getElementById('ppdCariSekolah').value.trim().toLowerCase();
+  const st = document.getElementById('ppdTapisStatus').value;
+  const susun = document.getElementById('ppdSusunSekolah').value;
+  const lajur = {};
+  a.sekolahSenarai.forEach(function (s) { lajur[s.kod] = s; });
+  let senarai = cachePpd.senarai.filter(function (s) {
+    if (st && s.Status !== st) return false;
+    return !q || s.Kod_Sekolah.toLowerCase().indexOf(q) !== -1 || s.Nama_Sekolah.toLowerCase().indexOf(q) !== -1;
+  }).map(function (s) { return { s: s, a: lajur[s.Kod_Sekolah] }; });
+  const num = function (v, bawah) { return v === null || v === undefined ? bawah : v; };
+  const cmp = {
+    kod: function (x, y) { return x.s.Kod_Sekolah.localeCompare(y.s.Kod_Sekolah); },
+    nama: function (x, y) { return x.s.Nama_Sekolah.localeCompare(y.s.Nama_Sekolah); },
+    murid: function (x, y) { return num(y.a.murid, -1) - num(x.a.murid, -1); },
+    'aktif': function (x, y) { return num(y.a.aktif30Peratus, -1) - num(x.a.aktif30Peratus, -1); },
+    't6-turun': function (x, y) { return num(y.a.t6Peratus, -1) - num(x.a.t6Peratus, -1); },
+    't6-naik': function (x, y) { return num(x.a.t6Peratus, 999) - num(y.a.t6Peratus, 999); }
+  };
+  senarai.sort(cmp[susun] || cmp.kod);
+  return senarai;
+}
+
+function renderSenaraiSekolahPpd_() {
   const badan = document.querySelector('#tablePpdSekolah tbody');
-  if (senarai.length === 0) {
-    badan.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Belum ada sekolah didaftarkan. Tekan "Daftar Sekolah".</td></tr>';
+  const semua = cachePpd ? cachePpd.senarai : [];
+  if (semua.length === 0) {
+    badan.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Belum ada sekolah didaftarkan. Tekan "Daftar Sekolah".</td></tr>';
+    setTeks_('ppdBilSekolah', '');
     return;
   }
-  badan.innerHTML = senarai.map(function (s) {
-    const r = s.Ringkasan;
-    const t6p = r && r.Tahun6_Murid ? Math.round((r.Tahun6_Menguasai / r.Tahun6_Murid) * 100) + '%' : '-';
+  const senarai = sekolahTertapis_();
+  setTeks_('ppdBilSekolah', senarai.length === semua.length ? '(' + semua.length + ')' : '(' + senarai.length + ' daripada ' + semua.length + ')');
+  if (!senarai.length) { badan.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Tiada sekolah sepadan dengan carian.</td></tr>'; return; }
+  badan.innerHTML = senarai.map(function (p) {
+    const s = p.s, r = s.Ringkasan, x = p.a;
     const aktifKah = s.Status === 'Aktif';
-    return '<tr>' +
+    const t6 = r && r.Tahun6_Murid ? Math.round((r.Tahun6_Menguasai / r.Tahun6_Murid) * 100) : null;
+    const sasaran = (cachePpd.daerah && cachePpd.daerah.Sasaran_PPD_Tahun6) || 65;
+    return '<tr class="ppd-baris" tabindex="0" data-buka="' + escapeHtml(s.Kod_Sekolah) + '">' +
       '<td><code>' + escapeHtml(s.Kod_Sekolah) + '</code></td>' +
-      '<td>' + escapeHtml(s.Nama_Sekolah) + '</td>' +
-      '<td><span class="ppd-status ' + (aktifKah ? 'ppd-status-aktif' : 'ppd-status-gantung') + '">' + escapeHtml(s.Status) + '</span></td>' +
-      '<td class="text-end">' + (r ? r.Jumlah_Murid : '-') + '</td>' +
-      '<td class="text-end">' + t6p + '</td>' +
+      '<td class="ppd-nama-sekolah">' + escapeHtml(s.Nama_Sekolah) + '</td>' +
+      '<td>' + lencanaStatusPpd_(s.Status) + '</td>' +
+      '<td class="text-end">' + (r ? formatNombor_(r.Jumlah_Murid) : '-') + '</td>' +
+      '<td>' + (t6 === null ? '<span class="text-muted">-</span>' : '<div class="ppd-mini-trek" title="' + t6 + '% (sasaran ' + sasaran + '%)"><div class="ppd-mini-trek-isi' + (t6 >= sasaran ? ' tercapai' : '') + '" style="width:' + t6 + '%"></div></div><span class="ppd-mini-trek-teks">' + t6 + '%</span>') + '</td>' +
       '<td class="text-end">' + (r ? r.Perkasa : '-') + '</td>' +
+      '<td class="text-end">' + (x && x.aktif30Peratus !== null ? x.aktif30Peratus + '%' : '-') + '</td>' +
+      '<td class="small">' + (x && x.adaAnalisis ? escapeHtml(hariTeks_(x.hariSejak)) : '-') + '</td>' +
       '<td class="small">' + (r ? escapeHtml(r.Dikemaskini) : '-') + '</td>' +
       '<td class="text-nowrap">' +
         '<button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Tetapkan semula kata laluan Admin sekolah" data-aksi="reset" data-kod="' + escapeHtml(s.Kod_Sekolah) + '" data-nama="' + escapeHtml(s.Nama_Sekolah) + '"><i class="fa-solid fa-key"></i></button>' +
@@ -8118,6 +8944,259 @@ function renderPpd(hasil) {
   }).join('');
 }
 
+// ------------------------- segmen (tab) -------------------------
+function pasangSegmenPpd_(idSegmen, awalanPane, pemuat) {
+  document.getElementById(idSegmen).addEventListener('click', function (e) {
+    const btn = e.target.closest('.ppd-segmen-btn');
+    if (!btn) return;
+    this.querySelectorAll('.ppd-segmen-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
+    const pane = btn.dataset.pane;
+    document.querySelectorAll('[id^="' + awalanPane + '"].ppd-pane').forEach(function (p) {
+      p.classList.toggle('d-none', p.id !== awalanPane + pane.charAt(0).toUpperCase() + pane.slice(1));
+    });
+    if (pemuat) pemuat(pane);
+  });
+}
+pasangSegmenPpd_('ppdSegmenDaerah', 'ppdPane', function (pane) {
+  // carta dilukis semasa tersembunyi mempunyai saiz 0 - lukis semula bila tab Gambaran dipaparkan
+  if (pane === 'gambaran' && cachePpd && cachePpd.success) { Object.keys(chartPpd_).forEach(function (k) { try { chartPpd_[k].resize(); } catch (e) { /* abaikan */ } }); }
+});
+pasangSegmenPpd_('ppdSegmenSekolah', 'ppdSkPane', function (pane) {
+  if (pane === 'ringkasan') Object.keys(chartPpd_).forEach(function (k) { try { chartPpd_[k].resize(); } catch (e) { /* abaikan */ } });
+});
+['ppdCariSekolah', 'ppdTapisStatus', 'ppdSusunSekolah'].forEach(function (id) {
+  document.getElementById(id).addEventListener(id === 'ppdCariSekolah' ? 'input' : 'change', renderSenaraiSekolahPpd_);
+});
+
+// ------------------------- butiran sekolah -------------------------
+let kodSekolahPpdAktif_ = null;
+
+async function bukaButiranSekolah_(kod) {
+  kodSekolahPpdAktif_ = kod;
+  cacheButiranSekolah_ = null;
+  document.getElementById('ppdPaparanDaerah').classList.add('d-none');
+  document.getElementById('ppdPaparanSekolah').classList.remove('d-none');
+  const s = cachePpd && cachePpd.senarai.filter(function (x) { return x.Kod_Sekolah === kod; })[0];
+  setTeks_('ppdSkKod', kod);
+  setTeks_('ppdSkNama', s ? s.Nama_Sekolah : kod);
+  document.getElementById('ppdSkStatus').innerHTML = s ? lencanaStatusPpd_(s.Status) : '';
+  setTeks_('ppdSkMeta', 'Memuatkan data sekolah...');
+  document.getElementById('ppdSkKpi').innerHTML = '';
+  ['tablePpdSkKelas', 'tablePpdSkMurid', 'tablePpdSkGuru', 'tablePpdSkAktiviti'].forEach(function (id) {
+    document.querySelector('#' + id + ' tbody').innerHTML = '<tr><td colspan="9">' + skeletonSenarai_(3) + '</td></tr>';
+  });
+  // segmen kembali ke Ringkasan
+  document.querySelectorAll('#ppdSegmenSekolah .ppd-segmen-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.pane === 'ringkasan'); });
+  document.querySelectorAll('#ppdPaparanSekolah .ppd-pane').forEach(function (p) { p.classList.toggle('d-none', p.id !== 'ppdSkPaneRingkasan'); });
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  try {
+    const hasil = await cubaSemulaClient_(function () { return apiPpdButiranSekolah(kod); });
+    if (kodSekolahPpdAktif_ !== kod) return;     // pengguna sudah beralih
+    if (!hasil.success) { setTeks_('ppdSkMeta', hasil.message || 'Gagal memuatkan butiran sekolah.'); toastRalat(hasil.message || 'Gagal memuatkan butiran sekolah.'); return; }
+    cacheButiranSekolah_ = hasil;
+    renderButiranSekolah_(hasil);
+  } catch (err) {
+    setTeks_('ppdSkMeta', 'Gagal memuatkan butiran sekolah (' + ((err && err.message) || 'ralat') + ').');
+  }
+}
+
+function kpiHtml_(nada, ikon, nilai, label, sub) {
+  return '<div class="ppd-kpi" data-nada="' + nada + '"><div class="ppd-kpi-ikon"><i class="fa-solid ' + ikon + '"></i></div><div class="ppd-kpi-isi"><div class="ppd-kpi-nilai">' + nilai + '</div><div class="ppd-kpi-label">' + label + '</div>' + (sub ? '<div class="ppd-kpi-sub">' + sub + '</div>' : '') + '</div></div>';
+}
+
+function renderButiranSekolah_(h) {
+  const sk = h.sekolah, r = h.ringkasan, sasaran = h.sasaranTahun6;
+  setTeks_('ppdSkKod', sk.kod); setTeks_('ppdSkNama', sk.nama);
+  document.getElementById('ppdSkStatus').innerHTML = lencanaStatusPpd_(sk.status);
+  setTeks_('ppdSkMeta', 'Didaftar ' + sk.tarikhDaftar + (sk.catatan ? ' · ' + sk.catatan : '') + ' · Data dijana ' + h.janaPada);
+  const btnStatus = document.getElementById('btnPpdSkStatus');
+  const aktif = sk.status === 'Aktif';
+  btnStatus.className = 'btn btn-sm ' + (aktif ? 'btn-outline-danger' : 'btn-outline-success');
+  btnStatus.dataset.status = aktif ? 'Digantung' : 'Aktif';
+  btnStatus.innerHTML = '<i class="fa-solid ' + (aktif ? 'fa-pause' : 'fa-play') + '"></i> ' + (aktif ? 'Gantung' : 'Aktifkan');
+
+  const t6 = r.tahun['6'] || { j: 0, m: 0, k: 0 };
+  const t6p = t6.j ? Math.round(t6.m / t6.j * 100) : null;
+  const jumlah = h.murid.length;
+  const perkasa = h.murid.filter(function (m) { return m.perkasa; }).length;
+  const aktif30 = h.murid.filter(function (m) { return m.hari !== null && m.hari <= 30; }).length;
+  const quran = (r.kategori['Al-Quran'] || 0) + (r.kategori['Khatam'] || 0);
+  document.getElementById('ppdSkKpi').innerHTML =
+    kpiHtml_('violet', 'fa-children', formatNombor_(jumlah), 'Murid', formatNombor_(r.jantina.Lelaki) + ' lelaki, ' + formatNombor_(r.jantina.Perempuan) + ' perempuan') +
+    kpiHtml_('teal', 'fa-book-quran', t6p === null ? '-' : t6p + '%', 'Thn 6 Menguasai Al-Quran', t6.j ? t6.m + ' / ' + t6.j + ' murid · sasaran ' + sasaran + '%' : 'Tiada murid Tahun 6') +
+    kpiHtml_('indigo', 'fa-book-open-reader', jumlah ? Math.round(quran / jumlah * 100) + '%' : '-', 'Di peringkat Al-Quran/Khatam', formatNombor_(quran) + ' daripada ' + formatNombor_(jumlah)) +
+    kpiHtml_('rose', 'fa-life-ring', formatNombor_(perkasa), 'PERKASA (Thn 6, Iqra 1-3)') +
+    kpiHtml_('gold', 'fa-award', formatNombor_(r.kategori['Khatam'] || 0), 'Murid Khatam') +
+    kpiHtml_('indigo', 'fa-chalkboard-user', formatNombor_(h.guru.length), 'Guru & Pentadbir') +
+    kpiHtml_('teal', 'fa-bolt', jumlah ? Math.round(aktif30 / jumlah * 100) + '%' : '-', 'Murid Ditasmik (30 hari)', formatNombor_(aktif30) + ' murid · ' + formatNombor_(r.aktif.rekod30) + ' rekod') +
+    kpiHtml_('violet', 'fa-clock', r.aktif.terakhir ? tarikhTeksPpd_(r.aktif.terakhir) : '-', 'Rekod Tasmik Terakhir');
+
+  lukisDoughnutPpd_('skKategori', 'ppdSkChartKategori', 'Murid', r.kategori, URUTAN_KATEGORI_, WARNA_KATEGORI_);
+  lukisTahunPpd_('skTahun', 'ppdSkChartTahun', r.tahun);
+  lukisAktivitiPpd_('skAktiviti', 'ppdSkChartAktiviti', r.aktif.bulanan);
+  lukisDoughnutPpd_('skStatus', 'ppdSkChartStatus', 'Rekod', r.aktif.status90, ['Lancar', 'Sederhana', 'Ulang'], WARNA_MUTU_);
+  const ralat = r.aktif.ralat90 || {};
+  const warnaRalat = { 'Tajwid': '#6366F1', 'Makhraj': '#EC4899', 'Panjang/Pendek': '#14B8A6', 'Dengung': '#F59E0B' };
+  lukisDoughnutPpd_('skRalat', 'ppdSkChartRalat', 'Rekod', ralat, Object.keys(ralat).sort(function (x, y) { return ralat[y] - ralat[x]; }), warnaRalat);
+
+  const kadInfo = function (tajuk, ikon, isi) { return '<div class="col-12 col-md-6 col-lg-4"><div class="card h-100"><div class="card-header fw-bold"><i class="fa-solid ' + ikon + '"></i> ' + tajuk + '</div><div class="card-body">' + isi + '</div></div></div>'; };
+  const perkasaSenarai = h.murid.filter(function (m) { return m.perkasa; });
+  const tidakAktif = h.murid.filter(function (m) { return m.bil > 0 && m.hari !== null && m.hari > 30; }).length;
+  const tiadaRekod = h.murid.filter(function (m) { return m.bil === 0; }).length;
+  const khas = h.murid.filter(function (m) { return m.khas; }).length;
+  const hadir = r.aktif.hadir90 || {};
+  const jumlahHadir = Object.keys(hadir).reduce(function (n, k) { return n + hadir[k]; }, 0);
+  const hadirPct = jumlahHadir ? Math.round((hadir['Hadir'] || 0) / jumlahHadir * 100) : null;
+  document.getElementById('ppdSkInfoTambahan').innerHTML =
+    kadInfo('Perlu Perhatian', 'fa-flag',
+      '<ul class="ppd-senarai-info"><li><b>' + perkasaSenarai.length + '</b> murid PERKASA</li><li><b>' + tidakAktif + '</b> murid tidak ditasmik lebih 30 hari</li><li><b>' + tiadaRekod + '</b> murid belum ada sebarang rekod</li><li><b>' + khas + '</b> murid keperluan khas</li></ul>') +
+    kadInfo('Kehadiran Tasmik (90 hari)', 'fa-user-check',
+      hadirPct === null ? '<div class="ppd-carta-kosong">Tiada data</div>' : '<div class="ppd-besar">' + hadirPct + '%</div><div class="small text-muted">hadir pada ' + formatNombor_(jumlahHadir) + ' sesi direkod</div>') +
+    kadInfo('Hafazan', 'fa-feather-pointed',
+      '<div class="ppd-besar">' + formatNombor_(r.hafazan.rekod) + '</div><div class="small text-muted">rekod hafazan' + (Object.keys(r.hafazan.fasa || {}).length ? ' · ' + Object.keys(r.hafazan.fasa).map(function (k) { return escapeHtml(k) + ' ' + r.hafazan.fasa[k]; }).join(', ') : '') + '</div>');
+
+  renderKelasPpd_(h);
+  isiTapisanMuridPpd_(h);
+  renderMuridPpd_();
+  renderGuruPpd_(h);
+  renderAktivitiPpd_(h);
+}
+
+function renderKelasPpd_(h) {
+  const badan = document.querySelector('#tablePpdSkKelas tbody');
+  if (!h.kelas.length) { badan.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Belum ada murid didaftarkan.</td></tr>'; }
+  else {
+    badan.innerHTML = h.kelas.map(function (k) {
+      const seg = URUTAN_KATEGORI_.filter(function (c) { return (k.kategori[c] || 0) > 0; }).map(function (c) {
+        return '<span class="ppd-seg" style="flex:' + k.kategori[c] + ';background:' + WARNA_KATEGORI_[c] + '" title="' + escapeHtml(c) + ': ' + k.kategori[c] + '"></span>';
+      }).join('');
+      return '<tr><td><b>Thn ' + escapeHtml(k.tahun) + '</b> ' + escapeHtml(k.kelas) + '</td><td class="text-end">' + k.jumlah + '</td>' +
+        '<td><div class="ppd-seg-bar">' + seg + '</div></td>' +
+        '<td class="text-end">' + k.menguasai + ' <span class="text-muted small">(' + Math.round(k.menguasai / k.jumlah * 100) + '%)</span></td>' +
+        '<td class="text-end">' + k.aktif30 + '</td><td class="text-end">' + (k.tiadaRekod ? '<span class="text-danger fw-bold">' + k.tiadaRekod + '</span>' : '0') + '</td></tr>';
+    }).join('');
+  }
+  document.getElementById('ppdLegendaKategori').innerHTML = URUTAN_KATEGORI_.map(function (c) {
+    return '<span class="ppd-legenda-item"><i style="background:' + WARNA_KATEGORI_[c] + '"></i>' + escapeHtml(c) + '</span>';
+  }).join('');
+}
+
+function isiTapisanMuridPpd_(h) {
+  const isi = function (id, nilai, label) {
+    const el = document.getElementById(id);
+    const semasa = el.value;
+    el.innerHTML = '<option value="">' + label + '</option>' + nilai.map(function (v) { return '<option value="' + escapeHtml(v) + '">' + escapeHtml(v) + '</option>'; }).join('');
+    el.value = nilai.indexOf(semasa) !== -1 ? semasa : '';
+  };
+  const unik = function (arr) { return arr.filter(function (v, i) { return arr.indexOf(v) === i; }); };
+  isi('ppdTapisTahun', unik(h.murid.map(function (m) { return m.tahun; })).sort(function (a, b) { return Number(a) - Number(b); }), 'Semua tahun');
+  isi('ppdTapisKelas', unik(h.murid.map(function (m) { return m.kelas; })).sort(), 'Semua kelas');
+  isi('ppdTapisKategori', URUTAN_KATEGORI_.filter(function (c) { return h.murid.some(function (m) { return m.kategori === c; }); }), 'Semua tahap');
+}
+
+function muridTertapisPpd_() {
+  const h = cacheButiranSekolah_;
+  if (!h) return [];
+  const q = document.getElementById('ppdCariMurid').value.trim().toLowerCase();
+  const th = document.getElementById('ppdTapisTahun').value, kl = document.getElementById('ppdTapisKelas').value;
+  const kt = document.getElementById('ppdTapisKategori').value, ks = document.getElementById('ppdTapisKhas').value;
+  return h.murid.filter(function (m) {
+    if (q && m.nama.toLowerCase().indexOf(q) === -1) return false;
+    if (th && m.tahun !== th) return false;
+    if (kl && m.kelas !== kl) return false;
+    if (kt && m.kategori !== kt) return false;
+    if (ks === 'perkasa' && !m.perkasa) return false;
+    if (ks === 'tidak-aktif' && !(m.bil > 0 && m.hari !== null && m.hari > 30)) return false;
+    if (ks === 'tiada-rekod' && m.bil !== 0) return false;
+    if (ks === 'khas' && !m.khas) return false;
+    return true;
+  });
+}
+
+function renderMuridPpd_() {
+  const h = cacheButiranSekolah_;
+  const badan = document.querySelector('#tablePpdSkMurid tbody');
+  if (!h) { badan.innerHTML = ''; return; }
+  const senarai = muridTertapisPpd_();
+  setTeks_('ppdBilMurid', senarai.length === h.murid.length ? '(' + h.murid.length + ')' : '(' + senarai.length + ' daripada ' + h.murid.length + ')');
+  if (!senarai.length) { badan.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Tiada murid sepadan.</td></tr>'; return; }
+  const had = 400;
+  badan.innerHTML = senarai.slice(0, had).map(function (m) {
+    return '<tr class="ppd-baris" tabindex="0" data-murid="' + escapeHtml(m.id) + '">' +
+      '<td class="ppd-nama-murid">' + escapeHtml(m.nama) + (m.perkasa ? ' <span class="ppd-tanda perkasa" title="PERKASA">P</span>' : '') + (m.khas ? ' <span class="ppd-tanda khas" title="' + escapeHtml(m.khas) + '">K</span>' : '') + '</td>' +
+      '<td>' + escapeHtml(m.tahun + ' ' + m.kelas) + '</td>' +
+      '<td>' + lencanaKategori_(m.kategori) + '</td>' +
+      '<td class="small">' + (m.muka !== '' ? 'ms ' + escapeHtml(m.muka) : '') + (m.juzuk !== '' ? ' · juzuk ' + escapeHtml(m.juzuk) : '') + (m.muka === '' && m.juzuk === '' ? '-' : '') + '</td>' +
+      '<td class="small">' + (m.terakhir ? escapeHtml(m.terakhir) : '-') + '</td>' +
+      '<td class="text-end ' + (m.hari !== null && m.hari > 30 ? 'text-danger fw-bold' : '') + '">' + (m.hari === null ? '-' : m.hari) + '</td>' +
+      '<td class="text-end">' + m.bil + '</td>' +
+      '<td>' + lencanaMutu_(m.status) + '</td></tr>';
+  }).join('') + (senarai.length > had ? '<tr><td colspan="8" class="text-center text-muted small">Memaparkan ' + had + ' pertama daripada ' + senarai.length + '. Gunakan carian/penapis untuk mengecilkan senarai.</td></tr>' : '');
+}
+['ppdCariMurid', 'ppdTapisTahun', 'ppdTapisKelas', 'ppdTapisKategori', 'ppdTapisKhas'].forEach(function (id) {
+  document.getElementById(id).addEventListener(id === 'ppdCariMurid' ? 'input' : 'change', renderMuridPpd_);
+});
+
+function renderGuruPpd_(h) {
+  const badan = document.querySelector('#tablePpdSkGuru tbody');
+  badan.innerHTML = h.guru.length ? h.guru.map(function (g) {
+    return '<tr><td><code>' + escapeHtml(g.id) + '</code></td><td>' + escapeHtml(g.nama) + '</td><td>' + escapeHtml(g.peranan) + '</td><td class="text-end">' + formatNombor_(g.rekod) + '</td><td class="text-end">' + formatNombor_(g.rekod30) + '</td><td class="small">' + (g.terakhir ? escapeHtml(g.terakhir) : '-') + '</td></tr>';
+  }).join('') : '<tr><td colspan="6" class="text-center text-muted">Tiada akaun.</td></tr>';
+}
+
+function renderAktivitiPpd_(h) {
+  const badan = document.querySelector('#tablePpdSkAktiviti tbody');
+  badan.innerHTML = h.aktivitiTerkini.length ? h.aktivitiTerkini.map(function (a) {
+    return '<tr><td class="small text-nowrap">' + escapeHtml(a.masa) + '</td><td>' + escapeHtml(a.murid) + '</td><td>' + lencanaKategori_(a.kategori) + '</td><td>' + (a.muka !== '' ? escapeHtml(a.muka) : '-') + '</td><td>' + lencanaMutu_(a.status) + '</td><td class="small">' + escapeHtml(a.guru) + '</td></tr>';
+  }).join('') : '<tr><td colspan="6" class="text-center text-muted">Belum ada rekod tasmik.</td></tr>';
+}
+
+// ------------------------- sejarah bacaan murid -------------------------
+async function bukaRekodMuridPpd_(idMurid) {
+  if (!kodSekolahPpdAktif_) return;
+  if (!modalPpdMuridInstance) modalPpdMuridInstance = new bootstrap.Modal(document.getElementById('modalPpdMurid'));
+  const m = cacheButiranSekolah_ && cacheButiranSekolah_.murid.filter(function (x) { return x.id === idMurid; })[0];
+  setTeks_('ppdMuridNama', m ? m.nama : 'Murid');
+  setTeks_('ppdMuridMeta', m ? 'Tahun ' + m.tahun + ' ' + m.kelas + (m.jantina ? ' · ' + m.jantina : '') : '');
+  document.getElementById('ppdMuridIsi').innerHTML = skeletonSenarai_(4);
+  modalPpdMuridInstance.show();
+  try {
+    const hasil = await cubaSemulaClient_(function () { return apiPpdRekodMurid(kodSekolahPpdAktif_, idMurid); });
+    if (!hasil.success) { document.getElementById('ppdMuridIsi').innerHTML = '<div class="text-danger">' + escapeHtml(hasil.message || 'Gagal memuatkan rekod.') + '</div>'; return; }
+    const rt = hasil.tasmik.map(function (r) {
+      return '<tr><td class="small text-nowrap">' + escapeHtml(r.masa) + '</td><td>' + lencanaKategori_(r.kategori) + '</td><td>' + (r.muka !== '' ? escapeHtml(r.muka) : '-') + '</td><td>' + (r.juzuk !== '' ? escapeHtml(r.juzuk) : '-') + '</td><td>' + lencanaMutu_(r.status) + '</td><td class="small">' + escapeHtml(r.ralat || '-') + '</td><td class="small">' + escapeHtml(r.hadir) + '</td><td class="small">' + escapeHtml(r.guru) + '</td></tr>';
+    }).join('');
+    const rh = hasil.hafazan.map(function (r) {
+      return '<tr><td class="small text-nowrap">' + escapeHtml(r.masa) + '</td><td>' + escapeHtml(r.surah) + '</td><td>' + escapeHtml(r.fasa) + '</td><td>' + escapeHtml(r.kualiti || '-') + '</td><td class="small">' + escapeHtml(r.guru) + '</td></tr>';
+    }).join('');
+    document.getElementById('ppdMuridIsi').innerHTML =
+      '<div class="ppd-kpi-grid ppd-kpi-grid-kecil">' + kpiHtml_('indigo', 'fa-clipboard-list', formatNombor_(hasil.jumlahTasmik), 'Sesi tasmik') + kpiHtml_('violet', 'fa-feather-pointed', formatNombor_(hasil.jumlahHafazan), 'Rekod hafazan') + (hasil.murid.khas ? kpiHtml_('rose', 'fa-heart', escapeHtml(hasil.murid.khas), 'Keperluan khas') : '') + '</div>' +
+      '<h6 class="fw-bold mt-3">Tasmik' + (hasil.jumlahTasmik > hasil.tasmik.length ? ' <span class="small text-muted fw-normal">(' + hasil.tasmik.length + ' terkini)</span>' : '') + '</h6>' +
+      (rt ? '<div class="table-responsive ppd-murid-bingkai"><table class="table table-sm align-middle ppd-jadual"><thead><tr><th>Masa</th><th>Tahap</th><th>Muka</th><th>Juzuk</th><th>Mutu</th><th>Ralat</th><th>Hadir</th><th>Guru</th></tr></thead><tbody>' + rt + '</tbody></table></div>' : '<p class="text-muted small">Belum ada rekod tasmik.</p>') +
+      '<h6 class="fw-bold mt-3">Hafazan</h6>' +
+      (rh ? '<div class="table-responsive"><table class="table table-sm align-middle ppd-jadual"><thead><tr><th>Masa</th><th>Surah</th><th>Fasa</th><th>Kualiti</th><th>Guru</th></tr></thead><tbody>' + rh + '</tbody></table></div>' : '<p class="text-muted small">Belum ada rekod hafazan.</p>');
+  } catch (err) {
+    document.getElementById('ppdMuridIsi').innerHTML = '<div class="text-danger">Gagal memuatkan rekod (' + escapeHtml((err && err.message) || 'ralat') + ').</div>';
+  }
+}
+
+// ------------------------- tetapan & log capaian -------------------------
+async function muatLogPpd_() {
+  const badan = document.querySelector('#tablePpdLog tbody');
+  badan.innerHTML = '<tr><td colspan="5">' + skeletonSenarai_(3) + '</td></tr>';
+  try {
+    const hasil = await cubaSemulaClient_(function () { return apiPpdLogAkses(); });
+    if (!hasil.success) { badan.innerHTML = '<tr><td colspan="5" class="text-danger">' + escapeHtml(hasil.message || 'Gagal memuatkan log.') + '</td></tr>'; return; }
+    badan.innerHTML = hasil.log.length ? hasil.log.map(function (l) {
+      return '<tr><td class="small text-nowrap">' + escapeHtml(l.masa) + '</td><td class="small">' + escapeHtml(l.nama || l.pengguna) + ' <span class="text-muted">(' + escapeHtml(l.pengguna) + ')</span></td><td><span class="ppd-tindakan-lencana">' + escapeHtml(l.tindakan.replace(/_/g, ' ').toLowerCase()) + '</span></td><td><code>' + escapeHtml(l.kod || '-') + '</code></td><td class="small">' + escapeHtml(l.butiran || '') + '</td></tr>';
+    }).join('') : '<tr><td colspan="5" class="text-center text-muted">Belum ada catatan.</td></tr>';
+  } catch (err) {
+    badan.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuatkan log (' + escapeHtml((err && err.message) || 'ralat') + ').</td></tr>';
+  }
+}
+document.getElementById('btnPpdMuatLog').addEventListener('click', muatLogPpd_);
+
+// ------------------------- kelayakan sementara, daftar, status, reset -------------------------
 /** Papar kelayakan sementara SEKALI sahaja (kod sekolah + ID + kata laluan) dengan butang salin. */
 function paparKelayakan_(tajuk, kodSekolah, akaun) {
   const blok = akaun.map(function (a) {
@@ -8169,39 +9248,88 @@ document.getElementById('formDaftarSekolah').addEventListener('submit', async fu
   }
 });
 
+async function tukarStatusSekolahPpd_(kod, nama, status) {
+  const sah = await Swal.fire({
+    title: (status === 'Digantung' ? 'Gantung' : 'Aktifkan') + ' sekolah ini?',
+    text: status === 'Digantung' ? nama + ' tidak boleh log masuk sehingga diaktifkan semula. Data tidak dipadam.' : nama + ' akan boleh log masuk semula.',
+    icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal', confirmButtonColor: '#4F46E5'
+  });
+  if (!sah.isConfirmed) return false;
+  tunjukLoading('Mengemaskini status...');
+  try {
+    const hasil = await apiPpdTetapStatusSekolah(kod, status);
+    tutupLoading();
+    if (!hasil.success) { toastRalat(hasil.message || 'Gagal mengemaskini status.'); return false; }
+    toastKejayaan(hasil.message || 'Status dikemaskini.');
+    return true;
+  } catch (err) { tutupLoading(); toastRalat('Gagal mengemaskini status.'); return false; }
+}
+
+async function resetAdminSekolahPpd_(kod, nama) {
+  const sah = await Swal.fire({
+    title: 'Tetapkan semula kata laluan Admin?', text: 'Kata laluan sementara baharu dijana untuk akaun Admin ' + nama + '. Sesi Admin itu ditamatkan. Tindakan ini dicatat dalam Log Capaian PPD.',
+    icon: 'question', showCancelButton: true, confirmButtonText: 'Tetapkan semula', cancelButtonText: 'Batal', confirmButtonColor: '#4F46E5'
+  });
+  if (!sah.isConfirmed) return;
+  tunjukLoading('Menjana kata laluan...');
+  try {
+    const hasil = await apiPpdTetapSemulaAdminSekolah(kod);
+    tutupLoading();
+    if (!hasil.success) { toastRalat(hasil.message || 'Gagal menetapkan semula.'); return; }
+    await paparKelayakan_('Kata laluan sementara Admin', hasil.kod, [{ ID_Guru: hasil.ID_Guru, Peranan: 'Admin', kataLaluanSementara: hasil.kataLaluanSementara }]);
+  } catch (err) { tutupLoading(); toastRalat('Gagal menetapkan semula kata laluan.'); }
+}
+
 document.querySelector('#tablePpdSekolah tbody').addEventListener('click', async function (e) {
   const btn = e.target.closest('button[data-aksi]');
-  if (!btn) return;
+  if (!btn) {
+    const baris = e.target.closest('tr[data-buka]');
+    if (baris) bukaButiranSekolah_(baris.dataset.buka);
+    return;
+  }
   const kod = btn.dataset.kod, nama = btn.dataset.nama;
   if (btn.dataset.aksi === 'status') {
-    const status = btn.dataset.status;
-    const sah = await Swal.fire({
-      title: (status === 'Digantung' ? 'Gantung' : 'Aktifkan') + ' sekolah ini?',
-      text: status === 'Digantung' ? nama + ' tidak boleh log masuk sehingga diaktifkan semula. Data tidak dipadam.' : nama + ' akan boleh log masuk semula.',
-      icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal', confirmButtonColor: '#4F46E5'
-    });
-    if (!sah.isConfirmed) return;
-    tunjukLoading('Mengemaskini status...');
-    try {
-      const hasil = await apiPpdTetapStatusSekolah(kod, status);
-      tutupLoading();
-      if (!hasil.success) { toastRalat(hasil.message || 'Gagal mengemaskini status.'); return; }
-      toastKejayaan(hasil.message || 'Status dikemaskini.');
-      muatPpd();
-    } catch (err) { tutupLoading(); toastRalat('Gagal mengemaskini status.'); }
+    if (await tukarStatusSekolahPpd_(kod, nama, btn.dataset.status)) muatPpd();
   } else if (btn.dataset.aksi === 'reset') {
-    const sah = await Swal.fire({
-      title: 'Tetapkan semula kata laluan Admin?', text: 'Kata laluan sementara baharu dijana untuk akaun Admin ' + nama + '. Sesi Admin itu ditamatkan.',
-      icon: 'question', showCancelButton: true, confirmButtonText: 'Tetapkan semula', cancelButtonText: 'Batal', confirmButtonColor: '#4F46E5'
-    });
-    if (!sah.isConfirmed) return;
-    tunjukLoading('Menjana kata laluan...');
-    try {
-      const hasil = await apiPpdTetapSemulaAdminSekolah(kod);
-      tutupLoading();
-      if (!hasil.success) { toastRalat(hasil.message || 'Gagal menetapkan semula.'); return; }
-      await paparKelayakan_('Kata laluan sementara Admin', hasil.kod, [{ ID_Guru: hasil.ID_Guru, Peranan: 'Admin', kataLaluanSementara: hasil.kataLaluanSementara }]);
-    } catch (err) { tutupLoading(); toastRalat('Gagal menetapkan semula kata laluan.'); }
+    await resetAdminSekolahPpd_(kod, nama);
+  }
+});
+document.querySelector('#tablePpdSekolah tbody').addEventListener('keydown', function (e) {
+  if (e.key !== 'Enter') return;
+  const baris = e.target.closest('tr[data-buka]');
+  if (baris && e.target === baris) bukaButiranSekolah_(baris.dataset.buka);
+});
+document.getElementById('ppdPerhatian').addEventListener('click', function (e) {
+  const c = e.target.closest('[data-buka]');
+  if (c) bukaButiranSekolah_(c.dataset.buka);
+});
+document.querySelector('#tablePpdSkMurid tbody').addEventListener('click', function (e) {
+  const baris = e.target.closest('tr[data-murid]');
+  if (baris) bukaRekodMuridPpd_(baris.dataset.murid);
+});
+document.querySelector('#tablePpdSkMurid tbody').addEventListener('keydown', function (e) {
+  if (e.key !== 'Enter') return;
+  const baris = e.target.closest('tr[data-murid]');
+  if (baris && e.target === baris) bukaRekodMuridPpd_(baris.dataset.murid);
+});
+
+document.getElementById('btnPpdKembali').addEventListener('click', function () {
+  kodSekolahPpdAktif_ = null; cacheButiranSekolah_ = null;
+  ['skKategori', 'skTahun', 'skAktiviti', 'skStatus', 'skRalat'].forEach(musnahkanCartaPpd_);
+  tunjukPaparanDaerahPpd_();
+  Object.keys(chartPpd_).forEach(function (k) { try { chartPpd_[k].resize(); } catch (e) { /* abaikan */ } });
+  window.scrollTo({ top: 0, behavior: 'auto' });
+});
+document.getElementById('btnPpdSkMuat').addEventListener('click', function () { if (kodSekolahPpdAktif_) bukaButiranSekolah_(kodSekolahPpdAktif_); });
+document.getElementById('btnPpdSkReset').addEventListener('click', function () {
+  if (kodSekolahPpdAktif_ && cacheButiranSekolah_) resetAdminSekolahPpd_(kodSekolahPpdAktif_, cacheButiranSekolah_.sekolah.nama);
+});
+document.getElementById('btnPpdSkStatus').addEventListener('click', async function () {
+  if (!kodSekolahPpdAktif_ || !cacheButiranSekolah_) return;
+  const kod = kodSekolahPpdAktif_;
+  if (await tukarStatusSekolahPpd_(kod, cacheButiranSekolah_.sekolah.nama, this.dataset.status)) {
+    await muatPpd();
+    bukaButiranSekolah_(kod);
   }
 });
 
@@ -8233,6 +9361,21 @@ document.getElementById('formTetapanDaerah').addEventListener('submit', async fu
     muatPpd();
   } catch (err) { tutupLoading(); ralatEl.textContent = 'Gagal menyimpan (' + ((err && err.message) || 'ralat') + ').'; }
 });
+
+/** Dipanggil semasa log keluar / pertukaran sesi: kosongkan semua data PPD dalam ingatan & paparan. */
+function bersihkanPaparanPpd_() {
+  musnahkanSemuaCartaPpd_();
+  cachePpd = null; cacheButiranSekolah_ = null; kodSekolahPpdAktif_ = null;
+  ['ppdPerhatian', 'ppdSkKpi', 'ppdSkInfoTambahan', 'ppdTahapMini', 'ppdMuridIsi', 'ppdLegendaKategori', 'ppdNotaSegar'].forEach(function (id) { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
+  ['#tablePpdSkKelas tbody', '#tablePpdSkMurid tbody', '#tablePpdSkGuru tbody', '#tablePpdSkAktiviti tbody', '#tablePpdLog tbody'].forEach(function (s) { const el = document.querySelector(s); if (el) el.innerHTML = ''; });
+  ['ppdStatSekolah', 'ppdStatMurid', 'ppdStatTahun6', 'ppdStatPerkasa', 'ppdStatKhatam', 'ppdStatGuru', 'ppdStatAktif', 'ppdStatRekod30'].forEach(function (id) { setTeks_(id, '-'); });
+  ['ppdNamaDaerah', 'ppdStatSekolahSub', 'ppdStatMuridSub', 'ppdStatSasaran', 'ppdSkKod', 'ppdSkNama', 'ppdSkMeta', 'ppdMuridNama', 'ppdMuridMeta'].forEach(function (id) { setTeks_(id, ''); });
+  ['ppdCariSekolah', 'ppdCariMurid'].forEach(function (id) { const el = document.getElementById(id); if (el) el.value = ''; });
+  try { if (modalPpdMuridInstance) modalPpdMuridInstance.hide(); } catch (e) { /* abaikan */ }
+  tunjukPaparanDaerahPpd_();
+  document.querySelectorAll('#ppdSegmenDaerah .ppd-segmen-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.pane === 'gambaran'); });
+  document.querySelectorAll('#ppdPaparanDaerah .ppd-pane').forEach(function (p) { p.classList.toggle('d-none', p.id !== 'ppdPaneGambaran'); });
+}
 
 // ---------------------------------------------------------------
 // MULA
