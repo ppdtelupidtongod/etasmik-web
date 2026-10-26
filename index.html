@@ -4646,7 +4646,18 @@
     .menu-pentas .menu-grid .menu-card .menu-card-arrow { width: 44px; height: 44px; font-size: .95rem; }
   }
   @media (min-width: 1600px) { .menu-pentas .menu-grid { max-width: 1260px; } }
-  @media (prefers-reduced-motion: reduce) { .menu-pentas .menu-grid .menu-card, .menu-pentas .menu-grid .menu-card .menu-card-arrow { transition: none !important; } }</style>
+  @media (prefers-reduced-motion: reduce) { .menu-pentas .menu-grid .menu-card, .menu-pentas .menu-grid .menu-card .menu-card-arrow { transition: none !important; } }
+
+  /* =====================================================================
+     v17 - jubin ke-4 BIRU & ke-5 UNGU (atas permintaan pengguna, ikut gambar rujukan jubin menu). Ini SAHAJA tempat biru/ungu
+           dibenarkan; ujian warna (tests/ujian-uat.js) melangkau blok bertanda di bawah. Tempat lain kekal tanpa biru/ungu.
+  ===================================================================== */
+  /* [BIRU-UNGU-DIBENARKAN] */
+  .menu-pentas .menu-grid .menu-card.c-blue   { --kilau: 14,53,120;
+    background: radial-gradient(120% 62% at 50% 0%, rgba(120,176,255,.5), transparent 70%) padding-box, linear-gradient(172deg, #2169CC 0%, #174E9F 58%, #0E3578 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
+  .menu-pentas .menu-grid .menu-card.c-purple { --kilau: 58,23,120;
+    background: radial-gradient(120% 62% at 50% 0%, rgba(184,140,245,.5), transparent 70%) padding-box, linear-gradient(172deg, #7C3EC6 0%, #5B2B9F 58%, #3A1778 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
+  /* [/BIRU-UNGU-DIBENARKAN] */</style>
 </head>
 <body>
 
@@ -4943,31 +4954,31 @@
         <div class="menu-grid">
           <div class="menu-card c-green" role="button" tabindex="0" onclick="navigasi('murid')">
             <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-users"></i><i class="fa-solid fa-circle-plus ikon-lencana"></i></div>
-            <div class="menu-card-title">Enrolmen Murid</div>
+            <div class="menu-card-title"><span class="jdl">Enrolmen Murid</span></div>
             <div class="menu-card-desc">Daftar &amp; kemas kini maklumat murid</div>
             <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
           <div class="menu-card c-gold" role="button" tabindex="0" onclick="navigasi('tasmik')">
             <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-book-open"></i><i class="fa-solid fa-bookmark ikon-lencana"></i></div>
-            <div class="menu-card-title">Rekod Bacaan <span class="nb">Al-Quran</span> &amp; Iqra</div>
+            <div class="menu-card-title"><span class="jdl">Rekod Bacaan <span class="nb">Al-Quran</span> &amp; Iqra</span></div>
             <div class="menu-card-desc">Catat dan pantau kemajuan bacaan</div>
             <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
           <div class="menu-card c-red" role="button" tabindex="0" onclick="navigasi('dashboard')">
             <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-chart-simple"></i><i class="fa-solid fa-arrow-trend-up ikon-lencana"></i></div>
-            <div class="menu-card-title">Analisis Keseluruhan</div>
+            <div class="menu-card-title"><span class="jdl">Analisis Keseluruhan</span></div>
             <div class="menu-card-desc">Laporan &amp; statistik pencapaian</div>
             <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
           <div class="menu-card c-blue" role="button" tabindex="0" onclick="navigasi('perkasa')">
             <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-bullseye"></i><i class="fa-solid fa-location-arrow ikon-lencana"></i></div>
-            <div class="menu-card-title">PERKASA</div>
+            <div class="menu-card-title"><span class="jdl">PERKASA</span></div>
             <div class="menu-card-desc">Program Pengukuhan Al-Quran Sekolah Anda</div>
             <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
           <div class="menu-card c-purple" role="button" tabindex="0" onclick="navigasi('transkrip')">
             <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i><i class="fa-solid fa-award ikon-lencana"></i></div>
-            <div class="menu-card-title">Sijil / Transkrip</div>
+            <div class="menu-card-title"><span class="jdl">Sijil / Transkrip</span></div>
             <div class="menu-card-desc">Cetak sijil &amp; transkrip pencapaian</div>
             <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
