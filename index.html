@@ -4451,7 +4451,52 @@
   /* Enrolmen: kad murid sepadan dengan skrin kerja lain */
   #senaraiMuridCard .murid-item { background: var(--kertas); border: 1px solid var(--garis); box-shadow: 0 1px 2px rgba(10,50,36,.06); -webkit-backdrop-filter: none; backdrop-filter: none; }
   #senaraiMuridCard .murid-item:hover { border-color: rgba(14,64,46,.42); }
-  .murid-item-teks strong { font-weight: 800; }</style>
+  .murid-item-teks strong { font-weight: 800; }
+
+  /* =====================================================================
+     v14 - hashtag tanpa nilai lalai (disorok jika kosong), ucapan hero tetap dengan tulisan Arab besar beranimasi,
+           dialog Import mudah (salin nama + jantina), dan buku memuat yang MENYELAK halaman.
+  ===================================================================== */
+  .kelas-gate-hashtag:empty { display: none; }
+  .hero-welcome { padding: 12px 32px 13px; border-radius: 30px; }
+  .hero-welcome-arab {
+    padding: 0 8px; font-size: clamp(2.4rem, 4.8vw, 3.4rem); line-height: 1.55;
+    background: linear-gradient(100deg, #D8B45A 0%, #FFF4D2 28%, #E6CC85 48%, #FFFBEA 60%, #C9A24D 100%); background-size: 260% 100%;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+    filter: drop-shadow(0 3px 12px rgba(0,0,0,.55));
+    animation: arabMasuk 1.2s cubic-bezier(.22,1,.36,1) .5s backwards, arabKilau 5.5s ease-in-out 1.7s infinite, arabApung 6.5s ease-in-out 1.7s infinite;
+  }
+  @keyframes arabMasuk { from { opacity: 0; transform: translateY(12px) scale(.86); } to { opacity: 1; transform: none; } }
+  @keyframes arabKilau { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  @keyframes arabApung { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .hero-welcome-sapa { flex-wrap: wrap; justify-content: center; text-align: center; font-size: 1rem; }
+  .hero-welcome-sapa .nama-sekolah { color: #F6DE9A; }
+
+  .imp-wrap { font-size: .93rem; }
+  .imp-langkah { display: flex; align-items: center; gap: 9px; margin: 6px 0 8px; font-weight: 800; color: var(--green-1); }
+  .imp-pilih { display: flex; gap: 10px; margin-bottom: 14px; }
+  .imp-pilih select { flex: 1; }
+  .imp-nota { margin: 0 0 8px; color: var(--ink-soft); }
+  .imp-ruang { height: 200px; border: 1.5px solid var(--garis); border-radius: 14px; font-family: ui-monospace, Consolas, 'Courier New', monospace; font-size: .8rem; line-height: 1.55; white-space: pre; overflow: auto; }
+  .imp-pratonton { margin-top: 10px; padding: 10px 14px; border-radius: 12px; background: var(--kertas-2); border: 1px solid var(--garis); color: var(--ink); line-height: 1.45; }
+  .imp-masalah { margin-top: 4px; color: #A12544; font-weight: 700; font-size: .82rem; }
+  .imp-lanjut { margin-top: 10px; font-size: .78rem; color: var(--ink-faint); }
+  .imp-lanjut code, .imp-wrap code { color: var(--green-2); background: none; font-size: .78rem; }
+
+  .lq-selak { transform-box: view-box; transform-origin: 60px 50px; opacity: 0; filter: drop-shadow(0 1px 2.4px rgba(4,40,26,.75)); animation: lqSelak 3.9s ease-in-out infinite; }
+  .lq-selak.s2 { animation-delay: 1.3s; }
+  .lq-selak.s3 { animation-delay: 2.6s; }
+  @keyframes lqSelak {
+    0%   { opacity: 0; transform: scaleX(1) skewY(0deg); }
+    5%   { opacity: 1; transform: scaleX(1) skewY(0deg); }
+    12%  { transform: scaleX(1) skewY(0deg); }
+    40%  { transform: scaleX(.04) skewY(-9deg); }
+    66%  { opacity: 1; transform: scaleX(-1) skewY(0deg); }
+    84%  { opacity: 1; transform: scaleX(-1) skewY(0deg); }
+    96%  { opacity: 0; transform: scaleX(-1) skewY(0deg); }
+    100% { opacity: 0; transform: scaleX(1) skewY(0deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-welcome-arab { animation: none !important; } .lq-selak { animation: none !important; opacity: 0; } }</style>
 </head>
 <body>
 
@@ -4642,7 +4687,7 @@
           <div class="hero-corner-star tr" aria-hidden="true"></div>
           <div class="hero-corner-star bl" aria-hidden="true"></div>
           <div class="hero-corner-star br" aria-hidden="true"></div>
-          <div class="hero-ribbon" aria-hidden="true"><span class="r1" id="heroHashtag">#ETasmikKu</span><span class="r2 d-none" id="heroHashtagKata"></span></div>
+          <div class="hero-ribbon d-none" aria-hidden="true"><span class="r1" id="heroHashtag"></span></div>
           <svg class="hero-skyline" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
             <g class="hero-skyline-stars" fill="currentColor">
               <circle cx="40" cy="14" r="1.6"/>
@@ -4695,10 +4740,10 @@
               <!-- Ucapan selamat datang PERIBADI ("ahlan wasahlan" + nama guru yang log masuk; nama diisi oleh mulakanApp()).
                    "أَهْلاً وَسَهْلاً" ialah sapaan Arab biasa, bukan ayat Al-Quran. -->
               <div class="hero-welcome" id="heroWelcomeSapa">
-                <div class="hero-welcome-arab">أَهْلاً وَسَهْلاً</div>
+                <div class="hero-welcome-arab" lang="ar" dir="rtl">أَهْلاً وَسَهْلاً</div>
                 <div class="hero-welcome-sapa">
                   <span class="hero-welcome-icon" aria-hidden="true"></span>
-                  <span>Selamat Datang, <strong id="heroWelcomeNama">Cikgu</strong>!</span>
+                  <span>Selamat Datang ke Sistem E-Tasmik <strong class="nama-sekolah"></strong></span>
                   <span class="hero-welcome-icon" aria-hidden="true"></span>
                 </div>
               </div>
@@ -5777,8 +5822,8 @@
               </div>
             </div>
             <div class="mb-3">
-              <label class="form-label small mb-1">Hashtag (pilihan)</label>
-              <input type="text" class="form-control" id="inputTetapanHashtag" placeholder="cth: Cemerlang" maxlength="24" autocomplete="off" spellcheck="false">
+              <label class="form-label small mb-1" for="inputTetapanHashtag">Hashtag sekolah <span class="pilihan-kecil">pilihan</span></label>
+              <input type="text" class="form-control" id="inputTetapanHashtag" placeholder="taip hashtag sekolah anda" maxlength="41" autocomplete="off" spellcheck="false">
               <div class="form-text" id="tetapanHashtagPratonton"></div>
             </div>
             <div class="mb-3">
@@ -5995,7 +6040,9 @@
             <line x1="102" y1="50" x2="74" y2="47"/>
             <line x1="102" y1="59" x2="74" y2="57"/>
           </g>
-          <path class="lq-spine" d="M60 22 L60 78" stroke="#1D4E3C" stroke-width="2.4" stroke-linecap="round"/>
+          <g class="lq-selak s1" aria-hidden="true"><path fill="#FFFCEB" stroke="#8FC4AC" stroke-width="1" d="M60 24 C 76 15 98 16 110 23 L110 76 C 98 69 76 68 60 77 Z"/><g stroke="#1D674D" stroke-width="1.4" stroke-linecap="round" opacity=".5"><line x1="102" y1="32" x2="74" y2="27"/><line x1="102" y1="41" x2="74" y2="37"/><line x1="102" y1="50" x2="74" y2="47"/></g></g>
+          <g class="lq-selak s2" aria-hidden="true"><path fill="#FFFCEB" stroke="#8FC4AC" stroke-width="1" d="M60 24 C 76 15 98 16 110 23 L110 76 C 98 69 76 68 60 77 Z"/><g stroke="#1D674D" stroke-width="1.4" stroke-linecap="round" opacity=".5"><line x1="102" y1="32" x2="74" y2="27"/><line x1="102" y1="41" x2="74" y2="37"/><line x1="102" y1="50" x2="74" y2="47"/></g></g>
+          <g class="lq-selak s3" aria-hidden="true"><path fill="#FFFCEB" stroke="#8FC4AC" stroke-width="1" d="M60 24 C 76 15 98 16 110 23 L110 76 C 98 69 76 68 60 77 Z"/><g stroke="#1D674D" stroke-width="1.4" stroke-linecap="round" opacity=".5"><line x1="102" y1="32" x2="74" y2="27"/><line x1="102" y1="41" x2="74" y2="37"/><line x1="102" y1="50" x2="74" y2="47"/></g></g>          <path class="lq-spine" d="M60 22 L60 78" stroke="#1D4E3C" stroke-width="2.4" stroke-linecap="round"/>
           <path class="lq-ribbon" d="M58 15 L58 3 L62 7 L66 3 L66 15 Z" fill="#C0392B"/>
         </svg>
       </div>
@@ -6685,16 +6732,7 @@ async function mulakanApp(papatSelamatDatang) {
   document.getElementById('navNamaGuru').textContent = currentUser.Nama + ' (' + currentUser.Peranan + ')';
   document.getElementById('navNamaGuruMenu').textContent = currentUser.Nama;
   kemaskiniBadgeMenunggu();   // segera: lencana "menunggu sync" mesti mengikut queue pengguna INI (bukan sisa sesi sebelumnya) sebelum data dimuat
-  // Ucapan "Ahlan wa Sahlan" peribadi di hero menu utama (arahan tuan) -
-  // guna NAMA PERTAMA sahaja (cth "Ahmad" drpd "Ahmad Rizwan Hanafie Bin
-  // Yusop") supaya sapaan kekal ringkas/mesra & tidak melimpah keluar
-  // lencana bulat walau nama penuh guru panjang - corak sapaan biasa org
-  // Melayu ("Cikgu Ahmad", bukan "Cikgu Ahmad Rizwan Hanafie Bin Yusop").
-  const namaHeroWelcome = document.getElementById('heroWelcomeNama');
-  if (namaHeroWelcome) {
-    const namaPertama = String(currentUser.Nama || '').trim().split(/\s+/)[0] || currentUser.Nama;
-    namaHeroWelcome.textContent = 'Cikgu ' + namaPertama;
-  }
+  // Ucapan hero kini TETAP ("Selamat Datang ke Sistem E-Tasmik <nama sekolah>") - tiada nama guru.
   isiTarikhHero_();
 
   // Butang "Urus Pengguna" (daftar/urus akaun guru lain) - Admin SAHAJA
@@ -8146,6 +8184,7 @@ document.getElementById('pilihMuridTasmik').addEventListener('change', async fun
       // Guru tekan "Batal" pada dialog - jangan buka borang, kembali ke
       // keadaan "belum pilih murid" supaya dia boleh cuba murid lain.
       selMurid.value = '';
+      terapkanModalFormTasmik_('hide');   // jika borang sedang terbuka (pertukaran murid seterusnya), tutupkannya
       return;
     }
 
@@ -8231,6 +8270,18 @@ document.getElementById('formTasmik').addEventListener('submit', async function 
   const namaMurid = ((rosterMuridTasmikCache || []).find(function (m) { return m.ID_Murid === idMurid; }) || {}).Nama || '';
   const idSeterusnya = kejarSeterusnya ? idMuridSeterusnya_(idMurid) : '';
   await hantarRekod(data, apiSimpanRekodTasmik, namaMurid ? 'Rekod tasmik disimpan untuk ' + namaMurid + '.' : 'Rekod tasmik disimpan!');
+  if (kejarSeterusnya && idSeterusnya) {
+    // "Simpan & murid seterusnya": borang KEKAL terbuka dan terus bertukar kepada murid seterusnya (tidak tutup-lalu-buka semula -
+    // itu berlumba dengan animasi modal & peristiwa hidden.bs.modal yang mengosongkan pilihan murid).
+    tutupInfoRekod();
+    document.getElementById('alertRalatLepas').classList.add('d-none');
+    const thn = document.getElementById('pilihTahunTasmik').value, kls = document.getElementById('pilihKelasTasmik').value;
+    if (thn && kls) await muatRosterMuridTasmik(thn, kls);
+    pilihMuridDariRoster(idSeterusnya);
+    const badanBorang = document.querySelector('#modalFormTasmik .modal-body');
+    if (badanBorang) badanBorang.scrollTop = 0;
+    return;
+  }
   // reset separuh borang untuk sesi seterusnya, tapi KEKALKAN roster kelas
   // supaya guru boleh terus pilih murid seterusnya dalam kelas yang sama
   document.getElementById('pilihMuridTasmik').value = '';
@@ -8243,10 +8294,7 @@ document.getElementById('formTasmik').addEventListener('submit', async function 
   const tahun = document.getElementById('pilihTahunTasmik').value;
   const kelas = document.getElementById('pilihKelasTasmik').value;
   if (tahun && kelas) await muatRosterMuridTasmik(tahun, kelas); // segar semula status "Tarikh Terakhir" dsb.
-  if (kejarSeterusnya) {
-    if (idSeterusnya) pilihMuridDariRoster(idSeterusnya);
-    else toastKejayaan('Semua murid dalam senarai ini sudah dilalui. Syabas, cikgu!');
-  }
+  if (kejarSeterusnya) toastKejayaan('Semua murid dalam senarai ini sudah dilalui. Syabas, cikgu!');   // murid terakhir (tiada seterusnya)
 });
 
 /** Fungsi generik: hantar rekod terus jika online, atau simpan dalam queue jika offline */
@@ -8775,10 +8823,7 @@ function sapaanMasa_() {
   const j = new Date().getHours();
   return j < 12 ? 'Selamat pagi' : (j < 14 ? 'Selamat tengah hari' : (j < 19 ? 'Selamat petang' : 'Selamat malam'));
 }
-function namaCikgu_() {
-  const n = String((currentUser && currentUser.Nama) || '').trim().split(/\s+/)[0];
-  return n ? 'Cikgu ' + n : 'Cikgu';
-}
+function namaCikgu_() { return 'cikgu'; }   // sapaan umum (nama akaun seperti "Admin Sekolah" tidak sesuai disebut)
 
 /** Kad ringkasan di atas Papan Pemuka: sapaan, ayat ringkas dalam bahasa biasa, bar kemajuan. */
 function renderRingkasanPapan_(idElemen, p) {
@@ -9761,23 +9806,15 @@ function paparPratontonFoto_(uri) {
   document.getElementById('tetapanFotoNota').textContent = uri ? 'Foto sekolah anda.' : 'Lalai: foto Al-Quran.';
 }
 
-/** Pratonton hashtag dalam Tetapan: #<Singkatan>Ku<kata>. Kata = hashtag ditetapkan, atau daripada moto (1-3 perkataan), atau kosong. */
-function hashtagDaripadaMoto_(moto) {
-  const kata = String(moto || '').replace(/[^A-Za-z0-9 ]/g, ' ').trim().split(/\s+/).filter(function (k) { return k.length > 0; });
-  if (kata.length === 0 || kata.length > 3) return '';
-  return kata.map(function (k) { return k.charAt(0).toUpperCase() + k.slice(1).toLowerCase(); }).join('').slice(0, 24);
-}
+/** Pratonton hashtag dalam Tetapan: TEPAT seperti ditaip (ditambah # di hadapan). Kosong = tiada hashtag dipaparkan. Tiada nilai lalai. */
 function kemaskiniPratontonHashtag_() {
-  const sing = (document.getElementById('inputTetapanSingkatan').value.trim() || singkatanSemasa_() || 'ETasmik').toUpperCase();
-  const jelas = document.getElementById('inputTetapanHashtag').value.trim().replace(/^#/, '');
-  const kata = jelas || hashtagDaripadaMoto_(document.getElementById('inputTetapanMoto').value);
-  document.getElementById('tetapanHashtagPratonton').innerHTML = 'Paparan: <b>#' + escapeHtml(sing) + 'Ku' + escapeHtml(kata) + '</b> ' +
-    (jelas ? '' : (kata ? '(dijana daripada moto)' : '(moto panjang/kosong: tanpa perkataan tambahan - taip hashtag di atas jika mahu)'));
+  const nilai = document.getElementById('inputTetapanHashtag').value.trim().replace(/^#/, '');
+  const el = document.getElementById('tetapanHashtagPratonton');
+  if (!nilai) { el.textContent = 'Tiada hashtag akan dipaparkan. Taip hashtag sekolah anda jika mahu.'; return; }
+  if (!/^[A-Za-z0-9_]+$/.test(nilai)) { el.innerHTML = '<span class="text-danger">Hanya huruf, nombor atau _ (tanpa ruang).</span>'; return; }
+  el.innerHTML = 'Akan dipaparkan: <b>#' + escapeHtml(nilai) + '</b>';
 }
-['inputTetapanSingkatan', 'inputTetapanMoto', 'inputTetapanHashtag'].forEach(function (id) {
-  document.getElementById(id).addEventListener('input', kemaskiniPratontonHashtag_);
-});
-
+document.getElementById('inputTetapanHashtag').addEventListener('input', kemaskiniPratontonHashtag_);
 document.getElementById('btnTetapanSijil').addEventListener('click', function () {
   if (!modalTetapanSijilInstance) modalTetapanSijilInstance = new bootstrap.Modal(document.getElementById('modalTetapanSijil'));
   const t = tetapanSistem || {};
@@ -9896,7 +9933,7 @@ document.getElementById('formTetapanSijil').addEventListener('submit', async fun
     Guru_Besar: document.getElementById('inputTetapanGuruBesar').value.trim(),
     Singkatan: document.getElementById('inputTetapanSingkatan').value.trim(),
     Moto: document.getElementById('inputTetapanMoto').value.trim(),
-    Hashtag: document.getElementById('inputTetapanHashtag').value.trim()      // kosong = ikut moto (jika 1-3 perkataan)
+    Hashtag: document.getElementById('inputTetapanHashtag').value.trim()      // kosong = tiada hashtag
   };
   if (logoTetapanBaharu_ !== undefined) data.Logo = logoTetapanBaharu_;
   if (fotoTetapanBaharu_ !== undefined) data.Foto = fotoTetapanBaharu_;
@@ -10235,16 +10272,12 @@ function terapkanPenjenamaan_() {
   // Foto latar menu: foto sekolah jika ada, jika tidak foto Al-Quran generik (CSS: var(--foto-generik))
   if (t.Foto) document.documentElement.style.setProperty('--foto-sekolah', 'url("' + t.Foto + '")');
   else document.documentElement.style.removeProperty('--foto-sekolah');
-  const sing = singkatanSemasa_() || 'ETasmik';
-  // Hashtag = #<Singkatan>Ku<kata>; kata datang daripada tetapan sekolah (Hashtag, atau moto 1-3 perkataan) - TIDAK lagi "Gemilang" tetap.
-  const kataHashtag = t.Hashtag || '';
+  // Hashtag dipaparkan TEPAT seperti ditaip dalam Tetapan (ditambah #); kosong = disorok. Tiada nilai lalai/janaan.
+  const hashtag = t.Hashtag ? '#' + t.Hashtag : '';
   const hero = document.getElementById('heroHashtag');
-  if (hero) hero.textContent = '#' + sing + 'Ku';
-  const heroKata = document.getElementById('heroHashtagKata');
-  if (heroKata) { heroKata.textContent = kataHashtag; heroKata.classList.toggle('d-none', !kataHashtag); }
-  document.querySelectorAll('.hashtag-gemilang').forEach(function (el) { el.textContent = '#' + sing + 'Ku' + kataHashtag; });
+  if (hero) { hero.textContent = hashtag; hero.parentElement.classList.toggle('d-none', !hashtag); }
+  document.querySelectorAll('.hashtag-gemilang').forEach(function (el) { el.textContent = hashtag; el.classList.toggle('d-none', !hashtag); });
 }
-
 (function praIsiKodSekolah_() {
   const el = document.getElementById('inputKodSekolah');
   try {   // tapak statik: ?kod=XBA1234 dalam URL
@@ -10304,39 +10337,125 @@ document.getElementById('btnTukarKataLaluan').addEventListener('click', async fu
 });
 
 // ---------------------------------------------------------------
-// IMPORT PUKAL MURID (Admin / Ketua Panitia) - tampal senarai daripada Excel/CSV
+// IMPORT PUKAL MURID (Admin / Ketua Panitia) - guru hanya SALIN nama + jantina daripada Excel/Google Sheets lalu tampal.
+// Tahun & Kelas diambil daripada pilihan dalam dialog (lalai: kelas yang sedang dibuka). Format penuh
+// "Nama, Tahun, Kelas, Jantina, Keperluan Khas" masih diterima (lajur Tahun/Kelas dalam senarai akan digunakan).
 // ---------------------------------------------------------------
-function parseImportMurid_(teks) {
-  const baris = [];
-  String(teks).split(/\r?\n/).forEach(function (garis) {
-    if (!garis.trim()) return;
-    const sel = (garis.indexOf('\t') !== -1 ? garis.split('\t') : garis.split(/[,;]/)).map(function (s) { return s.trim(); });
-    baris.push({ Nama: sel[0] || '', Tahun: sel[1] || '', Kelas: sel[2] || '', Jantina: sel[3] || '', Status_Keperluan_Khas: sel[4] || '' });
+const REGEX_JANTINA_ = /^(L|P|LELAKI|PEREMPUAN)$/i;
+
+function bahagiBarisTempelan_(garis) {
+  if (garis.indexOf('\t') !== -1) return garis.split('\t');
+  if (garis.indexOf(';') !== -1) return garis.split(';');
+  if (garis.indexOf(',') !== -1) {
+    const bhg = garis.split(',');
+    // koma dianggap pemisah lajur hanya jika bahagian terakhir ialah jantina, atau bentuk penuh (lajur ke-2 ialah nombor Tahun)
+    const terakhir = (bhg[bhg.length - 1] || '').trim();
+    if (REGEX_JANTINA_.test(terakhir) || (bhg.length >= 4 && /^\s*\d+\s*$/.test(bhg[1]))) return bhg;
+  }
+  return [garis];
+}
+
+/**
+ * Ubah teks tampalan menjadi { baris: [{Nama, Tahun, Kelas, Jantina, Status_Keperluan_Khas}], masalah: [{no, teks, sebab}] }.
+ * Menerima: "NAMA<tab>L" (daripada Sheets), "NAMA  L" (ruang), "1<tab>NAMA<tab>P" (ada lajur bil.), dan bentuk penuh 4-5 lajur.
+ */
+function parseTempelanMurid_(teks, tahunLalai, kelasLalai) {
+  const baris = [], masalah = [];
+  let pertama = true;
+  String(teks || '').split(/\r?\n/).forEach(function (mentah, i) {
+    const g = mentah.replace(/ /g, ' ').trim();
+    if (!g) return;
+    let sel = bahagiBarisTempelan_(g).map(function (s) { return s.trim(); });
+    if (sel.length > 1 && /^\d+[.)]?$/.test(sel[0]) && !/^\d+$/.test(sel[1] || '')) sel.shift();     // lajur bil. di hadapan
+    const adaJantina = sel.some(function (c) { return REGEX_JANTINA_.test(c); });
+    if (pertama) {
+      pertama = false;
+      if (/^(bil\.?|no\.?)?\s*(nama|name)\b/i.test(sel[0]) && !adaJantina) return;                   // baris tajuk
+    }
+    let nama = '', tahun = '', kelas = '', jantina = '', khas = '';
+    if (sel.length >= 4 && /^\d+$/.test(sel[1])) {
+      nama = sel[0]; tahun = sel[1]; kelas = sel[2]; jantina = sel[3]; khas = sel[4] || '';
+    } else {
+      let idx = -1;
+      for (let k = sel.length - 1; k >= 0; k--) { if (sel[k] === '') continue; if (REGEX_JANTINA_.test(sel[k])) idx = k; break; }
+      if (idx > 0) { nama = sel.slice(0, idx).filter(Boolean).join(' '); jantina = sel[idx]; }
+      else if (sel.length === 1) {
+        const m = /^(.*\S)\s+(L|P|LELAKI|PEREMPUAN)$/i.exec(sel[0]);
+        if (m) { nama = m[1]; jantina = m[2]; } else nama = sel[0];
+      } else nama = sel.filter(Boolean)[0] || '';
+    }
+    nama = nama.replace(/\s+/g, ' ').trim();
+    if (!nama || REGEX_JANTINA_.test(nama)) { masalah.push({ no: i + 1, teks: g, sebab: 'tiada nama' }); return; }
+    if (!jantina) { masalah.push({ no: i + 1, teks: g, sebab: 'tiada jantina (L/P)' }); return; }
+    baris.push({ Nama: nama, Tahun: tahun || tahunLalai, Kelas: kelas || kelasLalai, Jantina: jantina, Status_Keperluan_Khas: khas });
   });
-  if (baris.length && !/^\d+$/.test(baris[0].Tahun)) baris.shift();   // baris pertama = tajuk jika lajur Tahun bukan nombor
-  return baris;
+  return { baris: baris, masalah: masalah };
+}
+
+function ringkasTempelanMurid_(hasil, tahun, kelas) {
+  if (!hasil.baris.length && !hasil.masalah.length) return 'Belum ada senarai ditampal.';
+  const l = hasil.baris.filter(function (b) { return /^(L|LELAKI)$/i.test(b.Jantina); }).length;
+  const p = hasil.baris.filter(function (b) { return /^(P|PEREMPUAN)$/i.test(b.Jantina); }).length;
+  let h = '<b>' + hasil.baris.length + '</b> murid dikesan';
+  if (hasil.baris.length) h += ' (' + l + ' lelaki, ' + p + ' perempuan)';
+  if (hasil.baris.length) h += ' &mdash; akan dimasukkan ke <b>Tahun ' + escapeHtml(String(tahun)) + ' ' + escapeHtml(String(kelas)) + '</b>.';
+  if (hasil.masalah.length) {
+    h += '<div class="imp-masalah">' + hasil.masalah.length + ' baris tidak sah: ' +
+      hasil.masalah.slice(0, 3).map(function (m) { return 'baris ' + m.no + ' (' + escapeHtml(m.sebab) + ')'; }).join(', ') +
+      (hasil.masalah.length > 3 ? ' ...' : '') + '</div>';
+  }
+  return h;
+}
+
+/** Kemas kini pratonton dialog Import (dipanggil terus daripada atribut oninput/onchange - tiada perlumbaan dengan didOpen SweetAlert2). */
+function segarPratontonImport_() {
+  const selT = document.getElementById('importTahun'), selK = document.getElementById('importKelas');
+  const ruang = document.getElementById('swalImportMurid'), pt = document.getElementById('importPratonton');
+  if (!selT || !selK || !ruang || !pt) return;
+  pt.innerHTML = ringkasTempelanMurid_(parseTempelanMurid_(ruang.value, selT.value, selK.value), selT.value, selK.value);
+}
+function tukarTahunImport_() {
+  const selT = document.getElementById('importTahun'), selK = document.getElementById('importKelas');
+  if (!selT || !selK) return;
+  selK.innerHTML = kelasUntukTahun(selT.value).map(function (k) { return '<option value="' + escapeHtml(k) + '">' + escapeHtml(k) + '</option>'; }).join('');
+  segarPratontonImport_();
 }
 
 document.getElementById('btnImportMurid').addEventListener('click', async function () {
-  const tahunImp = (tetapanSistem && tetapanSistem.Tahun ? tetapanSistem.Tahun : []).map(String);
-  const kelas = kelasSamaSemuaTahun_() ? kelasUntukTahun(tahunImp[0] || '1').join(', ') : tahunImp.map(function (th) { return 'Thn ' + th + ': ' + kelasUntukTahun(th).join('/'); }).join('; ');
-  const { value: teks, isConfirmed } = await Swal.fire({
-    title: 'Import Senarai Murid', width: 640,
+  const tahunSenarai = (tetapanSistem && tetapanSistem.Tahun ? tetapanSistem.Tahun : []).map(String);
+  const aktif = enrolmenKelasAktif;
+  const tahunMula = aktif && tahunSenarai.indexOf(String(aktif.Tahun)) !== -1 ? String(aktif.Tahun) : (tahunSenarai[0] || '1');
+  const optTahun = tahunSenarai.map(function (th) { return '<option value="' + escapeHtml(th) + '"' + (th === tahunMula ? ' selected' : '') + '>Tahun ' + escapeHtml(th) + '</option>'; }).join('');
+  const kelasMula = aktif ? String(aktif.Kelas) : (kelasUntukTahun(tahunMula)[0] || '');
+  const optKelas = kelasUntukTahun(tahunMula).map(function (k) { return '<option value="' + escapeHtml(k) + '"' + (k === kelasMula ? ' selected' : '') + '>' + escapeHtml(k) + '</option>'; }).join('');
+  const { value: hasilParse, isConfirmed } = await Swal.fire({
+    title: 'Import Senarai Murid', width: 680,
     html:
-      '<p class="text-start small text-muted mb-2">Tampal senarai (terus daripada Excel atau CSV), satu murid satu baris:<br>' +
-      '<code>Nama, Tahun, Kelas, Jantina (L/P), Keperluan Khas (pilihan)</code><br>' +
-      'Kelas sah: <strong>' + escapeHtml(kelas) + '</strong>. Baris tajuk dilangkau secara automatik; murid yang sudah ada dilangkau.</p>' +
-      '<textarea id="swalImportMurid" class="form-control" style="height:240px;font-family:monospace;font-size:.78rem;"></textarea>',
+      '<div class="imp-wrap text-start">' +
+      '<div class="imp-langkah"><span class="ft-no">1</span> Masukkan ke kelas mana?</div>' +
+      '<div class="imp-pilih"><select id="importTahun" class="form-select" aria-label="Tahun" onchange="tukarTahunImport_()">' + optTahun + '</select><select id="importKelas" class="form-select" aria-label="Kelas" onchange="segarPratontonImport_()">' + optKelas + '</select></div>' +
+      '<div class="imp-langkah"><span class="ft-no">2</span> Salin &amp; tampal senarai murid</div>' +
+      '<p class="imp-nota">Salin terus daripada Excel atau Google Sheets: <b>nama murid</b> dan <b>jantina (L/P)</b>. Satu murid satu baris.</p>' +
+      '<textarea id="swalImportMurid" class="form-control imp-ruang" oninput="segarPratontonImport_()" onpaste="setTimeout(segarPratontonImport_, 0)" placeholder="AHMAD BIN ALI&#9;L&#10;SITI AMINAH&#9;P" spellcheck="false"></textarea>' +
+      '<div class="imp-pratonton" id="importPratonton" aria-live="polite">Belum ada senarai ditampal.</div>' +
+      '<div class="imp-lanjut">Senarai anda sudah ada lajur Tahun &amp; Kelas? Boleh juga: <code>Nama, Tahun, Kelas, Jantina</code> &mdash; lajur itu akan digunakan.</div>' +
+      '</div>',
     showCancelButton: true, confirmButtonText: 'Import', cancelButtonText: 'Batal', confirmButtonColor: '#1F7C5B',
+    didOpen: function () {
+      const ruang = document.getElementById('swalImportMurid');   // boleh tiada jika dialog sudah ditutup
+      segarPratontonImport_();
+      if (ruang) ruang.focus();
+    },
     preConfirm: function () {
       const v = document.getElementById('swalImportMurid').value;
       if (!v.trim()) { Swal.showValidationMessage('Sila tampal senarai murid.'); return false; }
-      return v;
+      const hasil = parseTempelanMurid_(v, document.getElementById('importTahun').value, document.getElementById('importKelas').value);
+      if (!hasil.baris.length) { Swal.showValidationMessage('Tiada baris sah. Pastikan setiap baris ada nama dan jantina (L/P).'); return false; }
+      return hasil;
     }
   });
   if (!isConfirmed) return;
-  const baris = parseImportMurid_(teks);
-  if (!baris.length) { toastRalat('Tiada baris sah dijumpai.'); return; }
+  const baris = hasilParse.baris;
   tunjukLoading('Mengimport ' + baris.length + ' murid...');
   try {
     const hasil = await apiImportMurid(baris);
@@ -10347,8 +10466,10 @@ document.getElementById('btnImportMurid').addEventListener('click', async functi
       ? '<div class="text-start small mt-2 text-danger"><strong>' + hasil.jumlahRalat + ' baris bermasalah:</strong><ul class="mb-0">' +
         hasil.ralat.map(function (r) { return '<li>Baris ' + r.baris + ': ' + escapeHtml(r.sebab) + '</li>'; }).join('') + '</ul></div>'
       : '';
-    Swal.fire({ icon: hasil.jumlahRalat ? 'warning' : 'success', title: hasil.ditambah + ' murid ditambah',
-      html: hasil.dilangkau + ' dilangkau (sudah ada).' + ralatHtml, confirmButtonColor: '#1F7C5B' });
+    const masalahTempel = hasilParse.masalah.length
+      ? '<div class="text-start small mt-2 text-danger">' + hasilParse.masalah.length + ' baris dilangkau semasa tampal (tiada nama/jantina).</div>' : '';
+    Swal.fire({ icon: (hasil.jumlahRalat || hasilParse.masalah.length) ? 'warning' : 'success', title: hasil.ditambah + ' murid ditambah',
+      html: hasil.dilangkau + ' dilangkau (sudah ada).' + ralatHtml + masalahTempel, confirmButtonColor: '#1F7C5B' });
   } catch (err) {
     tutupLoading();
     toastRalat('Gagal mengimport (' + ((err && err.message) || 'ralat tidak diketahui') + ').');
