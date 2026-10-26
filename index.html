@@ -4961,6 +4961,80 @@
     .sijil-susun { display: block !important; }
   }
   @media (prefers-reduced-motion: reduce) { .modul-nav button, #view-murid .tahun-grid-enrolmen .tahun-kad { transition: none !important; } }
+
+  /* =====================================================================
+     v23 - SENARAI MURID (Rekod Bacaan & Laporan) = LEJAR SATU LAJUR yang premium (menggantikan kad dua lajur yang mengelirukan: nombor 1,3,5 turun di kiri).
+       Satu kad besar: bar tajuk + pengepala lajur + baris berpemisah garis halus; jalur tahap di kiri, cincin tahap, nama (huruf besar) + jantina + lencana tahap + M/S,
+       "tasmik terakhir" (ikon + tarikh relatif), butang Rekod zamrud. Telefon: dua baris padat. Tiada transform pada hover/tekan (klik sentiasa tepat).
+  ===================================================================== */
+  #wrapRosterTasmik { --kol: 48px 60px minmax(0, 1fr) 176px 124px; }
+  .roster-tajuk { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 0; padding: 14px 22px; border: 1px solid var(--k-garis); border-bottom: 0; border-radius: 20px 20px 0 0; background: linear-gradient(180deg, #FFFFFF, #FFFCF2); font-size: .8rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--green-1); }
+  .roster-tajuk .badge-roster-count { padding: 5px 13px; border-radius: 999px; font-size: .74rem; letter-spacing: .06em; color: var(--green-1); background: #F3EBD0; border: 1px solid #E4D6A6; }
+  .roster-kolum { display: grid; grid-template-columns: var(--kol); column-gap: 14px; align-items: center; padding: 9px 20px 9px 22px; border: 1px solid var(--k-garis); border-bottom: 0; background: #FBF7EA; font-size: .66rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--k-redup); }
+  .roster-kolum .rk-bil { grid-column: 1; justify-self: end; padding-right: 4px; }
+  .roster-kolum .rk-murid { grid-column: 2 / 4; }
+  .roster-kolum .rk-tarikh { grid-column: 4; }
+  .roster-kolum .rk-aksi { grid-column: 5; justify-self: end; padding-right: 22px; }
+
+  #rosterMuridTasmik, #rosterMuridLaporan { display: block; margin-bottom: 18px !important; background: #fff; border: 1px solid var(--k-garis); border-radius: 0 0 20px 20px; box-shadow: var(--k-bayang); overflow: hidden; padding: 0; }
+  #rosterMuridLaporan { border-radius: 20px; }
+  #rosterMuridTasmik .roster-row, #rosterMuridLaporan .roster-row {
+    position: relative; display: grid; align-items: center; column-gap: 14px; padding: 14px 20px 14px 22px; margin: 0; overflow: visible;
+    border: 0; border-bottom: 1px solid #EFE9D7; border-radius: 0; background: #fff; box-shadow: none; transform: none; animation: none; cursor: pointer;
+    transition: background .18s ease;
+  }
+  #rosterMuridTasmik .roster-row { grid-template-columns: var(--kol); }
+  #rosterMuridLaporan .roster-row { grid-template-columns: 30px 40px 58px minmax(0, 1fr) 176px 110px; }
+  #rosterMuridTasmik .roster-row:last-child, #rosterMuridLaporan .roster-row:last-child { border-bottom: 0; }
+  #rosterMuridTasmik .roster-row::before, #rosterMuridLaporan .roster-row::before { width: 4px; top: 10px; bottom: 10px; border-radius: 0 4px 4px 0; }
+  #rosterMuridTasmik .roster-row:hover, #rosterMuridLaporan .roster-row:hover { transform: none; background: #FBF8EE; border-color: #EFE9D7; box-shadow: none; }
+  #rosterMuridTasmik .roster-row:active, #rosterMuridLaporan .roster-row:active { transform: none; background: #F5F0DD; }
+  #rosterMuridTasmik .roster-row:has(.roster-tarikh.hari-ini), #rosterMuridLaporan .roster-row:has(.roster-tarikh.hari-ini) { background: linear-gradient(90deg, #EFF9F3, #fff 46%); }
+  #rosterMuridTasmik .roster-row.active { background: #F1F7EC; border-color: #EFE9D7; box-shadow: inset 0 0 0 2px rgba(22,95,68,.22); }
+  #rosterMuridTasmik .roster-row.active::before { background: var(--aksen); width: 5px; }
+  #rosterMuridTasmik .roster-bil, #rosterMuridLaporan .roster-bil { justify-self: end; min-width: 0; width: auto; padding-right: 4px; font-size: 1rem; color: #9AA59F; background: none; }
+  #rosterMuridTasmik .roster-bil, #rosterMuridTasmik .roster-bil:hover { transform: none; }
+  #rosterMuridTasmik .roster-row-main, #rosterMuridLaporan .roster-row-main { min-width: 0; }
+  #rosterMuridTasmik .roster-nama, #rosterMuridLaporan .roster-nama { font-size: 1.04rem; font-weight: 800; letter-spacing: .012em; white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.25; color: var(--k-teks); }
+  #rosterMuridTasmik .roster-meta, #rosterMuridLaporan .roster-meta { margin-top: 6px; gap: 10px; }
+  #rosterMuridTasmik .roster-ms, #rosterMuridLaporan .roster-ms { font-size: .8rem; font-weight: 700; color: var(--k-redup); }
+  #rosterMuridTasmik .roster-ms::before, #rosterMuridLaporan .roster-ms::before { content: "\f518"; font-family: "Font Awesome 6 Free"; font-weight: 900; margin-right: 6px; font-size: .72rem; color: var(--k-emas); }
+  #rosterMuridTasmik .roster-row-side, #rosterMuridLaporan .roster-row-side { display: contents; }
+  #rosterMuridTasmik .roster-tarikh, #rosterMuridLaporan .roster-tarikh { justify-self: start; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-size: .84rem; font-weight: 700; color: var(--k-redup); background: #F6F3E8; text-align: left; }
+  #rosterMuridTasmik .roster-tarikh::before, #rosterMuridLaporan .roster-tarikh::before { content: "\f017"; font-family: "Font Awesome 6 Free"; font-weight: 400; font-size: .82rem; }
+  #rosterMuridTasmik .roster-tarikh.hari-ini, #rosterMuridLaporan .roster-tarikh.hari-ini { color: #0B5F42; background: #E3F4EA; }
+  #rosterMuridTasmik .roster-tarikh.hari-ini::before, #rosterMuridLaporan .roster-tarikh.hari-ini::before { display: none; }
+  #rosterMuridTasmik .roster-tarikh.lama, #rosterMuridLaporan .roster-tarikh.lama { color: #9A4A06; background: #FFF1DA; }
+  #rosterMuridTasmik .roster-tarikh.tiada, #rosterMuridLaporan .roster-tarikh.tiada { color: #7B877F; background: transparent; padding-left: 0; font-style: italic; font-weight: 600; }
+  #rosterMuridTasmik .roster-tarikh.tiada::before, #rosterMuridLaporan .roster-tarikh.tiada::before { content: "\f111"; font-weight: 400; font-size: .5rem; opacity: .6; }
+  #rosterMuridTasmik .roster-aksi, #rosterMuridLaporan .roster-aksi { justify-self: end; gap: 8px; padding: 10px 18px; border-radius: 12px; font-size: .88rem; font-weight: 800; letter-spacing: .01em; transition: background .18s ease, box-shadow .18s ease, color .18s ease; }
+  #rosterMuridTasmik .roster-aksi { color: #fff; border: 0; background: linear-gradient(180deg, #18694F, #0E4A36); box-shadow: 0 10px 18px -12px rgba(10,60,43,.95), inset 0 1px 0 rgba(255,255,255,.2); }
+  #rosterMuridTasmik .roster-aksi::before { content: "\f130"; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: .8rem; color: var(--k-emas-t); }
+  #rosterMuridTasmik .roster-row:hover .roster-aksi { background: linear-gradient(180deg, #1D7658, #115240); box-shadow: 0 14px 22px -12px rgba(10,60,43,1), inset 0 1px 0 rgba(255,255,255,.25); border: 0; color: #fff; }
+  #rosterMuridLaporan .roster-aksi { color: var(--green-1); background: #fff; border: 1.5px solid var(--k-garis2); }
+  #rosterMuridLaporan .roster-row:hover .roster-aksi { color: #fff; background: var(--green-1); border-color: var(--green-1); }
+  #rosterMuridTasmik .roster-aksi:focus-visible, #rosterMuridLaporan .roster-aksi:focus-visible { outline: 3px solid rgba(201,162,77,.7); outline-offset: 2px; }
+  #rosterMuridTasmik .roster-kosong { margin: 18px; }
+
+  /* telefon & tablet kecil: dua baris padat */
+  @media (max-width: 899px) {
+    .roster-kolum { display: none; }
+    .roster-tajuk { margin-top: 14px; padding: 12px 16px; font-size: .74rem; }
+    #rosterMuridTasmik .roster-row { grid-template-columns: 54px minmax(0, 1fr) auto; grid-template-areas: "ring main aksi" "ring tarikh aksi"; column-gap: 12px; row-gap: 6px; padding: 12px 14px 12px 16px; }
+    #rosterMuridLaporan .roster-row { grid-template-columns: 28px 54px minmax(0, 1fr) auto; grid-template-areas: "chk ring main aksi" "chk ring tarikh aksi"; column-gap: 10px; row-gap: 6px; padding: 12px 14px 12px 16px; }
+    #rosterMuridTasmik .roster-bil, #rosterMuridLaporan .roster-bil { display: none; }
+    #rosterMuridTasmik .roster-row > .cincin-tahap, #rosterMuridLaporan .roster-row > .cincin-tahap { grid-area: ring; }
+    #rosterMuridLaporan .roster-row-check { grid-area: chk; }
+    #rosterMuridTasmik .roster-row-main, #rosterMuridLaporan .roster-row-main { grid-area: main; }
+    #rosterMuridTasmik .roster-tarikh, #rosterMuridLaporan .roster-tarikh { grid-area: tarikh; padding: 4px 10px; font-size: .78rem; }
+    #rosterMuridTasmik .roster-aksi, #rosterMuridLaporan .roster-aksi { grid-area: aksi; padding: 10px 14px; }
+    #rosterMuridTasmik .roster-aksi::before { display: none; }
+    #rosterMuridTasmik .roster-nama, #rosterMuridLaporan .roster-nama { font-size: .98rem; }
+  }
+  @media (max-width: 420px) {
+    #rosterMuridTasmik .roster-aksi, #rosterMuridLaporan .roster-aksi { padding: 10px 11px; }
+    #rosterMuridTasmik .roster-aksi i, #rosterMuridLaporan .roster-aksi i { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -5518,6 +5592,7 @@
                   <button type="button" class="btn-susun" id="btnSusunRosterTasmik" title="Tukar susunan senarai"><i class="fa-solid fa-arrow-down-a-z"></i> <span>A-Z</span></button>
                 </div>
                 <div class="roster-tajuk"><span>Senarai murid kelas ini</span><span class="badge-roster-count" id="rosterJumlahBadge">0 murid</span></div>
+                <div class="roster-kolum" aria-hidden="true"><span class="rk-bil">Bil.</span><span class="rk-murid">Murid &amp; tahap bacaan</span><span class="rk-tarikh">Tasmik terakhir</span><span class="rk-aksi">Tindakan</span></div>
                 <div id="rosterMuridTasmik" class="roster-list mb-3"></div>
               </div>
 
@@ -6781,7 +6856,10 @@ let masaTutupInfoRekod_ = null; // pemasa auto-tutup kad "Rekod Terakhir" semasa
 let modalFormTasmik = null;
 let modalFormTasmikBeralih_ = false;
 let modalFormTasmikAksiTertunda_ = null; // 'show' | 'hide' | null
-function terapkanModalFormTasmik_(aksi) {
+let modalFormTasmikPenjaga_ = null;      // pemasa keselamatan: peralihan yang tersangkut dilepaskan
+let modalFormTasmikJagaMs_ = 2500;       // tempoh pemasa keselamatan (ujian memendekkannya)
+let rekodTasmikSedangDimuat_ = 0;        // bilangan pemilihan murid yang SEDANG memuatkan rekod terakhir (lihat pendengar 'change' pilihMuridTasmik)
+function terapkanModalFormTasmik_(aksi, percubaan) {
   const modalEl = document.getElementById('modalFormTasmik');
   if (!modalFormTasmik || !modalEl) return;
   if (modalFormTasmikBeralih_) { modalFormTasmikAksiTertunda_ = aksi; return; }
@@ -6789,13 +6867,29 @@ function terapkanModalFormTasmik_(aksi) {
   if (aksi === 'show' && sedangTerbuka) return; // dah terbuka, tiada apa perlu dilakukan
   if (aksi === 'hide' && !sedangTerbuka) return; // dah tertutup, tiada apa perlu dilakukan
   modalFormTasmikBeralih_ = true;
+  // Pemasa keselamatan: jika peristiwa shown/hidden tidak pernah tiba (cth. Bootstrap mengabaikan show() semasa peralihan lain),
+  // bendera "beralih" tidak boleh kekal SELAMANYA (itu menyebabkan semua klik Rekod seterusnya senyap).
+  clearTimeout(modalFormTasmikPenjaga_);
+  modalFormTasmikPenjaga_ = setTimeout(function () {
+    if (!modalFormTasmikBeralih_) return;
+    modalFormTasmikBeralih_ = false;
+    const tertunda = modalFormTasmikAksiTertunda_;
+    modalFormTasmikAksiTertunda_ = null;
+    if (tertunda) terapkanModalFormTasmik_(tertunda);
+    else if ((percubaan || 0) < 2) terapkanModalFormTasmik_(aksi, (percubaan || 0) + 1);   // ulang paling banyak 2 kali (tidak berulang selama-lamanya)
+  }, modalFormTasmikJagaMs_);
   if (aksi === 'show') modalFormTasmik.show(); else modalFormTasmik.hide();
 }
 (function sediakanModalFormTasmik_() {
   const modalEl = document.getElementById('modalFormTasmik');
   if (!modalEl || typeof bootstrap === 'undefined') return;
   modalFormTasmik = new bootstrap.Modal(modalEl, { backdrop: true, keyboard: true });
+  // SEMUA peralihan (termasuk butang X / Esc / klik latar yang dikendalikan Bootstrap sendiri) menandakan "sedang beralih":
+  // permintaan buka murid lain yang tiba semasa modal sedang menutup kini DIBARISKAN, bukan hilang senyap.
+  modalEl.addEventListener('show.bs.modal', function () { modalFormTasmikBeralih_ = true; });
+  modalEl.addEventListener('hide.bs.modal', function () { modalFormTasmikBeralih_ = true; });
   function selepasPeralihanSelesai() {
+    clearTimeout(modalFormTasmikPenjaga_);
     modalFormTasmikBeralih_ = false;
     if (modalFormTasmikAksiTertunda_) {
       const aksi = modalFormTasmikAksiTertunda_;
@@ -6814,7 +6908,9 @@ function terapkanModalFormTasmik_(aksi) {
     // sebelum modal dibuka semula.
     const akanDibukaSemula = modalFormTasmikAksiTertunda_ === 'show';
     selepasPeralihanSelesai();
-    if (akanDibukaSemula) return;
+    // Murid LAIN sudah dipilih dan rekodnya SEDANG dimuat semasa modal lama ini menutup (guru menekan Rekod sejurus selepas menutup borang):
+    // pilihan, chip & sorotan itu milik murid BAHARU - jangan dipadam (dahulu inilah punca "tekan Rekod, tiada apa-apa berlaku").
+    if (akanDibukaSemula || rekodTasmikSedangDimuat_ > 0) return;
     const sel = document.getElementById('pilihMuridTasmik');
     if (sel) sel.value = '';
     document.querySelectorAll('#wrapRosterTasmik .roster-row, .roster-row').forEach(function (el) {
@@ -8806,6 +8902,7 @@ document.getElementById('pilihMuridTasmik').addEventListener('change', async fun
   document.getElementById('inputKehadiran').checked = true;
   segerakLabelKehadiran_();
 
+  rekodTasmikSedangDimuat_++;
   try {
     const rekod = await tarikRekodTerakhirDenganDialog_(idMurid);
 
@@ -8874,6 +8971,8 @@ document.getElementById('pilihMuridTasmik').addEventListener('change', async fun
       confirmButtonText: 'OK',
       confirmButtonColor: '#1F7C5B'
     });
+  } finally {
+    rekodTasmikSedangDimuat_ = Math.max(0, rekodTasmikSedangDimuat_ - 1);
   }
 });
 
