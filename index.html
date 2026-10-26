@@ -36,7 +36,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500..900;1,500..800&family=Source+Sans+3:ital,wght@0,300..900;1,400..700&family=Amiri:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500..900;1,500..800&family=Source+Sans+3:ital,wght@0,300..900;1,400..700&family=Amiri:wght@400;700&family=Caveat:wght@500;700&display=swap">
 
 <style>
   /* =====================================================================
@@ -4238,7 +4238,220 @@
   .modal-body .form-label, .modal-body label { color: #1B382D; font-weight: 700; }
   .form-control, .form-select { border-color: rgba(14,64,46,.34); background-color: #fff; }
   .swal2-popup { background: #FDFDF8 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; border: 1px solid rgba(14,64,46,.32) !important; box-shadow: 0 0 0 1px rgba(201,162,77,.45), 0 44px 90px -30px rgba(2,18,12,.85) !important; }
-  .swal2-container.swal2-backdrop-show { background: rgba(4,23,15,.7) !important; }</style>
+  .swal2-container.swal2-backdrop-show { background: rgba(4,23,15,.7) !important; }
+
+  /* =====================================================================
+     v13 - SENTUHAN MANUSIA (skrin kerja: masukkan data & semak laporan).
+       Prinsip: lebih tenang & berguna daripada berkilau. Permukaan "kertas" hangat, garis halus 1px, jejari sederhana,
+       emas hanya pada garis/penanda; nombor berfon Playfair; catatan ringkas berfon tulisan tangan (Caveat) sekali-sekala;
+       maklumat sebenar (tarikh relatif, tangga bacaan, kemajuan hari ini) menggantikan hiasan.
+  ===================================================================== */
+  :root { --kertas: #FBFAF3; --kertas-2: #F1F2E6; --garis: rgba(14,64,46,.2); --tulis: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive; }
+
+  /* ---------- Tasmik: kad kelas aktif & ringkasan hari ini ---------- */
+  .kelas-aktif-bar { background: var(--kertas); border: 1px solid var(--garis); border-radius: 16px; padding: 9px 9px 9px 18px; box-shadow: none; }
+  .kelas-aktif-bar span { font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; color: var(--green-1); }
+  .roster-ringkas { position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 18px; padding: 16px 20px 14px 22px; margin-bottom: 12px; background: var(--kertas); border: 1px solid var(--garis); border-radius: 16px; box-shadow: inset 0 1px 0 #fff, 0 8px 18px -14px rgba(10,50,36,.45); }
+  .roster-ringkas::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 5px; border-radius: 0 5px 5px 0; background: var(--gold-shine); }
+  .rr-angka { display: flex; align-items: baseline; gap: 5px; font-family: var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+  .rr-angka b { font-size: 2.4rem; line-height: 1; color: var(--green-1); }
+  .rr-angka span { font-size: 1.05rem; color: var(--ink-faint); }
+  .rr-tajuk { font-size: .74rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+  .rr-bar { height: 9px; margin-top: 7px; border-radius: 99px; background: rgba(14,64,46,.1); overflow: hidden; }
+  .rr-bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #1FA876, #0E6B4B); transition: width .7s cubic-bezier(.22,1,.36,1); }
+  .rr-nota { grid-column: 1 / -1; margin-top: 4px; font-family: var(--tulis); font-size: 1.3rem; line-height: 1.2; color: #7A5410; transform: rotate(-.5deg); transform-origin: left center; }
+
+  .roster-alat { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+  .roster-cari { position: relative; flex: 1 1 230px; min-width: 0; }
+  .roster-cari i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: .85rem; pointer-events: none; }
+  .roster-cari input { height: 44px; padding-left: 38px; border-radius: 14px; border: 1px solid var(--garis); background: #fff; font-weight: 600; }
+  .roster-chip-grup { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip-tapis { border: 1px solid var(--garis); background: #fff; color: var(--ink-soft); border-radius: 999px; padding: 7px 13px; font-weight: 800; font-size: .78rem; transition: background .2s, color .2s, border-color .2s; }
+  .chip-tapis span { display: inline-block; margin-left: 4px; padding: 0 7px; border-radius: 999px; background: rgba(14,64,46,.1); font-variant-numeric: tabular-nums; }
+  .chip-tapis.aktif { background: var(--green-1); border-color: var(--green-1); color: #fff; }
+  .chip-tapis.aktif span { background: rgba(255,255,255,.22); }
+  .btn-susun { border: 1px solid var(--garis); background: #fff; color: var(--green-2); border-radius: 12px; padding: 8px 12px; font-weight: 800; font-size: .78rem; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-susun:hover { background: var(--kertas-2); }
+  .roster-tajuk { display: flex; align-items: center; justify-content: space-between; margin: 4px 2px 8px; font-weight: 800; font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+
+  /* ---------- Tasmik: baris murid ---------- */
+  .roster-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; max-height: none; overflow: visible; padding: 0; }
+  @media (min-width: 980px) { .roster-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; } }
+  #rosterMuridTasmik .roster-row, #rosterMuridLaporan .roster-row {
+    position: relative; overflow: hidden; gap: 12px; padding: 12px 14px 12px 18px;
+    background: var(--kertas); border: 1px solid var(--garis); border-radius: 14px; box-shadow: 0 1px 2px rgba(10,50,36,.06);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  #rosterMuridTasmik .roster-row::before, #rosterMuridLaporan .roster-row::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--rs, #B6BEB8); }
+  .roster-row.rs-iqra { --rs: #E0A12B; } .roster-row.rs-quran { --rs: #14B8A6; } .roster-row.rs-khatam { --rs: #0E6B4B; } .roster-row.rs-belum { --rs: #B6BEB8; }
+  #rosterMuridTasmik .roster-row:hover, #rosterMuridLaporan .roster-row:hover { transform: translateY(-1px); border-color: rgba(14,64,46,.42); box-shadow: 0 12px 22px -16px rgba(10,50,36,.6); }
+  #rosterMuridTasmik .roster-row.active { background: #EEF6EA; border-color: var(--green-2); box-shadow: 0 0 0 2px rgba(22,95,68,.25); }
+  #rosterMuridTasmik .roster-bil { width: auto; min-width: 20px; height: auto; background: transparent; color: var(--ink-faint); font-family: var(--font-display); font-size: .9rem; font-weight: 700; }
+  .roster-avatar, .chip-avatar { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: #fff; background: linear-gradient(150deg, #6C8E83, #3E5F54); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 4px 8px -4px rgba(10,50,36,.5); }
+  .roster-avatar.l, .chip-avatar.l { background: linear-gradient(150deg, #2F8F72, #14503C); }
+  .roster-avatar.p, .chip-avatar.p { background: linear-gradient(150deg, #C7627A, #8C2D45); }
+  #rosterMuridTasmik .roster-nama, #rosterMuridLaporan .roster-nama { font-size: 1rem; font-weight: 800; }
+  #rosterMuridTasmik .roster-meta { gap: 10px; margin-top: 5px; }
+  .tangga-mini { display: inline-flex; align-items: center; gap: 3px; }
+  .tangga-mini i { width: 7px; height: 7px; border-radius: 50%; background: rgba(14,64,46,.16); }
+  .tangga-mini i.on { background: #0E6B4B; }
+  .tangga-mini i.kini { background: var(--aksen); box-shadow: 0 0 0 2.5px rgba(201,162,77,.32); }
+  #rosterMuridTasmik .roster-row-side { flex-direction: column; align-items: flex-end; gap: 6px; }
+  .roster-tarikh { font-size: .76rem; font-weight: 700; color: var(--ink-soft); }
+  .roster-tarikh.hari-ini { color: #0E6B4B; }
+  .roster-tarikh.lama { color: #B45309; }
+  .roster-tarikh.tiada { color: var(--ink-faint); font-style: italic; font-weight: 600; }
+  .roster-aksi { display: inline-flex; align-items: center; gap: 5px; padding: 3px 11px; border: 1px solid rgba(14,64,46,.28); border-radius: 999px; background: #fff; color: var(--green-2); font-size: .72rem; font-weight: 800; transition: background .2s, color .2s; }
+  .roster-aksi i { font-size: .6rem; color: inherit; }
+  .roster-row:hover .roster-aksi { background: var(--green-1); border-color: var(--green-1); color: #fff; }
+  .roster-kosong { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 26px 14px; text-align: center; color: var(--ink-soft); background: var(--kertas); border: 1px dashed var(--garis); border-radius: 16px; }
+  .roster-kosong i { font-size: 1.7rem; color: var(--aksen); }
+  .roster-kosong b { font-family: var(--font-display); color: var(--green-1); font-size: 1.05rem; }
+
+  /* ---------- Tasmik: borang rekod ---------- */
+  #modalFormTasmik .modal-dialog { max-width: 580px; }
+  #modalFormTasmik .modal-header { background: var(--kertas-2); border-bottom: 3px solid #C9A24D; padding: 12px 14px 12px 16px; align-items: center; }
+  #modalFormTasmik .form-tasmik-murid-chip { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; padding: 0; background: transparent; border: 0; box-shadow: none; }
+  .chip-teks { min-width: 0; line-height: 1.2; }
+  .chip-teks strong { display: block; font-family: var(--font-display); font-size: 1.15rem; color: var(--green-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip-teks small { color: var(--ink-soft); font-weight: 600; font-size: .78rem; }
+  #modalFormTasmik .btn-tukar-murid { margin-left: auto; }
+  .ft-seksyen { padding: 14px 0; border-bottom: 1px dashed var(--garis); }
+  .ft-akhir { border-bottom: 0; }
+  .ft-tajuk { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; font-weight: 800; font-size: .98rem; color: var(--green-1); }
+  .ft-tajuk small { font-family: var(--tulis); font-size: 1.12rem; font-weight: 500; color: #7A5410; }
+  .ft-no { flex: none; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--green-1); color: #F6DE9A; font-family: var(--font-display); font-size: .85rem; font-weight: 800; }
+  .kat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .kat-chip { padding: 8px 14px; border-radius: 12px; border: 1.5px solid var(--garis); background: #fff; color: var(--ink-soft); font-weight: 800; font-size: .86rem; transition: transform .25s var(--spring), background .2s, border-color .2s; }
+  .kat-chip:active { transform: scale(.94); }
+  .kat-chip.aktif.kc-iqra { background: #FFF3D6; border-color: #D79A1E; color: #7A5208; }
+  .kat-chip.aktif.kc-quran { background: #DDF5EF; border-color: #14A394; color: #0B5E55; }
+  .kat-chip.aktif.kc-khatam { background: #DCEFE5; border-color: #0E6B4B; color: #0A4F37; }
+  .kat-pilih-asal { position: absolute; width: 1px; height: 1px; margin: 0; padding: 0; border: 0; opacity: 0; overflow: hidden; pointer-events: none; }
+  .ft-baris { display: flex; flex-wrap: wrap; gap: 14px; }
+  .ft-medan { flex: 1 1 190px; min-width: 0; }
+  .ft-medan .form-label { margin-bottom: 5px; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
+  .stepper-ms { display: flex; align-items: stretch; border: 1.5px solid var(--garis); border-radius: 14px; overflow: hidden; background: #fff; }
+  .stp-btn { flex: none; width: 50px; border: 0; background: var(--kertas-2); color: var(--green-1); font-size: 1rem; transition: background .2s; }
+  .stp-btn:hover { background: #E3EAD8; }
+  .stp-btn:active { background: #D6E0C9; }
+  .stepper-ms input { border: 0; border-radius: 0; box-shadow: none; text-align: center; font-family: var(--font-display); font-size: 1.55rem; font-weight: 800; color: var(--green-1); -moz-appearance: textfield; }
+  .stepper-ms input::-webkit-outer-spin-button, .stepper-ms input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .btn-group-traffic { gap: 10px; }
+  .btn-traffic { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 6px 12px; border: 2px solid var(--garis); border-radius: 16px; background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .btn-traffic > i:first-child { margin: 0 0 4px; font-size: 1.8rem; }
+  .btn-traffic.lancar > i:first-child { color: #10B981; }
+  .btn-traffic.sederhana > i:first-child { color: #F59E0B; }
+  .btn-traffic.ulang > i:first-child { color: #E05263; }
+  .btn-traffic b { font-size: .96rem; font-weight: 800; color: var(--ink); }
+  .btn-traffic small { font-size: .7rem; font-weight: 600; color: var(--ink-faint); line-height: 1.2; }
+  .btn-traffic .tanda-pilih { position: absolute; top: 8px; right: 8px; display: none; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #10B981; color: #fff; }
+  .btn-traffic .tanda-pilih i { margin: 0; font-size: .6rem; }
+  .btn-traffic.sederhana .tanda-pilih { background: #F59E0B; }
+  .btn-traffic.ulang .tanda-pilih { background: #E05263; }
+  .btn-traffic.selected .tanda-pilih { display: grid; }
+  .btn-traffic:focus-visible, .kat-chip:focus-visible, .chip-tapis:focus-visible { outline: 3px solid rgba(201,162,77,.7); outline-offset: 2px; }
+  .pill-toggle { border-radius: 12px; border: 1.5px solid var(--garis); background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; padding: 7px 14px; font-weight: 700; }
+  .tarikh-pantas { display: flex; gap: 6px; margin-top: 7px; }
+  .tarikh-pantas button { border: 1px solid var(--garis); background: #fff; color: var(--green-2); border-radius: 999px; padding: 3px 11px; font-size: .74rem; font-weight: 800; }
+  .tarikh-pantas button:hover { background: var(--kertas-2); }
+  .ft-hadir .form-switch { display: flex; align-items: center; gap: 10px; padding-left: 0; min-height: 44px; }
+  .ft-hadir .form-check-input { float: none; margin: 0; width: 2.9rem; height: 1.55rem; }
+  .ft-hadir .form-check-label { font-weight: 800; color: var(--ink); }
+  .ft-bar { position: sticky; bottom: -16px; z-index: 5; display: flex; flex-wrap: wrap; gap: 10px; margin: 6px -2px 0; padding: 14px 2px 6px; background: linear-gradient(180deg, rgba(253,253,248,0), #FDFDF8 28%); }
+  .ft-simpan { flex: 1 1 230px; border-radius: 14px; padding: 13px 16px; font-weight: 800; }
+  .ft-seterusnya { flex: 1 1 210px; border-radius: 14px; padding: 13px 16px; border: 2px solid var(--green-1); background: #fff; color: var(--green-1); font-weight: 800; }
+  .ft-seterusnya:hover { background: var(--green-1); color: #fff; }
+  .ft-petua { margin-top: 4px; text-align: center; font-size: .76rem; color: var(--ink-faint); }
+  .ft-petua kbd { background: #fff; border: 1px solid var(--garis); border-bottom-width: 2px; border-radius: 5px; padding: 0 6px; color: var(--ink-soft); font-size: .72rem; font-family: inherit; }
+  @media (hover: none) { .ft-petua { display: none; } }
+  @media (max-width: 575px) {
+    .rr-angka b { font-size: 2rem; }
+    .rr-nota { font-size: 1.2rem; }
+    #rosterMuridTasmik .roster-bil { display: none; }
+    .roster-avatar { width: 38px; height: 38px; }
+    .btn-traffic small { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .rr-bar i, .kat-chip, .roster-row { transition: none !important; } }
+
+  /* ---------- v13b: borang murid, rekod penuh, papan pemuka, PERKASA, skrin kerja yang lebih tenang ---------- */
+  .stepper-ms input, .roster-bil, .ft-no, .rr-angka, .rp-ayat b { font-variant-numeric: lining-nums tabular-nums; }
+  .seg-jantina { display: inline-flex; gap: 4px; padding: 4px; border: 1.5px solid var(--garis); border-radius: 14px; background: var(--kertas-2); }
+  .seg-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft); font-weight: 800; transition: background .2s, color .2s, box-shadow .2s; }
+  .seg-btn.aktif { background: #fff; color: var(--green-1); box-shadow: inset 0 1px 0 #fff, 0 3px 8px -3px rgba(10,50,36,.45); }
+  .pilihan-kecil { margin-left: 6px; font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
+  .nota-tangan { margin-top: 4px; font-family: var(--tulis); font-size: 1.15rem; line-height: 1.2; color: #7A5410; }
+  #modalMurid .form-label { font-size: .8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+  #modalMurid .modal-footer { flex-wrap: wrap; gap: 8px; }
+  #modalMurid .ft-seterusnya { flex: 0 1 auto; padding: 8px 16px; border-radius: 999px; font-size: .9rem; }
+  #modalMurid .btn-success, #modalMurid .btn-light { border-radius: 999px; padding: 8px 20px; font-weight: 800; }
+  #modalMurid .btn-light { border: 1px solid var(--garis); background: #fff; }
+
+  /* Rekod penuh murid */
+  #modalRekodMurid .form-tasmik-murid-chip { display: flex; align-items: center; gap: 12px; flex: 1; padding: 0; background: transparent; border: 0; }
+  #modalRekodMurid .modal-header { background: var(--kertas-2); }
+  .rpr-naratif { grid-column: 1 / -1; padding: 14px 16px 12px; border: 1px solid var(--garis); border-radius: 14px; background: var(--kertas); }
+  .rpr-ayat { margin-bottom: 14px; font-family: var(--font-display); font-size: 1.08rem; line-height: 1.45; color: var(--green-1); }
+  .tangga-penuh { display: flex; align-items: flex-start; }
+  .tp-langkah { position: relative; flex: 1; min-width: 0; text-align: center; font-size: .66rem; font-weight: 700; color: var(--ink-faint); }
+  .tp-langkah i { position: relative; z-index: 1; display: block; width: 14px; height: 14px; margin: 0 auto 6px; border-radius: 50%; background: #fff; border: 2px solid rgba(14,64,46,.28); }
+  .tp-langkah::before { content: ""; position: absolute; top: 6px; left: -50%; right: 50%; height: 2px; background: rgba(14,64,46,.2); }
+  .tp-langkah:first-child::before { display: none; }
+  .tp-langkah.selesai i { background: #0E6B4B; border-color: #0E6B4B; }
+  .tp-langkah.selesai::before, .tp-langkah.kini::before { background: #0E6B4B; }
+  .tp-langkah.kini { color: var(--green-1); font-weight: 800; }
+  .tp-langkah.kini i { background: var(--aksen); border-color: var(--aksen); box-shadow: 0 0 0 4px rgba(201,162,77,.32); }
+  #modalRekodMurid .rpr-item { background: var(--kertas); border: 1px solid var(--garis); border-radius: 12px; }
+  #modalRekodMurid .rpr-label { font-size: .66rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  #modalRekodMurid .rpr-value { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--green-1); font-variant-numeric: lining-nums; }
+  #modalRekodMurid table thead th { font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 2px solid #C9A24D; }
+  #modalRekodMurid table tbody tr:nth-child(even) > * { background: rgba(14,64,46,.04); }
+  .st-chip { display: inline-block; padding: 2px 11px; border-radius: 999px; font-size: .74rem; font-weight: 800; background: rgba(14,64,46,.08); color: var(--ink-soft); }
+  .st-chip.st-lancar { background: #D9F4E8; color: #0A6B47; }
+  .st-chip.st-sederhana { background: #FFF0CC; color: #8A5A00; }
+  .st-chip.st-ulang { background: #FBE0E4; color: #A12544; }
+  @media (max-width: 575px) { .tp-langkah { font-size: .58rem; } .tp-langkah i { width: 12px; height: 12px; } .tp-langkah::before { top: 5px; } }
+
+  /* Papan pemuka */
+  .ringkasan-papan { position: relative; margin-bottom: 14px; padding: 16px 22px 16px 26px; background: var(--kertas); border: 1px solid var(--garis); border-radius: 16px; box-shadow: inset 0 1px 0 #fff, 0 10px 22px -16px rgba(10,50,36,.5); }
+  .ringkasan-papan:empty { display: none; }
+  .ringkasan-papan::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 5px; border-radius: 0 5px 5px 0; background: var(--gold-shine); }
+  .rp-tangan { font-family: var(--tulis); font-size: 1.7rem; line-height: 1.1; color: #7A5410; }
+  .rp-ayat { margin: 2px 0 12px; font-size: 1.05rem; line-height: 1.5; color: var(--ink); }
+  .rp-ayat b { color: var(--green-1); font-weight: 800; }
+  .rp-bar { display: flex; height: 14px; border-radius: 99px; overflow: hidden; background: rgba(14,64,46,.1); }
+  .rp-bar i { display: block; height: 100%; transition: width .8s cubic-bezier(.22,1,.36,1); }
+  .rp-bar i + i { box-shadow: -2px 0 0 var(--kertas); }
+  i.rp-quran { background: #14B8A6; } i.rp-iqra { background: #E0A12B; } i.rp-belum { background: #B6BEB8; }
+  .rp-bar-satu { height: 10px; }
+  .rp-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 9px; font-size: .8rem; font-weight: 700; color: var(--ink-soft); }
+  .rp-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; }
+
+  /* PERKASA */
+  #senaraiPerkasa li.list-group-item { padding: 11px 14px; background: var(--kertas); border: 1px solid var(--garis); border-radius: 14px; margin: 0 10px 8px; }
+  .perkasa-baris-nama { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .perkasa-teks { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+  .perkasa-teks strong { font-size: 1rem; }
+  .perkasa-sisi { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+  /* Skrin kerja lebih tenang: kad pejal berwarna kertas, garis halus, tajuk bergaris tangan */
+  .main-content .card { background: var(--kertas); border: 1px solid var(--garis); border-radius: 16px; box-shadow: inset 0 1px 0 #fff, 0 10px 22px -18px rgba(10,50,36,.5); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .main-content .card-header { background: transparent; border-bottom: 1px solid var(--garis) !important; color: var(--green-1); }
+  .main-content h5.section-title { position: relative; margin-bottom: 18px !important; }
+  .main-content h5.section-title::after { content: ""; display: block; width: 124px; height: 8px; margin-top: 5px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8'%3E%3Cpath d='M2 4C20 0 30 8 50 4S90 0 118 4' fill='none' stroke='%23C9A24D' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / contain; }
+  .stat-card { border-radius: 16px; }
+  @media (prefers-reduced-motion: reduce) { .rp-bar i, .seg-btn { transition: none !important; } }
+
+  /* kad pilihan (Sijil/Transkrip) & angka berbentuk lurus di seluruh aplikasi (Playfair lalai ialah angka gaya lama: "1" nampak seperti huruf kecil) */
+  body, h1, h2, h3, h4, h5, h6, .navbar-brand { font-variant-numeric: lining-nums; }
+  .kad-pilihan { padding: 2px 18px 14px; background: var(--kertas); border: 1px solid var(--garis); border-radius: 16px; box-shadow: inset 0 1px 0 #fff, 0 10px 22px -18px rgba(10,50,36,.5); }
+  .kad-pilihan .ft-seterusnya:disabled { opacity: .5; border-color: var(--garis); color: var(--ink-faint); background: #fff; }
+  .kad-pilihan .pemisah-atau { margin: 10px 0; }
+
+  /* Enrolmen: kad murid sepadan dengan skrin kerja lain */
+  #senaraiMuridCard .murid-item { background: var(--kertas); border: 1px solid var(--garis); box-shadow: 0 1px 2px rgba(10,50,36,.06); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  #senaraiMuridCard .murid-item:hover { border-color: rgba(14,64,46,.42); }
+  .murid-item-teks strong { font-weight: 800; }</style>
 </head>
 <body>
 
@@ -4657,11 +4870,13 @@
               </select>
 
               <div id="wrapRosterTasmik" class="d-none">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <label class="form-label mb-0">Senarai Murid Kelas Ini</label>
-                  <span class="badge-roster-count" id="rosterJumlahBadge">0 murid</span>
+                <div class="roster-ringkas" id="rosterRingkas" aria-live="polite"></div>
+                <div class="roster-alat">
+                  <div class="roster-cari"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" class="form-control" id="carianMuridTasmik" placeholder="Cari nama murid..." autocomplete="off"></div>
+                  <div class="roster-chip-grup" id="rosterChipTasmik" role="group" aria-label="Tapis murid"></div>
+                  <button type="button" class="btn-susun" id="btnSusunRosterTasmik" title="Tukar susunan senarai"><i class="fa-solid fa-arrow-down-a-z"></i> <span>A-Z</span></button>
                 </div>
-                <input type="text" class="form-control mb-2" id="carianMuridTasmik" placeholder="Taip nama murid...">
+                <div class="roster-tajuk"><span>Senarai murid kelas ini</span><span class="badge-roster-count" id="rosterJumlahBadge">0 murid</span></div>
                 <div id="rosterMuridTasmik" class="roster-list mb-3"></div>
               </div>
 
@@ -4684,6 +4899,7 @@
 
             <!-- Papan pemuka Guru -->
             <div id="dashboardGuru" class="d-none">
+              <div class="ringkasan-papan" id="ringkasanPapanGuru" aria-live="polite"></div>
               <div class="row g-2 mb-3">
                 <div class="col-6">
                   <div class="stat-card bg-success-subtle">
@@ -4711,6 +4927,7 @@
 
             <!-- Papan pemuka Admin / Ketua Panitia -->
             <div id="dashboardAdmin" class="d-none">
+              <div class="ringkasan-papan" id="ringkasanPapanAdmin" aria-live="polite"></div>
               <div class="row g-2 mb-3">
                 <div class="col-6">
                   <div class="stat-card bg-success-subtle">
@@ -5007,31 +5224,35 @@
       <section id="view-transkrip" class="top-view d-none">
         <div class="p-3">
           <h5 class="fw-bold mb-3 section-title"><i class="fa-solid fa-scroll"></i> Sijil / Transkrip</h5>
-          <p class="text-muted small">Jana sijil pengiktirafan tahap bacaan SEMASA (pencapaian akhir) seorang murid, atau sekali gus untuk SEMUA murid dalam satu kelas - sedia untuk dicetak atau disimpan sebagai PDF.</p>
+          <p class="text-muted small">Sijil ini menunjukkan tahap bacaan terkini murid (pencapaian akhir) - sesuai diserahkan kepada ibu bapa. Boleh dicetak atau disimpan sebagai PDF.</p>
 
-          <div class="mb-3" id="pemilihTranskrip">
-            <label class="form-label">Pilih Tahun &amp; Kelas</label>
-            <div class="row g-2 mb-2">
-              <div class="col-6">
-                <select class="form-select" id="pilihTahunTranskrip">
-                  <option value="">-- Tahun --</option>
-                </select>
-              </div>
-              <div class="col-6">
-                <select class="form-select" id="pilihKelasTranskrip" disabled>
-                  <option value="">-- Kelas --</option>
-                </select>
+          <div class="kad-pilihan mb-3" id="pemilihTranskrip">
+            <div class="ft-seksyen">
+              <div class="ft-tajuk"><span class="ft-no">1</span> Kelas mana?</div>
+              <div class="row g-2">
+                <div class="col-6">
+                  <select class="form-select" id="pilihTahunTranskrip" aria-label="Tahun">
+                    <option value="">-- Tahun --</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <select class="form-select" id="pilihKelasTranskrip" disabled aria-label="Kelas">
+                    <option value="">-- Kelas --</option>
+                  </select>
+                </div>
               </div>
             </div>
-            <button type="button" class="btn btn-outline-success w-100 mb-2" id="btnJanaSijilKelas" disabled>
-              <i class="fa-solid fa-users"></i> Jana Sijil Semua Murid (Kelas Ini)
-            </button>
-            <div class="pemisah-atau"><span>atau pilih seorang murid</span></div>
-            <select class="form-select form-select-lg" id="pilihMuridTranskrip" disabled>
-              <option value="">-- Pilih Tahun &amp; Kelas dahulu --</option>
-            </select>
+            <div class="ft-seksyen ft-akhir">
+              <div class="ft-tajuk"><span class="ft-no">2</span> Sijil untuk siapa? <small>seluruh kelas atau seorang murid</small></div>
+              <button type="button" class="btn ft-seterusnya w-100 mb-2" id="btnJanaSijilKelas" disabled>
+                <i class="fa-solid fa-users"></i> Jana Sijil Semua Murid (Kelas Ini)
+              </button>
+              <div class="pemisah-atau"><span>atau pilih seorang murid</span></div>
+              <select class="form-select form-select-lg" id="pilihMuridTranskrip" disabled aria-label="Murid">
+                <option value="">-- Pilih Tahun &amp; Kelas dahulu --</option>
+              </select>
+            </div>
           </div>
-
           <button class="btn btn-success btn-lg w-100 mb-3 py-3 d-none shine-hover" id="btnCetakTranskrip">
             <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
           </button>
@@ -5335,43 +5556,60 @@
           <div id="alertRalatLepas" class="alert alert-warning d-none py-2"></div>
 
           <form id="formTasmik">
-          <div class="row g-2 mb-3">
-            <div class="col-6">
-              <label class="form-label">Kategori</label>
-              <select class="form-select" id="inputKategori" required></select>
+            <div class="ft-seksyen">
+              <div class="ft-tajuk"><span class="ft-no">1</span> Apa yang dibaca?</div>
+              <div class="kat-chips" id="katChips" role="group" aria-label="Kategori bacaan"></div>
+              <select class="form-select kat-pilih-asal" id="inputKategori" required aria-label="Kategori"></select>
+              <div class="ft-baris">
+                <div class="ft-medan">
+                  <label class="form-label" for="inputMukaSurat">Muka surat</label>
+                  <div class="stepper-ms">
+                    <button type="button" class="stp-btn" id="btnMsKurang" aria-label="Kurangkan muka surat"><i class="fa-solid fa-minus"></i></button>
+                    <input type="number" min="1" class="form-control" id="inputMukaSurat" required inputmode="numeric">
+                    <button type="button" class="stp-btn" id="btnMsTambah" aria-label="Tambah muka surat"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+                <div class="ft-medan d-none" id="wrapJuzuk">
+                  <label class="form-label" for="inputJuzuk">Juzuk</label>
+                  <select class="form-select" id="inputJuzuk"></select>
+                </div>
+              </div>
             </div>
-            <div class="col-6">
-              <label class="form-label">Muka Surat</label>
-              <input type="number" min="1" class="form-control" id="inputMukaSurat" required>
+
+            <div class="ft-seksyen">
+              <div class="ft-tajuk"><span class="ft-no">2</span> Bagaimana bacaannya?</div>
+              <div class="btn-group-traffic" id="groupStatusBacaan"></div>
+              <input type="hidden" id="inputStatusBacaan" required>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label">Tarikh Tasmik</label>
-            <input type="date" class="form-control" id="inputTarikhTasmik" required>
-          </div>
+            <div class="ft-seksyen">
+              <div class="ft-tajuk"><span class="ft-no">3</span> Ada kesalahan tajwid? <small>boleh pilih lebih daripada satu</small></div>
+              <div class="pill-group" id="groupRalat"></div>
+            </div>
 
-          <div class="mb-3 d-none" id="wrapJuzuk">
-            <label class="form-label">Juzuk</label>
-            <select class="form-select" id="inputJuzuk"></select>
-          </div>
+            <div class="ft-seksyen ft-akhir">
+              <div class="ft-baris">
+                <div class="ft-medan">
+                  <label class="form-label" for="inputTarikhTasmik">Tarikh tasmik</label>
+                  <input type="date" class="form-control" id="inputTarikhTasmik" required>
+                  <div class="tarikh-pantas"><button type="button" data-hari="0">Hari ini</button><button type="button" data-hari="1">Semalam</button></div>
+                </div>
+                <div class="ft-medan ft-hadir">
+                  <span class="form-label">Kehadiran</span>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="inputKehadiran" checked>
+                    <label class="form-check-label" for="inputKehadiran" id="labelKehadiran">Murid hadir</label>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <label class="form-label">Status Bacaan</label>
-          <div class="btn-group-traffic mb-3" id="groupStatusBacaan"></div>
-          <input type="hidden" id="inputStatusBacaan" required>
-
-          <label class="form-label">Kesalahan (Ralat Tajwid) - Sentuh untuk tanda</label>
-          <div class="pill-group mb-3" id="groupRalat"></div>
-
-          <div class="mb-3 form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="inputKehadiran" checked>
-            <label class="form-check-label" for="inputKehadiran">Murid Hadir</label>
-          </div>
-
-          <button type="submit" class="btn btn-success btn-lg w-100 py-3 shine-hover">
-            <i class="fa-solid fa-floppy-disk"></i> Simpan Rekod Tasmik
-          </button>
-        </form>
+            <div class="ft-bar">
+              <button type="submit" class="btn btn-success btn-lg ft-simpan shine-hover"><i class="fa-solid fa-floppy-disk"></i> Simpan Rekod Tasmik</button>
+              <button type="button" class="btn ft-seterusnya" id="btnSimpanSeterusnya"><i class="fa-solid fa-forward-step"></i> Simpan &amp; murid seterusnya</button>
+            </div>
+            <div class="ft-petua">Tekan <kbd>Ctrl</kbd> + <kbd>Enter</kbd> untuk simpan dengan pantas.</div>
+          </form>
         </div>
       </div>
     </div>
@@ -5669,47 +5907,52 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Maklumat Murid</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <h5 class="modal-title" id="judulModalMurid">Murid baharu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
-          <form id="formMurid">
+          <form id="formMurid" autocomplete="off">
             <input type="hidden" id="inputMuridId">
-            <div class="mb-2">
-              <label class="form-label">Nama</label>
-              <input type="text" class="form-control" id="inputMuridNama" required>
+            <div class="mb-3">
+              <label class="form-label" for="inputMuridNama">Nama murid</label>
+              <input type="text" class="form-control form-control-lg" id="inputMuridNama" required placeholder="Nama penuh, seperti dalam senarai kelas">
             </div>
-            <div class="row g-2 mb-2">
+            <div class="row g-3 mb-3">
               <div class="col-6">
-                <label class="form-label">Tahun</label>
+                <label class="form-label" for="inputMuridTahun">Tahun</label>
                 <select class="form-select" id="inputMuridTahun" required></select>
               </div>
               <div class="col-6">
-                <label class="form-label">Kelas</label>
+                <label class="form-label" for="inputMuridKelas">Kelas</label>
                 <select class="form-select" id="inputMuridKelas" required></select>
               </div>
             </div>
-            <div class="mb-2">
-              <label class="form-label">Jantina</label>
-              <select class="form-select" id="inputMuridJantina">
+            <div class="mb-3">
+              <span class="form-label d-block">Jantina</span>
+              <div class="seg-jantina" id="segJantina" role="group" aria-label="Jantina">
+                <button type="button" class="seg-btn" data-jantina="Lelaki"><i class="fa-solid fa-person" aria-hidden="true"></i> Lelaki</button>
+                <button type="button" class="seg-btn" data-jantina="Perempuan"><i class="fa-solid fa-person-dress" aria-hidden="true"></i> Perempuan</button>
+              </div>
+              <select class="form-select kat-pilih-asal" id="inputMuridJantina" tabindex="-1" aria-hidden="true">
                 <option value="Lelaki">Lelaki</option>
                 <option value="Perempuan">Perempuan</option>
               </select>
             </div>
-            <div class="mb-2">
-              <label class="form-label">Keperluan Khas (jika ada)</label>
+            <div class="mb-1">
+              <label class="form-label" for="inputMuridKeperluanKhas">Keperluan khas <span class="pilihan-kecil">pilihan</span></label>
               <input type="text" class="form-control" id="inputMuridKeperluanKhas" placeholder="cth: KMS, Disleksia">
+              <div class="nota-tangan">Isi hanya jika murid perlukan perhatian khas.</div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+          <button class="btn ft-seterusnya" id="btnSimpanTambahLagi"><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Simpan &amp; tambah lagi</button>
           <button class="btn btn-success" id="btnSimpanMurid">Simpan</button>
         </div>
       </div>
     </div>
   </div>
-
   <!-- ============================================================ -->
   <!-- SKRIN MEMUAT "WOW" v2 - Al-Quran terbuka bercahaya: sinar      -->
   <!-- keemasan berpusar di belakang, anak bulan & bintang mengorbit, -->
@@ -6441,6 +6684,7 @@ async function mulakanApp(papatSelamatDatang) {
   document.getElementById('appShell').classList.remove('d-none');
   document.getElementById('navNamaGuru').textContent = currentUser.Nama + ' (' + currentUser.Peranan + ')';
   document.getElementById('navNamaGuruMenu').textContent = currentUser.Nama;
+  kemaskiniBadgeMenunggu();   // segera: lencana "menunggu sync" mesti mengikut queue pengguna INI (bukan sisa sesi sebelumnya) sebelum data dimuat
   // Ucapan "Ahlan wa Sahlan" peribadi di hero menu utama (arahan tuan) -
   // guna NAMA PERTAMA sahaja (cth "Ahmad" drpd "Ahmad Rizwan Hanafie Bin
   // Yusop") supaya sapaan kekal ringkas/mesra & tidak melimpah keluar
@@ -6519,6 +6763,7 @@ function isiPilihanKelasMurid_(tahun, kelasPilih) {
 function isiDropdownTetapan() {
   const kategoriSel = document.getElementById('inputKategori');
   kategoriSel.innerHTML = tetapanSistem.SenaraiKategoriBacaan.map(k => `<option value="${k}">${k}</option>`).join('');
+  binaChipKategori_();
 
   const tahunOpts = tetapanSistem.Tahun.map(t => `<option value="${t}">Tahun ${t}</option>`).join('');
   document.getElementById('inputMuridTahun').innerHTML = tahunOpts;
@@ -6719,6 +6964,9 @@ function tukarKelasEnrolmen() {
 }
 
 function pilihKelasTasmikDariGate(tahun, kelas) {
+  rosterPenapisTasmik_ = 'semua'; rosterSusunTasmik_ = 'nama';
+  const btnSusun = document.getElementById('btnSusunRosterTasmik');
+  if (btnSusun) { btnSusun.querySelector('span').textContent = 'A-Z'; btnSusun.querySelector('i').className = 'fa-solid fa-arrow-down-a-z'; }
   const selTahun = document.getElementById('pilihTahunTasmik');
   const selKelas = document.getElementById('pilihKelasTasmik');
   selTahun.value = tahun;
@@ -6885,6 +7133,7 @@ async function muatDashboard() {
   try {
     if (!isAdmin) {
       const data = await apiGetDashboardGuru(currentUser.ID_Guru);
+      renderRingkasanPapan_('ringkasanPapanGuru', { jenis: 'guru', jumlah: data.jumlahMurid, hariIni: data.jumlahDitasmikHariIni, belumMinggu: data.belumDitasmikMingguIni.length });
       animasiKiraNaik_('statJumlahMurid', data.jumlahMurid, '');
       animasiKiraNaik_('statDitasmikHariIni', data.jumlahDitasmikHariIni, '');
       const senarai = document.getElementById('senaraiBelumTasmik');
@@ -6905,6 +7154,7 @@ async function muatDashboard() {
       try {
         const data = await apiGetDashboardAdmin();
         renderChartIqraQuran(data.jumlahIqra, data.jumlahQuran, data.jumlahBelumMula);
+        renderRingkasanPapan_('ringkasanPapanAdmin', { jenis: 'admin', iqra: data.jumlahIqra, quran: data.jumlahQuran, belum: data.jumlahBelumMula });
       } catch (err) {
         console.error('muatDashboard (KPI/carta Iqra-Quran) gagal:', err);
       }
@@ -7637,16 +7887,19 @@ function renderChartIqraQuran(iqra, quran, belumMula) {
 // MODUL: KEMASUKAN TASMIK (3-CLICK SYSTEM)
 // ---------------------------------------------------------------
 function binaGroupStatusBacaan() {
-  const map = { 'Lancar': { kelas: 'lancar', ikon: 'fa-face-smile' }, 'Sederhana': { kelas: 'sederhana', ikon: 'fa-face-meh' }, 'Ulang': { kelas: 'ulang', ikon: 'fa-rotate-left' } };
+  const map = {
+    'Lancar': { kelas: 'lancar', ikon: 'fa-face-smile', desc: 'Lancar dan tepat' },
+    'Sederhana': { kelas: 'sederhana', ikon: 'fa-face-meh', desc: 'Ada sedikit kesilapan' },
+    'Ulang': { kelas: 'ulang', ikon: 'fa-rotate-left', desc: 'Perlu diulang' }
+  };
   const container = document.getElementById('groupStatusBacaan');
   container.innerHTML = tetapanSistem.SenaraiStatusBacaan.map(status => {
-    const m = map[status] || { kelas: '', ikon: 'fa-circle' };
-    return `<div class="btn-traffic ${m.kelas}" data-status="${status}" onclick="pilihStatusBacaan('${status}')">
-              <i class="fa-solid ${m.ikon}"></i>${status}
+    const m = map[status] || { kelas: '', ikon: 'fa-circle', desc: '' };
+    return `<div class="btn-traffic ${m.kelas}" data-status="${status}" role="button" tabindex="0" onclick="pilihStatusBacaan('${status}')">
+              <i class="fa-solid ${m.ikon}"></i><b>${status}</b>${m.desc ? '<small>' + m.desc + '</small>' : ''}<span class="tanda-pilih" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
             </div>`;
   }).join('');
-}
-function pilihStatusBacaan(status) {
+}function pilihStatusBacaan(status) {
   document.querySelectorAll('#groupStatusBacaan .btn-traffic').forEach(el => el.classList.toggle('selected', el.dataset.status === status));
   document.getElementById('inputStatusBacaan').value = status;
 }
@@ -7869,7 +8122,9 @@ document.getElementById('pilihMuridTasmik').addEventListener('change', async fun
   document.querySelectorAll('.pill-toggle').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('#groupStatusBacaan .btn-traffic').forEach(el => el.classList.remove('selected'));
   document.getElementById('inputStatusBacaan').value = '';
-  document.getElementById('inputTarikhTasmik').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('inputTarikhTasmik').value = tarikhTempatan_(0);
+  document.getElementById('inputKehadiran').checked = true;
+  segerakLabelKehadiran_();
 
   try {
     const rekod = await tarikRekodTerakhirDenganDialog_(idMurid);
@@ -7943,6 +8198,8 @@ document.getElementById('pilihMuridTasmik').addEventListener('change', async fun
 
 document.getElementById('formTasmik').addEventListener('submit', async function (e) {
   e.preventDefault();
+  const kejarSeterusnya = bukaSeterusnyaTasmik_;   // set oleh butang "Simpan & murid seterusnya"
+  bukaSeterusnyaTasmik_ = false;
   const idMurid = document.getElementById('pilihMuridTasmik').value;
   const statusBacaan = document.getElementById('inputStatusBacaan').value;
   if (!statusBacaan) { toastRalat('Sila pilih Status Bacaan.'); return; }
@@ -7971,7 +8228,9 @@ document.getElementById('formTasmik').addEventListener('submit', async function 
     Timestamp: timestampGabungan.toISOString()
   };
 
-  await hantarRekod(data, apiSimpanRekodTasmik, 'Rekod tasmik disimpan!');
+  const namaMurid = ((rosterMuridTasmikCache || []).find(function (m) { return m.ID_Murid === idMurid; }) || {}).Nama || '';
+  const idSeterusnya = kejarSeterusnya ? idMuridSeterusnya_(idMurid) : '';
+  await hantarRekod(data, apiSimpanRekodTasmik, namaMurid ? 'Rekod tasmik disimpan untuk ' + namaMurid + '.' : 'Rekod tasmik disimpan!');
   // reset separuh borang untuk sesi seterusnya, tapi KEKALKAN roster kelas
   // supaya guru boleh terus pilih murid seterusnya dalam kelas yang sama
   document.getElementById('pilihMuridTasmik').value = '';
@@ -7983,7 +8242,11 @@ document.getElementById('formTasmik').addEventListener('submit', async function 
 
   const tahun = document.getElementById('pilihTahunTasmik').value;
   const kelas = document.getElementById('pilihKelasTasmik').value;
-  if (tahun && kelas) muatRosterMuridTasmik(tahun, kelas); // segar semula status "Tarikh Terakhir" dsb.
+  if (tahun && kelas) await muatRosterMuridTasmik(tahun, kelas); // segar semula status "Tarikh Terakhir" dsb.
+  if (kejarSeterusnya) {
+    if (idSeterusnya) pilihMuridDariRoster(idSeterusnya);
+    else toastKejayaan('Semua murid dalam senarai ini sudah dilalui. Syabas, cikgu!');
+  }
 });
 
 /** Fungsi generik: hantar rekod terus jika online, atau simpan dalam queue jika offline */
@@ -8024,7 +8287,8 @@ async function muatRosterMuridTasmik(tahun, kelas) {
   document.getElementById('rosterMuridTasmik').innerHTML = skeletonSenarai_(5);
   try {
     rosterMuridTasmikCache = await cubaSemulaClient_(() => apiGetSenaraiMuridKelasStatus(tahun, kelas));
-    renderRosterMuridTasmik(rosterMuridTasmikCache);
+    kemaskiniRingkasanRosterTasmik_();
+    terapkanPenapisRosterTasmik_();
   } catch (err) {
     const mesejRalat = (err && err.message) ? err.message : 'ralat tidak diketahui';
     document.getElementById('rosterMuridTasmik').innerHTML =
@@ -8044,43 +8308,145 @@ function kategoriCssClass_(kategori) {
   return 'bk-iqra';
 }
 
+// ---------------------------------------------------------------
+// SENTUHAN MANUSIA (Tasmik): ringkasan "hari ini", penapis ringkas, tarikh relatif ("semalam", "3 hari lalu"),
+// tangga bacaan mini, avatar. Semua dikira di klien daripada data roster sedia ada (tiada API baharu).
+// ---------------------------------------------------------------
+let rosterPenapisTasmik_ = 'semua';   // 'semua' | 'belum' | 'sudah'
+let rosterSusunTasmik_ = 'nama';      // 'nama' | 'lama'
+
+/** Huruf pertama nama (untuk avatar bulat). */
+function inisialNama_(nama) {
+  const s = String(nama || '').trim();
+  return s ? s.charAt(0).toUpperCase() : '?';
+}
+
+/** Jantina murid (L/P) daripada cache Enrolmen; '' jika tidak diketahui. */
+function jantinaMurid_(idMurid) {
+  const m = (cacheSenaraiMurid || []).find(function (x) { return x.ID_Murid === idMurid; });
+  return m ? String(m.Jantina || '').charAt(0).toUpperCase() : '';
+}
+
+/** "dd/MM/yyyy" -> { teks: 'Semalam', hari: 1 }; nilai lain (cth "Tiada Rekod") -> hari null. */
+function tarikhRelatif_(dmy) {
+  const s = String(dmy || '');
+  if (s === 'Tiada Rekod') return { teks: 'Belum pernah', hari: null };
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s);
+  if (!m) return { teks: s, hari: null };
+  const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+  const kini = new Date();
+  const hari = Math.round((new Date(kini.getFullYear(), kini.getMonth(), kini.getDate()) - d) / 86400000);
+  let teks;
+  if (hari <= 0) teks = 'Hari ini';
+  else if (hari === 1) teks = 'Semalam';
+  else if (hari < 7) teks = hari + ' hari lalu';
+  else if (hari < 30) teks = Math.floor(hari / 7) + ' minggu lalu';
+  else if (hari < 365) teks = Math.floor(hari / 30) + ' bulan lalu';
+  else teks = 'Lebih setahun lalu';
+  return { teks: teks, hari: Math.max(0, hari) };
+}
+function hariSejak_(m) { const h = tarikhRelatif_(m.Tarikh_Terakhir).hari; return h === null ? 99999 : h; }
+
+/** Tangga bacaan mini: satu titik setiap tahap; terisi hingga tahap semasa. */
+function tanggaMini_(kategori) {
+  const senarai = (tetapanSistem && tetapanSistem.SenaraiKategoriBacaan && tetapanSistem.SenaraiKategoriBacaan.length)
+    ? tetapanSistem.SenaraiKategoriBacaan : SENARAI_KATEGORI_LALAI_;
+  const idx = senarai.indexOf(kategori);
+  return '<span class="tangga-mini" aria-hidden="true">' +
+    senarai.map(function (k, i) { return '<i class="' + (i < idx ? 'on' : (i === idx ? 'kini' : '')) + '"></i>'; }).join('') + '</span>';
+}
+
+/** Kad ringkasan di atas senarai: berapa murid sudah ditasmik hari ini + nota ringkas + chip penapis. */
+function kemaskiniRingkasanRosterTasmik_() {
+  const el = document.getElementById('rosterRingkas');
+  if (!el) return;
+  const s = rosterMuridTasmikCache || [];
+  const jumlah = s.length;
+  const hariIni = s.filter(function (m) { return tarikhRelatif_(m.Tarikh_Terakhir).hari === 0; }).length;
+  const peratus = jumlah ? Math.round(hariIni / jumlah * 100) : 0;
+  let nota;
+  if (!jumlah) nota = 'Belum ada murid dalam kelas ini.';
+  else if (hariIni === jumlah) nota = 'Alhamdulillah, semua murid sudah ditasmik hari ini.';
+  else if (hariIni === 0) nota = 'Belum ada rekod hari ini. Tekan nama murid untuk mula.';
+  else nota = (jumlah - hariIni) + ' murid lagi, cikgu.';
+  el.innerHTML =
+    '<div class="rr-angka"><b>' + hariIni + '</b><span>/ ' + jumlah + '</span></div>' +
+    '<div class="rr-tengah"><div class="rr-tajuk">sudah ditasmik hari ini</div>' +
+    '<div class="rr-bar" role="progressbar" aria-valuenow="' + peratus + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + peratus + '%"></i></div></div>' +
+    '<div class="rr-nota">' + escapeHtml(nota) + '</div>';
+  const chip = function (k, label, n) {
+    return '<button type="button" class="chip-tapis' + (rosterPenapisTasmik_ === k ? ' aktif' : '') + '" data-tapis="' + k + '">' + label + ' <span>' + n + '</span></button>';
+  };
+  document.getElementById('rosterChipTasmik').innerHTML = chip('semua', 'Semua', jumlah) + chip('belum', 'Belum hari ini', jumlah - hariIni) + chip('sudah', 'Sudah hari ini', hariIni);
+}
+
+/** Gabungkan carian + penapis + susunan, kemudian lukis senarai. */
+function terapkanPenapisRosterTasmik_() {
+  const c = (document.getElementById('carianMuridTasmik').value || '').toLowerCase();
+  let s = (rosterMuridTasmikCache || []).filter(function (m) { return !c || m.Nama.toLowerCase().includes(c); });
+  if (rosterPenapisTasmik_ === 'belum') s = s.filter(function (m) { return tarikhRelatif_(m.Tarikh_Terakhir).hari !== 0; });
+  else if (rosterPenapisTasmik_ === 'sudah') s = s.filter(function (m) { return tarikhRelatif_(m.Tarikh_Terakhir).hari === 0; });
+  if (rosterSusunTasmik_ === 'lama') s = s.slice().sort(function (a, b) { return hariSejak_(b) - hariSejak_(a); });
+  renderRosterMuridTasmik(s);
+}
+
 function renderRosterMuridTasmik(senarai) {
   const kontena = document.getElementById('rosterMuridTasmik');
   document.getElementById('rosterJumlahBadge').textContent = senarai.length + ' murid';
   if (senarai.length === 0) {
-    kontena.innerHTML = '<div class="roster-status-msg">Tiada murid dijumpai.</div>';
+    const adaCache = rosterMuridTasmikCache.length > 0;
+    kontena.innerHTML = '<div class="roster-kosong"><i class="fa-regular fa-face-smile"></i><b>' + (adaCache ? 'Tiada murid yang sepadan' : 'Belum ada murid dalam kelas ini') + '</b><span>' +
+      (adaCache ? 'Cuba tukar carian atau penapis di atas.' : 'Daftarkan murid melalui Enrolmen Murid dahulu.') + '</span></div>';
     return;
   }
   const idAktif = document.getElementById('pilihMuridTasmik').value;
-  kontena.innerHTML = senarai.map((m, i) => `
-    <div class="roster-row${m.ID_Murid === idAktif ? ' active' : ''}" data-id="${m.ID_Murid}" onclick="pilihMuridDariRoster('${m.ID_Murid}')">
+  kontena.innerHTML = senarai.map(function (m, i) {
+    const r = tarikhRelatif_(m.Tarikh_Terakhir);
+    const j = jantinaMurid_(m.ID_Murid);
+    const kelasTarikh = r.hari === 0 ? ' hari-ini' : (r.hari === null ? ' tiada' : (r.hari >= 14 ? ' lama' : ''));
+    return `
+    <div class="roster-row ${kategoriCssClass_(m.Kategori_Semasa).replace('bk-', 'rs-')}${m.ID_Murid === idAktif ? ' active' : ''}" data-id="${m.ID_Murid}" onclick="pilihMuridDariRoster('${m.ID_Murid}')">
       <div class="roster-bil">${i + 1}</div>
+      <span class="roster-avatar${j === 'P' ? ' p' : (j === 'L' ? ' l' : '')}" aria-hidden="true">${escapeHtml(inisialNama_(m.Nama))}</span>
       <div class="roster-row-main">
         <div class="roster-nama">${escapeHtml(m.Nama)}</div>
         <div class="roster-meta">
           <span class="badge-kategori ${kategoriCssClass_(m.Kategori_Semasa)}">${escapeHtml(m.Kategori_Semasa)}</span>
           ${m.Muka_Surat_Semasa !== '-' ? `<span class="roster-ms">M/S ${escapeHtml(String(m.Muka_Surat_Semasa))}</span>` : ''}
+          ${tanggaMini_(m.Kategori_Semasa)}
         </div>
       </div>
       <div class="roster-row-side">
-        <div class="roster-tarikh">${escapeHtml(m.Tarikh_Terakhir)}</div>
-        <i class="fa-solid fa-chevron-right"></i>
+        <div class="roster-tarikh${kelasTarikh}">${r.hari === 0 ? '<i class="fa-solid fa-circle-check"></i> ' : ''}${escapeHtml(r.teks)}</div>
+        <span class="roster-aksi">Rekod <i class="fa-solid fa-chevron-right"></i></span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
-document.getElementById('carianMuridTasmik').addEventListener('input', function () {
-  const c = this.value.toLowerCase();
-  const senarai = c ? rosterMuridTasmikCache.filter(m => m.Nama.toLowerCase().includes(c)) : rosterMuridTasmikCache;
-  renderRosterMuridTasmik(senarai);
+document.getElementById('carianMuridTasmik').addEventListener('input', terapkanPenapisRosterTasmik_);
+document.getElementById('rosterChipTasmik').addEventListener('click', function (e) {
+  const b = e.target.closest('[data-tapis]');
+  if (!b) return;
+  rosterPenapisTasmik_ = b.dataset.tapis;
+  kemaskiniRingkasanRosterTasmik_();
+  terapkanPenapisRosterTasmik_();
+});
+document.getElementById('btnSusunRosterTasmik').addEventListener('click', function () {
+  rosterSusunTasmik_ = rosterSusunTasmik_ === 'nama' ? 'lama' : 'nama';
+  this.querySelector('span').textContent = rosterSusunTasmik_ === 'nama' ? 'A-Z' : 'Paling lama dahulu';
+  this.querySelector('i').className = 'fa-solid ' + (rosterSusunTasmik_ === 'nama' ? 'fa-arrow-down-a-z' : 'fa-clock-rotate-left');
+  terapkanPenapisRosterTasmik_();
 });
 
 function pilihMuridDariRoster(idMurid) {
   document.querySelectorAll('#rosterMuridTasmik .roster-row').forEach(el => el.classList.toggle('active', el.dataset.id === idMurid));
   const info = rosterMuridTasmikCache.find(m => m.ID_Murid === idMurid);
   if (info) {
+    const jChip = jantinaMurid_(idMurid);
     document.getElementById('formTasmikMuridChip').innerHTML =
-      `<i class="fa-solid fa-user"></i> <strong>${escapeHtml(info.Nama)}</strong>
+      `<span class="chip-avatar${jChip === 'P' ? ' p' : (jChip === 'L' ? ' l' : '')}">${escapeHtml(inisialNama_(info.Nama))}</span>
+       <span class="chip-teks"><strong>${escapeHtml(info.Nama)}</strong><small>${escapeHtml(document.getElementById('tasmikKelasAktifLabel').textContent)}</small></span>
        <button type="button" class="btn-tukar-murid" onclick="tukarMuridTasmik()">Tukar Murid</button>`;
   }
   const sel = document.getElementById('pilihMuridTasmik');
@@ -8104,10 +8470,89 @@ function tukarMuridTasmik() {
 }
 
 // ---------------------------------------------------------------
+// SENTUHAN MANUSIA (borang Tasmik): chip kategori, penambah muka surat, tarikh pantas, "Simpan & murid seterusnya", Ctrl+Enter.
+// Medan asal (#inputKategori, #inputMukaSurat, #inputTarikhTasmik, #inputKehadiran, ...) KEKAL - logik simpan tidak berubah.
+// ---------------------------------------------------------------
+let bukaSeterusnyaTasmik_ = false;
+
+/** Tarikh tempatan (bukan UTC - toISOString() memberi semalam sebelum jam 8 pagi di Malaysia) dalam bentuk yyyy-mm-dd. */
+function tarikhTempatan_(hariLalu) {
+  const d = new Date();
+  d.setDate(d.getDate() - (hariLalu || 0));
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function binaChipKategori_() {
+  const kont = document.getElementById('katChips');
+  if (!kont || !tetapanSistem) return;
+  kont.innerHTML = tetapanSistem.SenaraiKategoriBacaan.map(function (k) {
+    const jenis = k === 'Khatam' ? 'khatam' : (k === 'Al-Quran' ? 'quran' : 'iqra');
+    return '<button type="button" class="kat-chip kc-' + jenis + '" data-kat="' + escapeHtml(k) + '" aria-pressed="false">' + escapeHtml(k) + '</button>';
+  }).join('');
+  segerakChipKategori_();
+}
+function segerakChipKategori_() {
+  const v = document.getElementById('inputKategori').value;
+  document.querySelectorAll('#katChips .kat-chip').forEach(function (b) {
+    const aktif = b.dataset.kat === v;
+    b.classList.toggle('aktif', aktif);
+    b.setAttribute('aria-pressed', aktif ? 'true' : 'false');
+  });
+}
+document.getElementById('katChips').addEventListener('click', function (e) {
+  const b = e.target.closest('.kat-chip');
+  if (!b) return;
+  const sel = document.getElementById('inputKategori');
+  sel.value = b.dataset.kat;
+  sel.dispatchEvent(new Event('change', { bubbles: true }));
+});
+
+function larasMukaSurat_(delta) {
+  const el = document.getElementById('inputMukaSurat');
+  el.value = Math.max(1, (parseInt(el.value, 10) || 0) + delta);
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+}
+document.getElementById('btnMsKurang').addEventListener('click', function () { larasMukaSurat_(-1); });
+document.getElementById('btnMsTambah').addEventListener('click', function () { larasMukaSurat_(1); });
+
+document.querySelector('.tarikh-pantas').addEventListener('click', function (e) {
+  const b = e.target.closest('button[data-hari]');
+  if (b) document.getElementById('inputTarikhTasmik').value = tarikhTempatan_(Number(b.dataset.hari));
+});
+
+function segerakLabelKehadiran_() {
+  document.getElementById('labelKehadiran').textContent = document.getElementById('inputKehadiran').checked ? 'Murid hadir' : 'Murid tidak hadir';
+}
+document.getElementById('inputKehadiran').addEventListener('change', segerakLabelKehadiran_);
+
+document.getElementById('groupStatusBacaan').addEventListener('keydown', function (e) {
+  const b = e.target.closest('.btn-traffic');
+  if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pilihStatusBacaan(b.dataset.status); }
+});
+
+/** ID murid seterusnya mengikut SUSUNAN yang sedang dipaparkan pada senarai (kosong jika murid terakhir). */
+function idMuridSeterusnya_(idSemasa) {
+  const ids = Array.prototype.map.call(document.querySelectorAll('#rosterMuridTasmik .roster-row'), function (el) { return el.dataset.id; });
+  const i = ids.indexOf(idSemasa);
+  return (i >= 0 && i < ids.length - 1) ? ids[i + 1] : '';
+}
+
+document.getElementById('btnSimpanSeterusnya').addEventListener('click', function () {
+  const borang = document.getElementById('formTasmik');
+  bukaSeterusnyaTasmik_ = true;
+  if (!borang.reportValidity()) { bukaSeterusnyaTasmik_ = false; return; }
+  borang.requestSubmit();
+});
+document.getElementById('modalFormTasmik').addEventListener('keydown', function (e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); document.getElementById('formTasmik').requestSubmit(); }
+});
+
+// ---------------------------------------------------------------
 // MEDAN JUZUK - hanya perlu bila Kategori ialah Al-Quran/Khatam
 // ---------------------------------------------------------------
 document.getElementById('inputKategori').addEventListener('change', toggleJuzukTasmik);
 function toggleJuzukTasmik() {
+  segerakChipKategori_();
   const kategori = document.getElementById('inputKategori').value;
   const perluJuzuk = tetapanSistem.KategoriPerluJuzuk.indexOf(kategori) !== -1;
   document.getElementById('wrapJuzuk').classList.toggle('d-none', !perluJuzuk);
@@ -8187,25 +8632,31 @@ function renderRosterMuridLaporan(senarai) {
   // supaya klik padanya TIDAK turut mencetuskan onclick baris (yg buka
   // #modalRekodMurid seorang murid) - dua tindakan berasingan pd baris yg
   // sama (tanda utk kumpulan / klik utk lihat cepat seorang).
-  kontena.innerHTML = senarai.map((m, i) => `
-    <div class="roster-row" data-id="${m.ID_Murid}" onclick="bukaRekodPenuhMurid('${m.ID_Murid}')">
+  kontena.innerHTML = senarai.map((m, i) => {
+    const r = tarikhRelatif_(m.Tarikh_Terakhir);
+    const j = jantinaMurid_(m.ID_Murid);
+    const kelasTarikh = r.hari === 0 ? ' hari-ini' : (r.hari === null ? ' tiada' : (r.hari >= 14 ? ' lama' : ''));
+    return `
+    <div class="roster-row ${kategoriCssClass_(m.Kategori_Semasa).replace('bk-', 'rs-')}" data-id="${m.ID_Murid}" onclick="bukaRekodPenuhMurid('${m.ID_Murid}')">
       <div class="roster-row-check" onclick="event.stopPropagation()">
         <input class="form-check-input check-murid-laporan" type="checkbox" value="${m.ID_Murid}" aria-label="Tanda ${escapeHtml(m.Nama)}">
       </div>
       <div class="roster-bil">${i + 1}</div>
+      <span class="roster-avatar${j === 'P' ? ' p' : (j === 'L' ? ' l' : '')}" aria-hidden="true">${escapeHtml(inisialNama_(m.Nama))}</span>
       <div class="roster-row-main">
         <div class="roster-nama">${escapeHtml(m.Nama)}</div>
         <div class="roster-meta">
           <span class="badge-kategori ${kategoriCssClass_(m.Kategori_Semasa)}">${escapeHtml(m.Kategori_Semasa)}</span>
           ${m.Muka_Surat_Semasa !== '-' ? `<span class="roster-ms">M/S ${escapeHtml(String(m.Muka_Surat_Semasa))}</span>` : ''}
+          ${tanggaMini_(m.Kategori_Semasa)}
         </div>
       </div>
       <div class="roster-row-side">
-        <div class="roster-tarikh">${escapeHtml(m.Tarikh_Terakhir)}</div>
-        <i class="fa-solid fa-chevron-right"></i>
+        <div class="roster-tarikh${kelasTarikh}">${escapeHtml(r.teks)}</div>
+        <span class="roster-aksi">Lihat <i class="fa-solid fa-chevron-right"></i></span>
       </div>
-    </div>`).join('');
-  kontena.querySelectorAll('.check-murid-laporan').forEach(function (cb) {
+    </div>`;
+  }).join('');  kontena.querySelectorAll('.check-murid-laporan').forEach(function (cb) {
     cb.addEventListener('change', kemaskiniJumlahDipilihLaporan_);
   });
   kemaskiniJumlahDipilihLaporan_();
@@ -8297,16 +8748,76 @@ async function bukaRekodPenuhMurid(idMurid) {
   }
 }
 
+/** Tangga bacaan penuh (bertanda nama) - dipakai pada Rekod Penuh Murid. */
+function tanggaPenuh_(kategori) {
+  const senarai = (tetapanSistem && tetapanSistem.SenaraiKategoriBacaan && tetapanSistem.SenaraiKategoriBacaan.length)
+    ? tetapanSistem.SenaraiKategoriBacaan : SENARAI_KATEGORI_LALAI_;
+  const idx = senarai.indexOf(kategori);
+  return '<div class="tangga-penuh" role="img" aria-label="Kedudukan murid pada tangga bacaan">' +
+    senarai.map(function (k, i) {
+      return '<div class="tp-langkah' + (i < idx ? ' selesai' : (i === idx ? ' kini' : '')) + '"><i></i><span>' + escapeHtml(k.replace('Al-Quran', 'Quran')) + '</span></div>';
+    }).join('') + '</div>';
+}
+
+/** Ayat ringkas + tangga bacaan di bahagian atas Rekod Penuh Murid. */
+function ruangNaratifRekod_(m, r) {
+  const nama1 = String(m.Nama || '').trim().split(/\s+/)[0] || 'murid';
+  const adaRekod = Number(r.Jumlah_Sesi_Tasmik) > 0;
+  const ayat = adaRekod
+    ? 'Setakat ' + r.Tarikh_Rekod_Terakhir + ', ' + nama1 + ' berada di ' + r.Tahap_Semasa +
+      (r.Muka_Surat_Semasa !== '-' ? ', muka surat ' + r.Muka_Surat_Semasa : '') + ', selepas ' + r.Jumlah_Sesi_Tasmik + ' sesi tasmik.'
+    : 'Belum ada rekod tasmik untuk ' + nama1 + '. Sesi pertama sedang menanti.';
+  return '<div class="rpr-naratif"><div class="rpr-ayat">' + escapeHtml(ayat) + '</div>' + tanggaPenuh_(r.Tahap_Semasa) + '</div>';
+}
+
+/** Sapaan ikut waktu (untuk Papan Pemuka). */
+function sapaanMasa_() {
+  const j = new Date().getHours();
+  return j < 12 ? 'Selamat pagi' : (j < 14 ? 'Selamat tengah hari' : (j < 19 ? 'Selamat petang' : 'Selamat malam'));
+}
+function namaCikgu_() {
+  const n = String((currentUser && currentUser.Nama) || '').trim().split(/\s+/)[0];
+  return n ? 'Cikgu ' + n : 'Cikgu';
+}
+
+/** Kad ringkasan di atas Papan Pemuka: sapaan, ayat ringkas dalam bahasa biasa, bar kemajuan. */
+function renderRingkasanPapan_(idElemen, p) {
+  const el = document.getElementById(idElemen);
+  if (!el) return;
+  const kepala = '<div class="rp-sapa"><span class="rp-tangan">' + escapeHtml(sapaanMasa_() + ', ' + namaCikgu_() + '.') + '</span></div>';
+  if (p.jenis === 'admin') {
+    const iqra = Number(p.iqra) || 0, quran = Number(p.quran) || 0, belum = Number(p.belum) || 0;
+    const jumlah = iqra + quran + belum;
+    if (!jumlah) {
+      el.innerHTML = kepala + '<div class="rp-ayat">Belum ada murid yang direkodkan. Mulakan dengan <b>Enrolmen Murid</b>, kemudian rekod tasmik pertama.</div>';
+      return;
+    }
+    const pc = function (n) { return Math.round(n / jumlah * 1000) / 10; };
+    el.innerHTML = kepala +
+      '<div class="rp-ayat">Daripada <b>' + jumlah + '</b> murid, <b>' + quran + '</b> sudah di Al-Quran, <b>' + iqra + '</b> masih di Iqra’ dan <b>' + belum + '</b> belum bermula.</div>' +
+      '<div class="rp-bar" role="img" aria-label="Pecahan tahap bacaan"><i class="rp-quran" style="width:' + pc(quran) + '%"></i><i class="rp-iqra" style="width:' + pc(iqra) + '%"></i><i class="rp-belum" style="width:' + pc(belum) + '%"></i></div>' +
+      '<div class="rp-legend"><span><i class="rp-quran"></i> Al-Quran / Khatam ' + quran + '</span><span><i class="rp-iqra"></i> Iqra’ ' + iqra + '</span><span><i class="rp-belum"></i> Belum mula ' + belum + '</span></div>';
+  } else {
+    const jumlah = Number(p.jumlah) || 0, hariIni = Number(p.hariIni) || 0, belumMinggu = Number(p.belumMinggu) || 0;
+    const peratus = jumlah ? Math.round(hariIni / jumlah * 100) : 0;
+    el.innerHTML = kepala +
+      '<div class="rp-ayat">Hari ini <b>' + hariIni + '</b> daripada <b>' + jumlah + '</b> murid sudah ditasmik. ' +
+      (belumMinggu ? '<b>' + belumMinggu + '</b> murid belum ditasmik minggu ini.' : 'Semua murid sudah ditasmik minggu ini, alhamdulillah.') + '</div>' +
+      '<div class="rp-bar rp-bar-satu" role="progressbar" aria-valuenow="' + peratus + '" aria-valuemin="0" aria-valuemax="100"><i class="rp-quran" style="width:' + peratus + '%"></i></div>';
+  }
+}
+
 function renderRekodPenuhMurid(hasil) {
   const m = hasil.murid;
   const r = hasil.ringkasan;
   const p = hasil.penandatangan || {};
 
+  const jRekod = jantinaMurid_(m.ID_Murid);
   document.getElementById('rekodMuridChip').innerHTML =
-    `<i class="fa-solid fa-user"></i> <strong>${escapeHtml(m.Nama)}</strong>
-     &nbsp;<span class="text-muted small">Tahun ${escapeHtml(String(m.Tahun))} ${escapeHtml(m.Kelas)}</span>`;
+    `<span class="chip-avatar${jRekod === 'P' ? ' p' : (jRekod === 'L' ? ' l' : '')}">${escapeHtml(inisialNama_(m.Nama))}</span>
+     <span class="chip-teks"><strong>${escapeHtml(m.Nama)}</strong><small>Tahun ${escapeHtml(String(m.Tahun))} ${escapeHtml(m.Kelas)}</small></span>`;
 
-  document.getElementById('rekodMuridRingkasan').innerHTML = `
+  document.getElementById('rekodMuridRingkasan').innerHTML = ruangNaratifRekod_(m, r) + `
     <div class="rpr-item"><span class="rpr-label">Tahap Semasa</span><span class="rpr-value">${escapeHtml(r.Tahap_Semasa)}</span></div>
     <div class="rpr-item"><span class="rpr-label">M/S Semasa</span><span class="rpr-value">${escapeHtml(String(r.Muka_Surat_Semasa))}</span></div>
     <div class="rpr-item"><span class="rpr-label">Jumlah Sesi</span><span class="rpr-value">${r.Jumlah_Sesi_Tasmik}</span></div>
@@ -8323,7 +8834,7 @@ function renderRekodPenuhMurid(hasil) {
           <td>${escapeHtml(x.Tarikh)}</td>
           <td>${escapeHtml(x.Kategori)}${x.Juzuk ? ' (Juzuk ' + escapeHtml(String(x.Juzuk)) + ')' : ''}</td>
           <td>${escapeHtml(String(x.Muka_Surat))}</td>
-          <td>${escapeHtml(x.Status_Bacaan)}</td>
+          <td><span class="st-chip st-${escapeHtml(String(x.Status_Bacaan).toLowerCase())}">${escapeHtml(x.Status_Bacaan)}</span></td>
           <td>${escapeHtml(x.Ralat_Tajwid)}</td>
           <td>${x.Kehadiran === 'Tidak Hadir' ? '<span class="text-danger">Tidak Hadir</span>' : 'Hadir'}</td>
         </tr>`).join('');
@@ -8645,10 +9156,33 @@ function bukaModalMurid(murid) {
   } else {
     isiPilihanKelasMurid_(document.getElementById('inputMuridTahun').value);
   }
+  document.getElementById('judulModalMurid').textContent = murid ? 'Sunting maklumat murid' : 'Murid baharu';
+  document.getElementById('btnSimpanTambahLagi').classList.toggle('d-none', !!murid);   // "tambah lagi" hanya untuk murid baharu
+  segerakJantina_();
   if (!modalMuridInstance) modalMuridInstance = new bootstrap.Modal(document.getElementById('modalMurid'));
   modalMuridInstance.show();
 }
-document.getElementById('btnSimpanMurid').addEventListener('click', async function () {
+/** Butang Lelaki/Perempuan (kawalan segmen) mengikut nilai <select> sebenar (#inputMuridJantina). */
+function segerakJantina_() {
+  const v = document.getElementById('inputMuridJantina').value;
+  document.querySelectorAll('#segJantina .seg-btn').forEach(function (b) {
+    const aktif = b.dataset.jantina === v;
+    b.classList.toggle('aktif', aktif);
+    b.setAttribute('aria-pressed', aktif ? 'true' : 'false');
+  });
+}
+document.getElementById('segJantina').addEventListener('click', function (e) {
+  const b = e.target.closest('.seg-btn');
+  if (!b) return;
+  document.getElementById('inputMuridJantina').value = b.dataset.jantina;
+  segerakJantina_();
+});
+document.getElementById('modalMurid').addEventListener('shown.bs.modal', function () { document.getElementById('inputMuridNama').focus(); });
+document.getElementById('inputMuridNama').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') { e.preventDefault(); simpanMurid_(false); }
+});
+
+async function simpanMurid_(tambahLagi) {
   const id = document.getElementById('inputMuridId').value;
   const data = {
     ID_Murid: id || undefined,
@@ -8659,19 +9193,28 @@ document.getElementById('btnSimpanMurid').addEventListener('click', async functi
     Status_Keperluan_Khas: document.getElementById('inputMuridKeperluanKhas').value.trim(),
     ID_Guru: currentUser.ID_Guru
   };
-  if (!data.Nama) { toastRalat('Sila isi nama murid.'); return; }
+  if (!data.Nama) { toastRalat('Sila isi nama murid.'); document.getElementById('inputMuridNama').focus(); return; }
   tunjukLoading('Menyimpan murid...');
   try {
     const hasil = id ? await apiKemaskiniMurid(data) : await apiTambahMurid(data);
     tutupLoading();
     if (hasil.success) {
-      toastKejayaan('Maklumat murid disimpan!');
-      modalMuridInstance.hide();
+      if (tambahLagi && !id) {
+        // kekalkan Tahun/Kelas/Jantina, kosongkan nama & keperluan khas supaya guru terus taip murid seterusnya
+        toastKejayaan(data.Nama + ' disimpan. Teruskan murid seterusnya.');
+        document.getElementById('inputMuridNama').value = '';
+        document.getElementById('inputMuridKeperluanKhas').value = '';
+        document.getElementById('inputMuridNama').focus();
+      } else {
+        toastKejayaan(data.Nama + ' disimpan.');
+        modalMuridInstance.hide();
+      }
       muatSenaraiMuridView();
     } else toastRalat(hasil.message || 'Gagal menyimpan murid.');
   } catch (err) { tutupLoading(); toastRalat('Ralat sambungan.'); }
-});
-async function padamMuridUI(idMurid) {
+}
+document.getElementById('btnSimpanMurid').addEventListener('click', function () { simpanMurid_(false); });
+document.getElementById('btnSimpanTambahLagi').addEventListener('click', function () { simpanMurid_(true); });async function padamMuridUI(idMurid) {
   const konfirmasi = await Swal.fire({
     title: 'Padam murid ini?', text: 'Rekod tasmik/hafazan sedia ada tidak akan dipadam.',
     icon: 'warning', showCancelButton: true, confirmButtonText: 'Padam', cancelButtonText: 'Batal', confirmButtonColor: '#dc3545'
@@ -8768,10 +9311,10 @@ function renderSenaraiPerkasa(senarai) {
   container.innerHTML = senarai.length === 0
     ? '<li class="list-group-item text-success"><i class="fa-solid fa-circle-check"></i> Tiada murid Tahun 6 di Iqra 1-3 buat masa ini.</li>'
     : senarai.map((m, i) => `<li class="list-group-item d-flex justify-content-between align-items-center">
-          <span class="perkasa-baris-nama"><span class="roster-bil">${i + 1}</span><strong>${escapeHtml(m.Nama)}</strong> <small class="text-muted">${escapeHtml(m.Kelas)}</small></span>
-          <span class="text-end">
-            <span class="badge bg-danger">${escapeHtml(m.Kategori_Semasa)}</span><br>
-            <small class="text-muted">${escapeHtml(m.Tarikh_Terakhir)}</small>
+          <span class="perkasa-baris-nama"><span class="roster-bil">${i + 1}</span><span class="roster-avatar${jantinaMurid_(m.ID_Murid) === 'P' ? ' p' : (jantinaMurid_(m.ID_Murid) === 'L' ? ' l' : '')}" aria-hidden="true">${escapeHtml(inisialNama_(m.Nama))}</span><span class="perkasa-teks"><strong>${escapeHtml(m.Nama)}</strong><small class="text-muted">Tahun 6 ${escapeHtml(m.Kelas)}</small></span></span>
+          <span class="text-end perkasa-sisi">
+            <span class="badge bg-danger">${escapeHtml(m.Kategori_Semasa)}</span>
+            <small class="text-muted">${escapeHtml(tarikhRelatif_(m.Tarikh_Terakhir).teks)}</small>
           </span>
         </li>`).join('');
 }
