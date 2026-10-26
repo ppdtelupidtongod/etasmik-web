@@ -4025,29 +4025,13 @@
   .ayat-tajuk { font-size: .74rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: #E6CC85; white-space: nowrap; }
   .ayat-tajuk small { font-size: .6rem; font-weight: 700; letter-spacing: .1em; color: rgba(255,255,255,.62); margin-left: 6px; }
   .ayat-slaid-grid { display: grid; }
-  .ayat-slaid { grid-area: 1 / 1; align-self: center; margin: 0; padding: 4px 0; text-align: center; opacity: 0; animation: ayatSlaid 32s ease-in-out infinite; }
-  .ayat-slaid:nth-child(2) { animation-delay: 8s; }
-  .ayat-slaid:nth-child(3) { animation-delay: 16s; }
-  .ayat-slaid:nth-child(4) { animation-delay: 24s; }
+  .ayat-slaid { grid-area: 1 / 1; align-self: center; margin: 0; padding: 4px 0; text-align: center; opacity: 0; }
   .ayat-arab { font-family: var(--font-arab); font-size: clamp(1.6rem, 3vw, 2.35rem); line-height: 2; margin: 10px 0 4px; color: #FFF6D8; text-shadow: 0 2px 14px rgba(0,0,0,.55); }
   .ayat-terjemah { max-width: 48ch; margin: 0 auto 10px; font-size: clamp(.96rem, 1.5vw, 1.1rem); line-height: 1.55; font-weight: 600; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
   .ayat-rujuk { display: block; font-style: normal; font-size: .74rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #E6CC85; }
-  .ayat-titik { display: flex; justify-content: center; align-items: center; gap: 7px; margin: 12px 0 2px; }
-  .ayat-titik i { width: 7px; height: 7px; border-radius: 99px; background: rgba(255,255,255,.3); animation: ayatTitik 32s ease-in-out infinite; }
-  .ayat-titik i:nth-child(2) { animation-delay: 8s; }
-  .ayat-titik i:nth-child(3) { animation-delay: 16s; }
-  .ayat-titik i:nth-child(4) { animation-delay: 24s; }
   .ayat-hadis { margin-top: 14px; padding-top: 13px; border-top: 1px solid rgba(230,204,133,.3); text-align: center; font-family: var(--font-accent); font-style: italic; font-weight: 600; font-size: .92rem; line-height: 1.5; color: #FFF4D2; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
   .ayat-hadis > i { color: #E6CC85; margin-right: 6px; font-size: .7rem; }
   .ayat-hadis cite { display: block; margin-top: 4px; font-family: inherit; font-style: normal; font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #E6CC85; }
-  @keyframes ayatSlaid {
-    0%   { opacity: 0; transform: translateY(10px); }
-    3%   { opacity: 1; transform: translateY(0); }
-    22%  { opacity: 1; transform: translateY(0); }
-    25%  { opacity: 0; transform: translateY(-8px); }
-    100% { opacity: 0; transform: translateY(-8px); }
-  }
-  @keyframes ayatTitik { 0%, 22% { width: 24px; background: #E6CC85; } 25%, 100% { width: 7px; background: rgba(255,255,255,.3); } }
 
   /* ---------- cip pengguna & reben hashtag lebih jelas ---------- */
   .menu-user-chip { background: rgba(4,28,20,.64); border: 1px solid rgba(230,204,133,.45); padding: 5px 8px 5px 14px; font-size: .82rem; font-weight: 700; box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 8px 18px -10px rgba(0,0,0,.7); }
@@ -4066,10 +4050,6 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-aurora span, .hero-emblem, .logo-emblem, .logo-emblem *, .hero-title-gold, .hero-ayat, .hero-welcome-icon { animation: none !important; }
-    .ayat-slaid, .ayat-titik i { animation: none !important; }
-    .ayat-slaid:first-child { opacity: 1; }
-    .ayat-slaid:nth-child(n+2) { display: none; }
-    .ayat-titik { display: none; }
   }  /* =====================================================================
      v9 - BAR ATAS HERO (cip pengguna + tarikh bersebelahan) & HAKCIPTA (skrin log masuk + semua halaman aplikasi, termasuk Konsol PPD).
   ===================================================================== */
@@ -4462,9 +4442,11 @@
   .hero-welcome-arab {
     padding: 0 8px; font-size: clamp(2.4rem, 4.8vw, 3.4rem); line-height: 1.55;
     /* emas berkilat: kecerunan BERKALA (hujung kiri = hujung kanan) supaya sapuan kilat boleh berulang tanpa lompatan */
-    background: linear-gradient(105deg, #D9B65C 0%, #C9A24D 16.6%, #EBD491 33.3%, #FFFFFF 45%, #FFF8DE 50%, #FFFFFF 55%, #D9B65C 66.7%, #C9A24D 83.3%, #EBD491 100%); background-size: 300% 100%;
+    /* warna lebih cerah + sengaja TEBAL (Amiri 700) + garis luar halus supaya baris/harakat nipis jelas kelihatan di atas hijau tua */
+    background: linear-gradient(105deg, #F4DE9A 0%, #E9C96E 16.6%, #FFF1C2 33.3%, #FFFFFF 45%, #FFFBEA 50%, #FFFFFF 55%, #F4DE9A 66.7%, #E9C96E 83.3%, #FFF1C2 100%); background-size: 300% 100%;
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
-    filter: drop-shadow(0 3px 12px rgba(0,0,0,.55));
+    font-weight: 700; -webkit-text-stroke: .7px rgba(255,240,186,.9);
+    filter: drop-shadow(0 2px 7px rgba(0,0,0,.45));
     /* "menulis khat": topeng menyingkap tulisan dari KANAN ke KIRI (arah tulisan Arab); keadaan rehat = tersingkap penuh */
     -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #000 55%, #000 100%); mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #000 55%, #000 100%);
     -webkit-mask-size: 300% 100%; mask-size: 300% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
@@ -4657,7 +4639,106 @@
     background: radial-gradient(120% 62% at 50% 0%, rgba(120,176,255,.5), transparent 70%) padding-box, linear-gradient(172deg, #2169CC 0%, #174E9F 58%, #0E3578 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
   .menu-pentas .menu-grid .menu-card.c-purple { --kilau: 58,23,120;
     background: radial-gradient(120% 62% at 50% 0%, rgba(184,140,245,.5), transparent 70%) padding-box, linear-gradient(172deg, #7C3EC6 0%, #5B2B9F 58%, #3A1778 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
-  /* [/BIRU-UNGU-DIBENARKAN] */</style>
+  /* [/BIRU-UNGU-DIBENARKAN] */
+
+  /* =====================================================================
+     v18 - "MUTIARA AL-QURAN" = GULUNGAN (skrol) + KACA BEKU, interaktif.
+       Dua batang emas (atas/bawah) + kertas kaca di antaranya (bayang lengkungan gulungan, corak bintang halus, kilau mengikut tetikus).
+       Ayat dibuka seperti gulungan terbentang (clip-path) dan tulisan Arab "ditulis" dari kanan ke kiri. Titik bernombor berpengisi masa;
+       jeda semasa tetikus/fokus. Hanya hijau/emas/putih (tiada biru/ungu).
+  ===================================================================== */
+  .hero-ayat {
+    padding: 0 11px; border: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+    transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .3s ease-out;
+  }
+  .hero-ayat::before { display: none; }
+  .skrol-batang {
+    position: relative; z-index: 3; display: block; height: 19px; margin: 0 -11px; border-radius: 11px;
+    background: linear-gradient(180deg, #FFF3C6 0%, #E8C76F 20%, #BD9235 52%, #7E5812 80%, #C9A24D 100%);
+    box-shadow: 0 8px 14px -6px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 3px rgba(62,40,5,.55);
+  }
+  .skrol-batang::before, .skrol-batang::after {
+    content: ""; position: absolute; top: 50%; width: 15px; height: 27px; margin-top: -13.5px; border-radius: 7px;
+    background: linear-gradient(180deg, #FFF3C6, #D9B35A 35%, #8F6718 75%, #C9A24D);
+    box-shadow: 0 3px 6px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.6);
+  }
+  .skrol-batang::before { left: -7px; }
+  .skrol-batang::after { right: -7px; }
+  .skrol-kertas {
+    position: relative; z-index: 1; margin: -4px 0; padding: 28px 26px 18px;
+    background: linear-gradient(168deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.07) 34%, rgba(8,50,36,.55) 100%), rgba(7,38,28,.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
+    border-left: 1px solid rgba(255,255,255,.28); border-right: 1px solid rgba(255,255,255,.18);
+    box-shadow: inset 0 0 0 1px rgba(230,204,133,.16), inset 0 0 46px rgba(0,0,0,.28), 0 30px 46px -26px rgba(0,0,0,.85);
+  }
+  .skrol-kertas::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.4) 0, transparent 36px, transparent calc(100% - 36px), rgba(0,0,0,.4) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.07' stroke-width='1'%3E%3Crect x='9' y='9' width='38' height='38'/%3E%3Crect x='9' y='9' width='38' height='38' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 56px 56px;
+  }
+  .skrol-kertas::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0; transition: opacity .35s ease;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), rgba(255,244,205,.22), transparent 62%);
+  }
+  .hero-ayat.menyala .skrol-kertas::after { opacity: 1; }
+  .skrol-kertas > * { position: relative; z-index: 1; }
+
+  .ayat-pentas { position: relative; margin: 0 -8px; padding: 0 24px; touch-action: pan-y; }
+  .ayat-nav {
+    position: absolute; top: 30%; z-index: 2; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%; padding: 0; display: grid; place-items: center; cursor: pointer;
+    font-size: .8rem; color: #F6E2A3; background: rgba(255,255,255,.1); border: 1px solid rgba(230,204,133,.5);
+    transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+  }
+  .ayat-nav.kiri { left: -2px; }
+  .ayat-nav.kanan { right: -2px; }
+  .ayat-nav:hover { background: rgba(230,204,133,.3); color: #fff; transform: scale(1.12); box-shadow: 0 0 16px rgba(230,204,133,.45); }
+  .ayat-nav:active { transform: scale(.94); }
+  .ayat-nav:focus-visible, .ayat-titik button:focus-visible, .ayat-salin:focus-visible { outline: 2px solid #E6CC85; outline-offset: 2px; }
+
+  .hero-ayat .ayat-slaid { opacity: 0; visibility: hidden; pointer-events: none; animation: none; }
+  .hero-ayat .ayat-slaid.aktif { opacity: 1; visibility: visible; pointer-events: auto; animation: ayatBuka .95s cubic-bezier(.22,1,.36,1) both; }
+  .hero-ayat .ayat-slaid.keluar { visibility: visible; animation: ayatTutup .4s ease-in both; }
+  @keyframes ayatBuka { from { clip-path: inset(0 0 100% 0); opacity: 0; transform: translateY(-8px); } to { clip-path: inset(0 0 0 0); opacity: 1; transform: none; } }
+  @keyframes ayatTutup { from { opacity: 1; } to { opacity: 0; transform: translateY(8px); } }
+  .hero-ayat .ayat-arab { text-shadow: 0 0 18px rgba(230,204,133,.35), 0 2px 10px rgba(0,0,0,.5); }
+  .hero-ayat .ayat-slaid.aktif .ayat-arab {
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #000 55%, #000 100%); mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #000 55%, #000 100%);
+    -webkit-mask-size: 300% 100%; mask-size: 300% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 100% 0; mask-position: 100% 0;
+    animation: ayatTulis 1.7s cubic-bezier(.4,.05,.25,1) .2s both;
+  }
+  @keyframes ayatTulis { from { -webkit-mask-position: 0% 0; mask-position: 0% 0; } to { -webkit-mask-position: 100% 0; mask-position: 100% 0; } }
+  .hero-ayat .ayat-slaid.aktif .ayat-terjemah, .hero-ayat .ayat-slaid.aktif .ayat-rujuk { animation: ayatNaik .7s ease-out .55s both; }
+  @keyframes ayatNaik { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .ayat-bawah { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin: 12px 0 2px; }
+  .hero-ayat .ayat-titik { display: flex; justify-content: center; gap: 6px; margin: 0; }
+  .ayat-titik button { padding: 7px 1px; background: none; border: 0; cursor: pointer; }
+  .hero-ayat .ayat-titik button i { display: block; position: relative; overflow: hidden; width: 8px; height: 8px; border-radius: 99px; background: rgba(255,255,255,.34); animation: none; transition: width .4s cubic-bezier(.22,1,.36,1), background .3s ease; }
+  .ayat-titik button:hover i { background: rgba(255,255,255,.6); }
+  .hero-ayat .ayat-titik button.aktif i { width: 34px; background: rgba(255,255,255,.26); }
+  .ayat-titik button.aktif i::after { content: ""; position: absolute; inset: 0; transform-origin: left center; background: linear-gradient(90deg, #E6CC85, #FFF1BF); animation: ayatIsi 9s linear forwards; }
+  .hero-ayat:hover .ayat-titik button.aktif i::after, .hero-ayat:focus-within .ayat-titik button.aktif i::after { animation-play-state: paused; }
+  @keyframes ayatIsi { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .ayat-salin { justify-self: end; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; cursor: pointer; font: inherit; font-size: .72rem; font-weight: 700; letter-spacing: .05em; color: #F6E2A3; background: rgba(255,255,255,.08); border: 1px solid rgba(230,204,133,.45); transition: background .25s ease, color .25s ease; }
+  .ayat-salin:hover { background: rgba(230,204,133,.28); color: #fff; }
+
+  @media (max-width: 575px) {
+    .hero-ayat { padding: 0 11px; border-radius: 0; }
+    .skrol-kertas { padding: 26px 14px 14px; }
+    .ayat-pentas { padding: 0 20px; }
+    .ayat-nav { width: 30px; height: 30px; margin-top: -15px; }
+    .ayat-salin span { display: none; }
+    .ayat-salin { padding: 7px 9px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-ayat { transform: none !important; transition: none !important; }
+    .hero-ayat .ayat-slaid.aktif, .hero-ayat .ayat-slaid.keluar, .hero-ayat .ayat-slaid.aktif .ayat-arab, .hero-ayat .ayat-slaid.aktif .ayat-terjemah, .hero-ayat .ayat-slaid.aktif .ayat-rujuk, .ayat-titik button.aktif i::after { animation: none !important; }
+    .hero-ayat .ayat-slaid:nth-child(n+2) { display: block; }
+    .hero-ayat .ayat-slaid:first-child:not(.aktif) { opacity: 0; }
+    .hero-ayat .ayat-titik { display: flex; }
+    .hero-ayat .ayat-titik button.aktif i { background: #E6CC85; }
+  }</style>
 </head>
 <body>
 
@@ -4911,10 +4992,17 @@
               </div>
             </div>
 
-            <figure class="hero-ayat">
+            <!-- "Mutiara Al-Quran": gulungan (skrol) berkaca. Dua batang emas atas & bawah + kertas kaca beku di antaranya. Interaktif: butang
+                 sebelum/seterusnya, titik berpengisi masa (klik), leret jari, anak panah papan kekunci, jeda semasa tetikus/fokus, kilau mengikut
+                 tetikus + condong 3D halus, butang salin. Pengaturan di initAyatHero_() (JS.html). -->
+            <figure class="hero-ayat" id="heroAyat" aria-roledescription="carousel" aria-label="Mutiara Al-Quran">
+              <span class="skrol-batang atas" aria-hidden="true"></span>
+              <div class="skrol-kertas">
               <figcaption class="ayat-kepala"><span class="ayat-hias"></span><span class="ayat-tajuk"><i class="fa-solid fa-book-quran" aria-hidden="true"></i> Mutiara Al-Quran <small>terjemahan makna</small></span><span class="ayat-hias"></span></figcaption>
+              <div class="ayat-pentas">
+              <button type="button" class="ayat-nav kiri" id="ayatSebelum" aria-label="Ayat sebelumnya"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
               <div class="ayat-slaid-grid">
-                <blockquote class="ayat-slaid">
+                <blockquote class="ayat-slaid aktif">
                   <p class="ayat-arab" lang="ar" dir="rtl">وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ</p>
                   <p class="ayat-terjemah">Dan demi sesungguhnya, Kami telah memudahkan Al-Quran untuk dijadikan peringatan dan pengajaran; maka adakah sesiapa yang mahu mengambil peringatan?</p>
                   <cite class="ayat-rujuk">Surah Al-Qamar &middot; Ayat 17</cite>
@@ -4935,8 +5023,16 @@
                   <cite class="ayat-rujuk">Surah Al-Isra&rsquo; &middot; Ayat 9</cite>
                 </blockquote>
               </div>
-              <div class="ayat-titik" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <button type="button" class="ayat-nav kanan" id="ayatSeterusnya" aria-label="Ayat seterusnya"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+              </div>
+              <div class="ayat-bawah">
+                <span class="ayat-bawah-kosong" aria-hidden="true"></span>
+                <div class="ayat-titik" role="group" aria-label="Pilih ayat"><button type="button" aria-label="Ayat 1"><i></i></button><button type="button" aria-label="Ayat 2"><i></i></button><button type="button" aria-label="Ayat 3"><i></i></button><button type="button" aria-label="Ayat 4"><i></i></button></div>
+                <button type="button" class="ayat-salin" id="ayatSalin" title="Salin ayat ini"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Salin</span></button>
+              </div>
               <div class="ayat-hadis"><i class="fa-solid fa-quote-left" aria-hidden="true"></i> Sebaik-baik kamu ialah orang yang belajar Al-Quran dan mengajarkannya. <cite>Riwayat Al-Bukhari</cite></div>
+              </div>
+              <span class="skrol-batang bawah" aria-hidden="true"></span>
             </figure>
           </div>
           <div class="beads-divider hero-divider"></div>
@@ -10582,6 +10678,90 @@ function tukarTahunImport_() {
   selK.innerHTML = kelasUntukTahun(selT.value).map(function (k) { return '<option value="' + escapeHtml(k) + '">' + escapeHtml(k) + '</option>'; }).join('');
   segarPratontonImport_();
 }
+
+// ---------------------------------------------------------------
+// "MUTIARA AL-QURAN" (hero) - gulungan kaca interaktif. Ayat bertukar sendiri apabila titik aktif habis terisi (peristiwa animationend, jadi
+// jeda semasa tetikus/fokus ialah CSS sahaja - tiada pemasa JS yang boleh tersasar), atau dengan butang, titik, leret jari & anak panah papan kekunci.
+// Kilau mengikut tetikus + condong 3D halus hanya untuk tetikus. Butang Salin menyalin Arab + terjemahan + rujukan.
+// ---------------------------------------------------------------
+const ayatHero_ = (function () {
+  const akar = document.getElementById('heroAyat');
+  if (!akar) return null;
+  const slaid = Array.prototype.slice.call(akar.querySelectorAll('.ayat-slaid'));
+  const titik = Array.prototype.slice.call(akar.querySelectorAll('.ayat-titik button'));
+  const pentas = akar.querySelector('.ayat-pentas');
+  let kini = 0;
+
+  function papar() {
+    slaid.forEach(function (s, i) { s.setAttribute('aria-hidden', i === kini ? 'false' : 'true'); });
+    titik.forEach(function (t, i) { t.classList.toggle('aktif', i === kini); t.setAttribute('aria-current', i === kini ? 'true' : 'false'); });
+  }
+  function pergi(n) {
+    n = (n + slaid.length) % slaid.length;
+    if (n === kini) return;
+    const lama = slaid[kini];
+    lama.classList.remove('aktif'); lama.classList.add('keluar');
+    clearTimeout(lama.penamat_); lama.penamat_ = setTimeout(function () { lama.classList.remove('keluar'); }, 420);   // pemasa setiap ayat (klik laju tidak boleh membatalkan pemasa ayat lain)
+    kini = n;
+    clearTimeout(slaid[kini].penamat_); slaid[kini].classList.remove('keluar'); slaid[kini].classList.add('aktif');
+    papar();
+  }
+  papar();
+
+  // pengisi masa pada titik aktif tamat -> ayat seterusnya (elapsedTime >= 1 mengelak larian laju bila animasi dimatikan, cth. dalam ujian)
+  akar.addEventListener('animationend', function (e) { if (e.animationName === 'ayatIsi' && e.elapsedTime >= 1) pergi(kini + 1); });
+  document.getElementById('ayatSebelum').addEventListener('click', function () { pergi(kini - 1); });
+  document.getElementById('ayatSeterusnya').addEventListener('click', function () { pergi(kini + 1); });
+  titik.forEach(function (t, i) { t.addEventListener('click', function () { pergi(i); }); });
+  akar.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { pergi(kini + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { pergi(kini - 1); e.preventDefault(); }
+  });
+
+  // leret jari / seret tetikus mendatar
+  let x0 = null, y0 = 0;
+  pentas.addEventListener('pointerdown', function (e) { if (e.target.closest('.ayat-nav')) return; x0 = e.clientX; y0 = e.clientY; });
+  pentas.addEventListener('pointerup', function (e) {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) pergi(kini + (dx < 0 ? 1 : -1));
+  });
+  pentas.addEventListener('pointercancel', function () { x0 = null; });
+
+  // kilau cahaya mengikut tetikus + condong 3D halus (tetikus sahaja; skrin sentuh tidak terjejas)
+  let rangka = 0;
+  akar.addEventListener('pointermove', function (e) {
+    if (e.pointerType !== 'mouse') return;
+    cancelAnimationFrame(rangka);
+    rangka = requestAnimationFrame(function () {
+      const r = akar.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      akar.style.setProperty('--mx', (px * 100).toFixed(1) + '%'); akar.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+      akar.style.setProperty('--ry', ((px - 0.5) * 6).toFixed(2) + 'deg'); akar.style.setProperty('--rx', ((0.5 - py) * 4).toFixed(2) + 'deg');
+      akar.classList.add('menyala');
+    });
+  });
+  akar.addEventListener('pointerleave', function () {
+    cancelAnimationFrame(rangka); akar.classList.remove('menyala');
+    ['--rx', '--ry'].forEach(function (p) { akar.style.removeProperty(p); });
+  });
+
+  // salin ayat semasa
+  const btnSalin = document.getElementById('ayatSalin');
+  btnSalin.addEventListener('click', async function () {
+    const s = slaid[kini];
+    const teks = s.querySelector('.ayat-arab').textContent.trim() + '\n' + s.querySelector('.ayat-terjemah').textContent.trim() + '\n— ' + s.querySelector('.ayat-rujuk').textContent.trim();
+    let ok = false;
+    try { await navigator.clipboard.writeText(teks); ok = true; }
+    catch (e) {
+      try { const ta = document.createElement('textarea'); ta.value = teks; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); document.body.removeChild(ta); } catch (e2) { ok = false; }
+    }
+    if (!ok) { toastRalat('Tidak dapat menyalin ayat.'); return; }
+    const ikon = btnSalin.querySelector('i'), teksBtn = btnSalin.querySelector('span');
+    ikon.className = 'fa-solid fa-check'; teksBtn.textContent = 'Disalin';
+    setTimeout(function () { ikon.className = 'fa-regular fa-copy'; teksBtn.textContent = 'Salin'; }, 1600);
+  });
+  return { pergi: pergi, kini: function () { return kini; } };
+})();
 
 // Jubin menu utama ialah <div role="button">: Enter / Spasi mesti berfungsi seperti klik (papan kekunci & pembaca skrin).
 document.querySelectorAll('.menu-card[role="button"]').forEach(function (k) {
