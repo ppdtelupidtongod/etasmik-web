@@ -4936,114 +4936,129 @@
             <defs>
               <linearGradient id="sk-emas" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A6420"/><stop offset=".24" stop-color="#E9C86F"/><stop offset=".46" stop-color="#FFF3C4"/><stop offset=".64" stop-color="#E2BC5C"/><stop offset="1" stop-color="#7A5516"/></linearGradient>
               <linearGradient id="sk-emas-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3C4"/><stop offset=".5" stop-color="#D8AE4E"/><stop offset="1" stop-color="#8A6420"/></linearGradient>
-              <linearGradient id="sk-zamrud" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0A4231"/><stop offset=".35" stop-color="#17795A"/><stop offset=".5" stop-color="#1F9068"/><stop offset=".7" stop-color="#127050"/><stop offset="1" stop-color="#06352A"/></linearGradient>
+              <linearGradient id="sk-gading" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B7A87F"/><stop offset=".3" stop-color="#EFE5C6"/><stop offset=".5" stop-color="#FFF9E8"/><stop offset=".72" stop-color="#E4D8B4"/><stop offset="1" stop-color="#A39470"/></linearGradient>
+              <linearGradient id="sk-gading-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF4DE"/><stop offset=".6" stop-color="#E3D6AE"/><stop offset="1" stop-color="#B9A97F"/></linearGradient>
               <linearGradient id="sk-zamrud-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B8260"/><stop offset=".6" stop-color="#0D5A41"/><stop offset="1" stop-color="#05301F"/></linearGradient>
               <linearGradient id="sk-lampu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1BF"/><stop offset="1" stop-color="#F0B84A"/></linearGradient>
-              <radialGradient id="sk-cahaya" cx=".5" cy=".7" r=".62"><stop offset="0" stop-color="#FFD98A" stop-opacity=".42"/><stop offset=".5" stop-color="#FFD98A" stop-opacity=".12"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient>
+              <radialGradient id="sk-cahaya" cx=".5" cy=".7" r=".62"><stop offset="0" stop-color="#FFD98A" stop-opacity=".4"/><stop offset=".5" stop-color="#FFD98A" stop-opacity=".11"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient>
               <radialGradient id="sk-bulan-cahaya"><stop offset="0" stop-color="#FFF1BF" stop-opacity=".6"/><stop offset="1" stop-color="#FFF1BF" stop-opacity="0"/></radialGradient>
-              <linearGradient id="sk-kabus" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A8EBCB" stop-opacity="0"/><stop offset="1" stop-color="#A8EBCB" stop-opacity=".22"/></linearGradient>
+              <linearGradient id="sk-kabus" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A8EBCB" stop-opacity="0"/><stop offset="1" stop-color="#A8EBCB" stop-opacity=".2"/></linearGradient>
+              <linearGradient id="sk-bayang" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05301F" stop-opacity="0"/><stop offset="1" stop-color="#05301F" stop-opacity=".45"/></linearGradient>
               <pattern id="sk-corak" width="28" height="10" patternUnits="userSpaceOnUse"><path d="M14 1L17 5L14 9L11 5Z M0 5H6 M22 5H28" fill="none" stroke="#E9C86F" stroke-width=".9"/></pattern>
 
-              <!-- tingkap/lengkung runcing -->
-              <path id="sk-lengkung" d="M-6 0V-20Q-6 -32 0 -39Q6 -32 6 -20V0Z"/>
+              <!-- bulan sabit: simbol sendiri (simbol asal terpotong di kiri kerana laluannya melepasi viewBox 0..24) -->
+              <symbol id="sk-sabit" viewBox="-2 0 26 24" fill="currentColor" stroke="none"><path d="M14.5 3.5A8.5 8.5 0 1 0 14.5 20.5 10 10 0 1 1 14.5 3.5Z"/><path d="m17.5 5 .7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7Z"/></symbol>
+              <!-- tingkap lengkung runcing (zamrud, bingkai emas) -->
+              <path id="sk-lengkung" d="M-6 0V-20Q-6 -32 0 -39Q6 -32 6 -20V0Z" fill="url(#sk-zamrud-v)" stroke="#C9A24D" stroke-width="1.3"/>
 
               <!-- kubah bawang emas (dasar y=0, lebar 120) -->
               <g id="sk-kubah">
                 <path d="M-60 0C-60 -44 -34 -80 0 -96C34 -80 60 -44 60 0Z" fill="url(#sk-emas)"/>
-                <path d="M0 -96C-12 -70 -22 -36 -25 0M0 -96C-4 -70 -7 -36 -8.5 0M0 -96C4 -70 7 -36 8.5 0M0 -96C12 -70 22 -36 25 0" fill="none" stroke="#6E4C12" stroke-width="1" opacity=".38"/>
-                <path d="M-50 -20C-46 -45 -31 -66 -13 -82" fill="none" stroke="#FFF8DC" stroke-width="3" stroke-linecap="round" opacity=".55"/>
-                <rect x="-63" y="-3" width="126" height="4" rx="2" fill="url(#sk-emas-v)"/>
+                <path d="M0 -96C-12 -70 -22 -36 -25 0M0 -96C-4 -70 -7 -36 -8.5 0M0 -96C4 -70 7 -36 8.5 0M0 -96C12 -70 22 -36 25 0" fill="none" stroke="#6E4C12" stroke-width="1" opacity=".36"/>
+                <path d="M-50 -20C-46 -45 -31 -66 -13 -82" fill="none" stroke="#FFF8DC" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+                <rect x="-63" y="-3" width="126" height="5" rx="2.4" fill="url(#sk-emas-v)"/>
                 <rect x="-1.3" y="-124" width="2.6" height="30" fill="#E9C86F"/>
                 <circle cx="0" cy="-125" r="3.4" fill="#F6E2A3"/>
-                <use href="#i-crescent" x="-9" y="-150" width="18" height="18" style="color:#F6E2A3" transform="rotate(-28 0 -141)"/>
+                <use href="#sk-sabit" x="-10.5" y="-150" width="19.5" height="18" style="color:#F6E2A3" transform="rotate(-28 0 -141)"/>
               </g>
 
-              <!-- menara (dasar y=0, tinggi ~ -250) -->
+              <!-- menara gading (dasar y=0, tinggi ~ -250) -->
               <g id="sk-menara">
-                <path d="M-9.5 0L-7 -152H7L9.5 0Z" fill="url(#sk-zamrud)"/>
-                <path d="M-8.7 -34H8.7M-8.2 -68H8.2M-7.6 -106H7.6" stroke="#E9C86F" stroke-width="1" opacity=".55"/>
+                <path d="M-9.5 0L-7 -152H7L9.5 0Z" fill="url(#sk-gading)"/>
+                <path d="M-8.7 -34H8.7M-8.2 -68H8.2M-7.6 -106H7.6" stroke="#C9A24D" stroke-width="1.1" opacity=".8"/>
                 <rect x="-13" y="-78" width="26" height="5" rx="1.6" fill="url(#sk-emas-v)"/>
-                <path d="M-12 -82H12" stroke="#E9C86F" stroke-width="4" stroke-dasharray="1.3 2.6" opacity=".85"/>
+                <path d="M-12 -82H12" stroke="#C9A24D" stroke-width="4" stroke-dasharray="1.3 2.6"/>
                 <rect x="-12" y="-154" width="24" height="5" rx="1.6" fill="url(#sk-emas-v)"/>
-                <path d="M-11 -158H11" stroke="#E9C86F" stroke-width="4" stroke-dasharray="1.3 2.6" opacity=".85"/>
-                <path d="M-7 -154V-170Q-7 -180 0 -190Q7 -180 7 -170V-154Z" fill="url(#sk-zamrud)"/>
+                <path d="M-11 -158H11" stroke="#C9A24D" stroke-width="4" stroke-dasharray="1.3 2.6"/>
+                <path d="M-7 -154V-170Q-7 -180 0 -190Q7 -180 7 -170V-154Z" fill="url(#sk-gading)"/>
                 <path d="M-8.5 -170C-8.5 -190 -3 -204 0 -222C3 -204 8.5 -190 8.5 -170Z" fill="url(#sk-emas)"/>
                 <rect x="-.8" y="-242" width="1.6" height="22" fill="#E9C86F"/>
-                <use href="#i-crescent" x="-7" y="-258" width="14" height="14" style="color:#F6E2A3" transform="rotate(-28 0 -251)"/>
-                <rect x="-1.5" y="-130" width="3" height="15" rx="1.5" fill="url(#sk-lampu)"/>
-                <rect x="-1.5" y="-98" width="3" height="15" rx="1.5" fill="url(#sk-lampu)" opacity=".85"/>
-                <rect x="-1.5" y="-54" width="3" height="15" rx="1.5" fill="url(#sk-lampu)" opacity=".8"/>
-                <rect x="-1.5" y="-20" width="3" height="14" rx="1.5" fill="url(#sk-lampu)" opacity=".75"/>
+                <use href="#sk-sabit" x="-8.2" y="-258" width="15.2" height="14" style="color:#F6E2A3" transform="rotate(-28 0 -251)"/>
+                <path d="M-2 -112V-126Q-2 -131 0 -134Q2 -131 2 -126V-112Z M-2 -96V-110Q-2 -115 0 -118Q2 -115 2 -110V-96Z M-2 -52V-66Q-2 -71 0 -74Q2 -71 2 -66V-52Z M-2 -20V-34Q-2 -39 0 -42Q2 -39 2 -34V-20Z" fill="#0D5A41"/>
               </g>
 
-              <!-- kubah sisi (dram kecil + kubah) -->
+              <!-- kubah sisi: dram gading + kubah emas -->
               <g id="sk-kubah-sisi">
-                <rect x="-34" y="-30" width="68" height="30" fill="url(#sk-zamrud-v)"/>
-                <use href="#sk-lengkung" fill="url(#sk-lampu)" opacity=".85" transform="translate(-16 -2) scale(.8)"/>
-                <use href="#sk-lengkung" fill="url(#sk-lampu)" opacity=".95" transform="translate(0 -2) scale(.8)"/>
-                <use href="#sk-lengkung" fill="url(#sk-lampu)" opacity=".85" transform="translate(16 -2) scale(.8)"/>
-                <use href="#sk-kubah" transform="translate(0 -30) scale(.56)"/>
+                <rect x="-34" y="-30" width="68" height="30" fill="url(#sk-gading-v)"/>
+                <rect x="-36" y="-32" width="72" height="3.4" rx="1.4" fill="url(#sk-emas-v)"/>
+                <use href="#sk-lengkung" transform="translate(-16 -2) scale(.7)"/>
+                <use href="#sk-lengkung" transform="translate(0 -2) scale(.7)"/>
+                <use href="#sk-lengkung" transform="translate(16 -2) scale(.7)"/>
+                <use href="#sk-kubah" transform="translate(0 -32) scale(.56)"/>
               </g>
 
-              <!-- masjid besar (dasar y=0, berpusat x=0, lebar ~ 700) -->
+              <!-- masjid besar (dasar y=0, berpusat x=0, lebar ~ 700); kubah utama di BELAKANG gerbang -->
               <g id="sk-masjid">
-                <ellipse cx="0" cy="-110" rx="360" ry="190" fill="url(#sk-cahaya)"/>
-                <rect x="-350" y="-18" width="700" height="18" fill="url(#sk-zamrud-v)"/>
-                <rect x="-350" y="-19.5" width="700" height="2.5" fill="url(#sk-emas-v)"/>
-                <rect x="-272" y="-62" width="544" height="46" fill="url(#sk-zamrud-v)"/>
-                <path d="M-272 -64H272" stroke="#E9C86F" stroke-width="3" stroke-dasharray="9 6" opacity=".85"/>
-                <rect x="-272" y="-62" width="544" height="2.6" fill="url(#sk-emas-v)"/>
-                <g fill="url(#sk-lampu)">
-                  <use href="#sk-lengkung" transform="translate(-248 -17) scale(.95)" opacity=".85"/><use href="#sk-lengkung" transform="translate(-222 -17) scale(.95)" opacity=".6"/><use href="#sk-lengkung" transform="translate(-196 -17) scale(.95)" opacity=".9"/>
-                  <use href="#sk-lengkung" transform="translate(-170 -17) scale(.95)" opacity=".65"/><use href="#sk-lengkung" transform="translate(-144 -17) scale(.95)" opacity=".85"/><use href="#sk-lengkung" transform="translate(-118 -17) scale(.95)" opacity=".6"/><use href="#sk-lengkung" transform="translate(-92 -17) scale(.95)" opacity=".85"/>
-                  <use href="#sk-lengkung" transform="translate(92 -17) scale(.95)" opacity=".85"/><use href="#sk-lengkung" transform="translate(118 -17) scale(.95)" opacity=".6"/><use href="#sk-lengkung" transform="translate(144 -17) scale(.95)" opacity=".85"/><use href="#sk-lengkung" transform="translate(170 -17) scale(.95)" opacity=".65"/>
-                  <use href="#sk-lengkung" transform="translate(196 -17) scale(.95)" opacity=".9"/><use href="#sk-lengkung" transform="translate(222 -17) scale(.95)" opacity=".6"/><use href="#sk-lengkung" transform="translate(248 -17) scale(.95)" opacity=".85"/>
-                </g>
-                <use href="#sk-kubah-sisi" transform="translate(-190 -62)"/>
-                <use href="#sk-kubah-sisi" transform="translate(190 -62)"/>
-                <path d="M-70 -18V-112Q-70 -154 0 -182Q70 -154 70 -112V-18Z" fill="url(#sk-zamrud)"/>
-                <path d="M-70 -18V-112Q-70 -154 0 -182Q70 -154 70 -112V-18" fill="none" stroke="url(#sk-emas-v)" stroke-width="3"/>
-                <path d="M-54 -18V-108Q-54 -140 0 -162Q54 -140 54 -108V-18Z" fill="#04251B"/>
-                <path d="M-54 -18V-108Q-54 -140 0 -162Q54 -140 54 -108V-18Z" fill="url(#sk-cahaya)"/>
-                <path d="M-54 -18V-108Q-54 -140 0 -162Q54 -140 54 -108V-18" fill="none" stroke="#E9C86F" stroke-width="1.6" opacity=".8"/>
-                <path d="M-38 -18V-96Q-38 -120 0 -138Q38 -120 38 -96V-18Z" fill="none" stroke="#E9C86F" stroke-width="1.2" opacity=".6"/>
-                <path d="M-22 -18V-78Q-22 -96 0 -108Q22 -96 22 -78V-18Z" fill="url(#sk-lampu)" opacity=".9"/>
-                <rect x="-58" y="-212" width="116" height="34" fill="url(#sk-zamrud-v)"/>
-                <rect x="-62" y="-214" width="124" height="4" rx="2" fill="url(#sk-emas-v)"/>
-                <g fill="url(#sk-lampu)">
-                  <use href="#sk-lengkung" transform="translate(-36 -182) scale(.7)" opacity=".85"/><use href="#sk-lengkung" transform="translate(-18 -182) scale(.7)" opacity=".95"/><use href="#sk-lengkung" transform="translate(0 -182) scale(.7)" opacity=".8"/>
-                  <use href="#sk-lengkung" transform="translate(18 -182) scale(.7)" opacity=".95"/><use href="#sk-lengkung" transform="translate(36 -182) scale(.7)" opacity=".85"/>
-                </g>
-                <use href="#sk-kubah" transform="translate(0 -212) scale(1.0)"/>
-                <use href="#sk-menara" transform="translate(-304 0) scale(1.38)"/>
-                <use href="#sk-menara" transform="translate(304 0) scale(1.38)"/>
-                <use href="#sk-menara" transform="translate(-338 0) scale(.82)" opacity=".92"/>
-                <use href="#sk-menara" transform="translate(338 0) scale(.82)" opacity=".92"/>
+                <ellipse cx="0" cy="-120" rx="380" ry="200" fill="url(#sk-cahaya)"/>
+                <!-- tapak & sayap -->
+                <rect x="-352" y="-16" width="704" height="16" fill="url(#sk-gading-v)"/>
+                <rect x="-352" y="-17.6" width="704" height="3" fill="url(#sk-emas-v)"/>
+                <rect x="-282" y="-58" width="564" height="44" fill="url(#sk-gading-v)"/>
+                <rect x="-282" y="-58" width="564" height="3" fill="url(#sk-emas-v)"/>
+                <path d="M-282 -62H282" stroke="#C9A24D" stroke-width="3.4" stroke-dasharray="8 6"/>
+                <use href="#sk-lengkung" transform="translate(-258 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(-232 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(-206 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(-180 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(-154 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(-128 -15) scale(.82)"/>
+                <use href="#sk-lengkung" transform="translate(128 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(154 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(180 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(206 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(232 -15) scale(.82)"/><use href="#sk-lengkung" transform="translate(258 -15) scale(.82)"/>
+                <use href="#sk-kubah-sisi" transform="translate(-204 -58)"/>
+                <use href="#sk-kubah-sisi" transform="translate(204 -58)"/>
+                <!-- dewan solat tengah -->
+                <rect x="-150" y="-132" width="300" height="116" fill="url(#sk-gading-v)"/>
+                <rect x="-150" y="-132" width="300" height="3.4" fill="url(#sk-emas-v)"/>
+                <path d="M-150 -136H150" stroke="#C9A24D" stroke-width="3.4" stroke-dasharray="8 6"/>
+                <use href="#sk-lengkung" transform="translate(-124 -78) scale(.92)"/><use href="#sk-lengkung" transform="translate(-98 -78) scale(.92)"/>
+                <use href="#sk-lengkung" transform="translate(98 -78) scale(.92)"/><use href="#sk-lengkung" transform="translate(124 -78) scale(.92)"/>
+                <use href="#sk-lengkung" transform="translate(-124 -34) scale(.8)"/><use href="#sk-lengkung" transform="translate(-98 -34) scale(.8)"/>
+                <use href="#sk-lengkung" transform="translate(98 -34) scale(.8)"/><use href="#sk-lengkung" transform="translate(124 -34) scale(.8)"/>
+                <!-- chattri sudut -->
+                <rect x="-156" y="-152" width="16" height="20" fill="url(#sk-gading-v)"/>
+                <rect x="140" y="-152" width="16" height="20" fill="url(#sk-gading-v)"/>
+                <use href="#sk-kubah" transform="translate(-148 -152) scale(.2)"/>
+                <use href="#sk-kubah" transform="translate(148 -152) scale(.2)"/>
+                <!-- dram + kubah utama -->
+                <rect x="-84" y="-184" width="168" height="54" fill="url(#sk-gading)"/>
+                <rect x="-88" y="-187" width="176" height="5" rx="2" fill="url(#sk-emas-v)"/>
+                <use href="#sk-lengkung" transform="translate(-54 -156) scale(.66)"/><use href="#sk-lengkung" transform="translate(-27 -156) scale(.66)"/><use href="#sk-lengkung" transform="translate(0 -156) scale(.66)"/><use href="#sk-lengkung" transform="translate(27 -156) scale(.66)"/><use href="#sk-lengkung" transform="translate(54 -156) scale(.66)"/>
+                <use href="#sk-kubah" transform="translate(0 -186) scale(1.36)"/>
+                <!-- gerbang (pishtaq) di hadapan -->
+                <rect x="-66" y="-152" width="132" height="136" fill="url(#sk-gading)"/>
+                <rect x="-66" y="-152" width="132" height="4" fill="url(#sk-emas-v)"/>
+                <rect x="-66" y="-152" width="3" height="136" fill="#C9A24D" opacity=".7"/><rect x="63" y="-152" width="3" height="136" fill="#C9A24D" opacity=".7"/>
+                <path d="M-48 -16V-96Q-48 -126 0 -146Q48 -126 48 -96V-16Z" fill="#06362A"/>
+                <path d="M-48 -16V-96Q-48 -126 0 -146Q48 -126 48 -96V-16Z" fill="url(#sk-cahaya)"/>
+                <path d="M-48 -16V-96Q-48 -126 0 -146Q48 -126 48 -96V-16" fill="none" stroke="#C9A24D" stroke-width="2"/>
+                <path d="M-34 -16V-88Q-34 -110 0 -126Q34 -110 34 -88V-16" fill="none" stroke="#E9C86F" stroke-width="1.2" opacity=".75"/>
+                <path d="M-20 -16V-70Q-20 -86 0 -96Q20 -86 20 -70V-16Z" fill="url(#sk-lampu)"/>
+                <path d="M-60 -148V-26M60 -148V-26" stroke="#0D5A41" stroke-width="2.4" stroke-dasharray="3 3" opacity=".5"/>
+                <!-- bayang kaki -->
+                <rect x="-352" y="-16" width="704" height="16" fill="url(#sk-bayang)"/>
+                <!-- menara -->
+                <use href="#sk-menara" transform="translate(-306 0) scale(1.32)"/>
+                <use href="#sk-menara" transform="translate(306 0) scale(1.32)"/>
+                <use href="#sk-menara" transform="translate(-340 0) scale(.8)"/>
+                <use href="#sk-menara" transform="translate(340 0) scale(.8)"/>
               </g>
             </defs>
 
             <!-- langit: bulan sabit bercahaya + bintang -->
             <circle class="hero-skyline-cahaya-bulan" cx="1262" cy="74" r="70" fill="url(#sk-bulan-cahaya)"/>
-            <use class="hero-skyline-moon" href="#i-crescent" x="1232" y="44" width="60" height="60" style="color:#FFF1BF"/>
+            <use class="hero-skyline-moon" href="#sk-sabit" x="1227" y="44" width="65" height="60" style="color:#FFF1BF"/>
             <g class="hero-skyline-stars" fill="#FFF1BF">
               <circle cx="420" cy="40" r="1.8"/><circle cx="560" cy="68" r="1.4"/><circle cx="700" cy="34" r="1.7"/><circle cx="800" cy="84" r="1.3"/>
               <circle cx="1100" cy="40" r="1.6"/><circle cx="1470" cy="60" r="1.5"/><circle cx="1620" cy="36" r="1.8"/><circle cx="1760" cy="70" r="1.4"/><circle cx="1880" cy="44" r="1.6"/>
             </g>
 
-            <!-- lapisan jauh (kabur & lutsinar) -->
-            <g opacity=".2">
+            <!-- lapisan jauh & tengah (kabur: gading lutsinar di atas latar zamrud) -->
+            <g opacity=".16">
               <use href="#sk-masjid" transform="translate(250 250) scale(.3)"/>
               <use href="#sk-masjid" transform="translate(1750 250) scale(-.3 .3)"/>
               <use href="#sk-menara" transform="translate(90 250) scale(.6)"/>
               <use href="#sk-menara" transform="translate(1910 250) scale(.6)"/>
             </g>
-            <!-- lapisan tengah -->
-            <g opacity=".6">
+            <g opacity=".42">
               <use href="#sk-masjid" transform="translate(560 250) scale(.4)"/>
               <use href="#sk-masjid" transform="translate(1440 250) scale(-.4 .4)"/>
             </g>
             <!-- masjid utama -->
-            <use href="#sk-masjid" transform="translate(1000 250) scale(.6)"/>
+            <use href="#sk-masjid" transform="translate(1000 250) scale(.58)"/>
 
             <rect x="0" y="196" width="2000" height="54" fill="url(#sk-kabus)"/>
             <rect x="0" y="236" width="2000" height="14" fill="#03221A"/>
