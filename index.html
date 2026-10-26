@@ -4440,7 +4440,9 @@
   .kelas-gate-hashtag:empty { display: none; }
   .hero-welcome { padding: 12px 32px 13px; border-radius: 30px; }
   .hero-welcome-arab {
-    padding: 0 8px; font-size: clamp(2.4rem, 4.8vw, 3.4rem); line-height: 1.55;
+    /* kotak MESTI cukup tinggi untuk baris di atas/bawah huruf: latar "background-clip:text" & topeng hanya dilukis DALAM kotak, jadi
+       harakat yang melepasi kotak terpotong (punca baris hilang). Ruang tambahan diimbangi margin negatif supaya susun atur tidak berubah. */
+    padding: .6em 14px .32em; margin: -.38em 0 -.2em; font-size: clamp(2.4rem, 4.8vw, 3.4rem); line-height: 1.5;
     /* emas berkilat: kecerunan BERKALA (hujung kiri = hujung kanan) supaya sapuan kilat boleh berulang tanpa lompatan */
     /* warna lebih cerah + sengaja TEBAL (Amiri 700) + garis luar halus supaya baris/harakat nipis jelas kelihatan di atas hijau tua */
     background: linear-gradient(105deg, #F4DE9A 0%, #E9C96E 16.6%, #FFF1C2 33.3%, #FFFFFF 45%, #FFFBEA 50%, #FFFFFF 55%, #F4DE9A 66.7%, #E9C96E 83.3%, #FFF1C2 100%); background-size: 300% 100%;
