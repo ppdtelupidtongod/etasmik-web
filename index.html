@@ -4781,8 +4781,37 @@
   .modul-nav button i { width: 1.1em; text-align: center; color: var(--k-redup); transition: color .2s ease; }
   .modul-nav button:hover { background: var(--k-kertas2); }
   .modul-nav button:focus-visible { outline: 2px solid var(--k-emas); outline-offset: 1px; }
-  .modul-nav button.aktif { color: #fff; background: linear-gradient(180deg, #14573F, #0C3B2B); box-shadow: 0 10px 18px -12px rgba(10,50,36,.9), inset 0 1px 0 rgba(255,255,255,.18); }
-  .modul-nav button.aktif i { color: var(--k-emas-t); }
+  .modul-nav button { position: relative; overflow: hidden; transition: background .22s ease, color .22s ease, box-shadow .3s ease, transform .22s var(--spring, cubic-bezier(.34,1.56,.64,1)); }
+  .modul-nav button i { display: inline-block; transition: transform .25s var(--spring, cubic-bezier(.34,1.56,.64,1)), color .2s ease, filter .3s ease; }
+  .modul-nav button:hover i { transform: translateY(-1px) scale(1.14); }
+  .modul-nav button:active { transform: scale(.94); }
+  /* tab aktif: zamrud pekat + GLOW KEEMASAN (gelang emas + cahaya lembut) */
+  .modul-nav button.aktif {
+    color: #fff; background: linear-gradient(180deg, #14573F, #0A3526);
+    box-shadow: 0 0 0 1.5px #E6CC85, 0 0 16px rgba(230,204,133,.55), 0 0 34px rgba(230,204,133,.26), 0 12px 20px -12px rgba(10,50,36,.9), inset 0 1px 0 rgba(255,255,255,.22);
+  }
+  .modul-nav button.aktif i { color: #F6DE9A; filter: drop-shadow(0 0 5px rgba(246,222,154,.85)); }
+  /* bila ditekan / diaktifkan: denyut cahaya emas + sapuan kilat + ikon bergerak */
+  .modul-nav button.denyut { animation: navGlow .95s cubic-bezier(.22,1,.36,1); }
+  .modul-nav button.denyut::after { content: ""; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 45%; background: linear-gradient(100deg, transparent, rgba(255,243,200,.75), transparent); transform: skewX(-18deg); animation: navSapu .8s ease-out .05s both; pointer-events: none; }
+  @keyframes navGlow {
+    0%   { box-shadow: 0 0 0 0 rgba(230,204,133,.95), 0 0 6px rgba(230,204,133,.3), 0 12px 20px -12px rgba(10,50,36,.9), inset 0 1px 0 rgba(255,255,255,.22); }
+    35%  { box-shadow: 0 0 0 3px #F3DC93, 0 0 30px rgba(243,220,147,.95), 0 0 58px rgba(230,204,133,.55), 0 12px 20px -12px rgba(10,50,36,.9), inset 0 1px 0 rgba(255,255,255,.3); }
+    100% { box-shadow: 0 0 0 1.5px #E6CC85, 0 0 16px rgba(230,204,133,.55), 0 0 34px rgba(230,204,133,.26), 0 12px 20px -12px rgba(10,50,36,.9), inset 0 1px 0 rgba(255,255,255,.22); }
+  }
+  @keyframes navSapu { from { left: -60%; } to { left: 130%; } }
+  .modul-nav button.denyut i { animation: ikonLompat .7s cubic-bezier(.34,1.56,.64,1); }
+  .modul-nav button.denyut[data-nav="murid"] i { animation-name: ikonLetup; }
+  .modul-nav button.denyut[data-nav="tasmik"] i { animation-name: ikonBuka; }
+  .modul-nav button.denyut[data-nav="dashboard"] i { animation-name: ikonPusing; animation-duration: .85s; }
+  .modul-nav button.denyut[data-nav="perkasa"] i { animation-name: ikonDenyut; }
+  .modul-nav button.denyut[data-nav="transkrip"] i { animation-name: ikonGoyang; animation-duration: .8s; }
+  @keyframes ikonLompat { 0% { transform: translateY(0); } 35% { transform: translateY(-7px) scale(1.2); } 65% { transform: translateY(1px) scale(.95); } 100% { transform: none; } }
+  @keyframes ikonLetup { 0% { transform: scale(1); } 40% { transform: scale(1.5) rotate(-12deg); } 70% { transform: scale(.9) rotate(5deg); } 100% { transform: none; } }
+  @keyframes ikonBuka { 0% { transform: scaleX(1); } 35% { transform: scaleX(.05) scale(1.15); } 70% { transform: scaleX(1.25); } 100% { transform: none; } }
+  @keyframes ikonPusing { 0% { transform: rotate(0) scale(1); } 50% { transform: rotate(200deg) scale(1.3); } 100% { transform: rotate(360deg) scale(1); } }
+  @keyframes ikonDenyut { 0% { transform: scale(1); } 30% { transform: scale(1.55); } 55% { transform: scale(.85); } 80% { transform: scale(1.12); } 100% { transform: none; } }
+  @keyframes ikonGoyang { 0% { transform: rotate(0); } 22% { transform: rotate(-18deg) scale(1.2); } 48% { transform: rotate(14deg) scale(1.2); } 72% { transform: rotate(-7deg); } 100% { transform: none; } }
   @media (max-width: 767px) { .modul-nav { justify-content: flex-start; margin: 10px 8px 2px; } .modul-nav button { padding: 9px 13px; font-size: .86rem; } }
 
   /* ---------- 4. tajuk halaman ---------- */
@@ -4942,25 +4971,18 @@
   .kelas-aktif-bar .btn-tukar-kelas:hover { border-color: var(--green-2); background: var(--k-kertas2); }
 
   /* ---------- 8. SIJIL / TRANSKRIP: borang + panduan ---------- */
-  .sijil-susun { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start; }
-  .sijil-panduan { padding: 24px 24px 22px; border-radius: 22px; background: linear-gradient(180deg, #FFFFFF, #FBF7EA); border: 1px solid var(--k-garis); box-shadow: var(--k-bayang); position: relative; overflow: hidden; }
-  .sijil-panduan::before { content: ""; position: absolute; left: 24px; top: 0; width: 70px; height: 4px; border-radius: 0 0 4px 4px; background: linear-gradient(90deg, #E6CC85, #B8892F); }
-  .sijil-panduan h6 { margin: 6px 0 14px; font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--green-1); }
-  .sijil-panduan ol { margin: 0 0 18px; padding: 0; list-style: none; counter-reset: langkah; display: grid; gap: 12px; }
-  .sijil-panduan li { counter-increment: langkah; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; font-size: .95rem; line-height: 1.45; color: var(--k-teks); }
-  .sijil-panduan li::before { content: counter(langkah); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; font-family: var(--font-display); font-weight: 800; color: #fff; background: var(--green-1); }
-  .sijil-panduan li b { display: block; color: var(--green-1); }
-  .sijil-contoh { display: block; width: 100%; height: auto; border-radius: 12px; }
-  @media (max-width: 991px) { .sijil-susun { grid-template-columns: minmax(0, 1fr); } }
+  .sijil-susun { max-width: 760px; }
   .kad-pilihan { background: #fff; border: 1px solid var(--k-garis); border-radius: 22px; box-shadow: var(--k-bayang); padding: 4px 24px 22px; }
 
   /* ---------- 9. cetakan: elemen skrin sahaja disembunyikan ---------- */
   @media print {
-    .modul-nav, .sijil-panduan { display: none !important; }
+    .modul-nav { display: none !important; }
     .main-content > .top-view { max-width: none !important; }
-    .sijil-susun { display: block !important; }
   }
-  @media (prefers-reduced-motion: reduce) { .modul-nav button, #view-murid .tahun-grid-enrolmen .tahun-kad { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) {
+    .modul-nav button, .modul-nav button i, #view-murid .tahun-grid-enrolmen .tahun-kad { transition: none !important; }
+    .modul-nav button.denyut, .modul-nav button.denyut i, .modul-nav button.denyut::after { animation: none !important; }
+  }
 
   /* =====================================================================
      v23 - SENARAI MURID (Rekod Bacaan & Laporan) = LEJAR SATU LAJUR yang premium (menggantikan kad dua lajur yang mengelirukan: nombor 1,3,5 turun di kiri).
@@ -5940,8 +5962,6 @@
       <section id="view-transkrip" class="top-view d-none">
         <div class="p-3">
           <h5 class="fw-bold mb-3 section-title"><i class="fa-solid fa-scroll"></i> Sijil / Transkrip</h5>
-          <p class="text-muted small">Sijil ini menunjukkan tahap bacaan terkini murid (pencapaian akhir) - sesuai diserahkan kepada ibu bapa. Boleh dicetak atau disimpan sebagai PDF.</p>
-
           <div class="sijil-susun">
           <div class="sijil-kiri">
           <div class="kad-pilihan mb-3" id="pemilihTranskrip">
@@ -5961,42 +5981,21 @@
               </div>
             </div>
             <div class="ft-seksyen ft-akhir">
-              <div class="ft-tajuk"><span class="ft-no">2</span> Sijil untuk siapa? <small>seluruh kelas atau seorang murid</small></div>
-              <button type="button" class="btn ft-seterusnya w-100 mb-2" id="btnJanaSijilKelas" disabled>
-                <i class="fa-solid fa-users"></i> Jana Sijil Semua Murid (Kelas Ini)
-              </button>
-              <div class="pemisah-atau"><span>atau pilih seorang murid</span></div>
+              <div class="ft-tajuk"><span class="ft-no">2</span> Pilih murid</div>
               <select class="form-select form-select-lg" id="pilihMuridTranskrip" disabled aria-label="Murid">
                 <option value="">-- Pilih Tahun &amp; Kelas dahulu --</option>
               </select>
+              <div class="pemisah-atau"><span>atau sekali gus untuk seluruh kelas</span></div>
+              <button type="button" class="btn ft-seterusnya w-100" id="btnJanaSijilKelas" disabled>
+                <i class="fa-solid fa-users"></i> Jana Sijil Semua Murid (Kelas Ini)
+              </button>
             </div>
           </div>
           <button class="btn btn-success btn-lg w-100 mb-3 py-3 d-none shine-hover" id="btnCetakTranskrip">
             <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
           </button>
           </div>
-          <aside class="sijil-panduan" aria-label="Panduan ringkas">
-            <h6>Panduan ringkas</h6>
-            <ol>
-              <li><span><b>Pilih kelas</b>Tahun dahulu, kemudian kelas.</span></li>
-              <li><span><b>Pilih sijil untuk siapa</b>Seluruh kelas sekali gus, atau seorang murid sahaja.</span></li>
-              <li><span><b>Cetak atau simpan PDF</b>Sijil terus tersedia untuk diserahkan kepada ibu bapa.</span></li>
-            </ol>
-            <svg class="sijil-contoh" viewBox="0 0 320 214" role="img" aria-label="Contoh susun atur sijil">
-              <rect x="1" y="1" width="318" height="212" rx="10" fill="#FFFDF6" stroke="#D3CAAB"/>
-              <rect x="12" y="12" width="296" height="190" rx="6" fill="none" stroke="#B8892F" stroke-width="2"/>
-              <rect x="18" y="18" width="284" height="178" rx="4" fill="none" stroke="#E6CC85" stroke-width="1"/>
-              <circle cx="160" cy="52" r="15" fill="none" stroke="#B8892F" stroke-width="1.6"/>
-              <path d="M152 52h16M160 44v16" stroke="#B8892F" stroke-width="1.4"/>
-              <rect x="94" y="80" width="132" height="8" rx="4" fill="#0F4A36"/>
-              <rect x="116" y="96" width="88" height="5" rx="2.5" fill="#CFC6A8"/>
-              <rect x="60" y="116" width="200" height="6" rx="3" fill="#E4DDC7"/>
-              <rect x="80" y="130" width="160" height="6" rx="3" fill="#E4DDC7"/>
-              <rect x="40" y="166" width="70" height="4" rx="2" fill="#CFC6A8"/>
-              <rect x="210" y="166" width="70" height="4" rx="2" fill="#CFC6A8"/>
-              <path d="M146 150l14 -12 14 12v18l-14 -8 -14 8z" fill="#B8892F" opacity=".85"/>
-            </svg>
-          </aside>
+
           </div>
 
           <!-- Kandungan sijil (satu atau lebih .sijil-bingkai) dibina
@@ -7814,9 +7813,20 @@ const PETA_VIEW = {
   ppd:        { kontena: 'view-ppd' }
 };
 
+/** Denyut cahaya emas + ikon bergerak pada tab jalan pintas modul (dimulakan semula setiap kali; kelas dibuang selepas selesai). */
+function denyutNav_(b) {
+  b.classList.remove('denyut');
+  void b.offsetWidth;                               // paksa reflow supaya animasi bermula semula
+  b.classList.add('denyut');
+  clearTimeout(b._penamatDenyut);
+  b._penamatDenyut = setTimeout(function () { b.classList.remove('denyut'); }, 1100);
+}
 document.getElementById('modulNav').addEventListener('click', function (e) {
   const b = e.target.closest('[data-nav]');
-  if (b) navigasi(b.dataset.nav);
+  if (!b) return;
+  const sudahAktif = b.classList.contains('aktif');
+  navigasi(b.dataset.nav);
+  if (sudahAktif) denyutNav_(b);                    // tekan tab yang sedang aktif: tetap beri maklum balas
 });
 
 function navigasi(view) {
@@ -7850,9 +7860,15 @@ function navigasi(view) {
   modulNav.classList.toggle('d-none', view === 'menu' || view === 'ppd');
   const kunciNav = view === 'laporan' ? 'dashboard' : view;
   modulNav.querySelectorAll('[data-nav]').forEach(function (b) {
-    const aktif = b.dataset.nav === kunciNav;
+    const aktif = b.dataset.nav === kunciNav, dahulu = b.classList.contains('aktif');
     b.classList.toggle('aktif', aktif);
-    if (aktif) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    if (aktif) b.setAttribute('aria-current', 'page'); else { b.removeAttribute('aria-current'); b.classList.remove('denyut'); }
+    if (aktif && !dahulu) {
+      denyutNav_(b);
+      // telefon: bar boleh disorong - bawa tab aktif ke tengah
+      const kiri = b.offsetLeft - (modulNav.clientWidth - b.offsetWidth) / 2;
+      if (modulNav.scrollWidth > modulNav.clientWidth && typeof modulNav.scrollTo === 'function') modulNav.scrollTo({ left: Math.max(0, kiri), behavior: 'smooth' });
+    }
   });
 
   // Tajuk pada topbar - ikut modul semasa (senang orientasi pengguna)
