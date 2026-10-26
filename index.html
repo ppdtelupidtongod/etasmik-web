@@ -3841,6 +3841,7 @@
   .enrol-carian input { padding-left: 40px; height: 44px; border-radius: 999px; border: 1px solid rgba(22,95,68,.2); background: rgba(255,255,255,.9); box-shadow: inset 0 1px 3px rgba(13,41,31,.06); font-weight: 600; }
   .enrol-carian input:focus { border-color: var(--aksen); box-shadow: 0 0 0 3px rgba(201,162,77,.25); }
 
+  .roster-cari input, #carianMuridTasmik, #carianMuridLaporan, #carianPerkasa { background-color: #fff; }
   #senaraiMuridCard { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
   @media (min-width: 1000px) { #senaraiMuridCard { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; } }
   #senaraiMuridCard .murid-item { margin-bottom: 0; padding: 10px 14px; border-radius: 18px; }
@@ -4245,9 +4246,6 @@
   #rosterMuridTasmik .roster-row:hover, #rosterMuridLaporan .roster-row:hover { transform: translateY(-1px); border-color: rgba(14,64,46,.42); box-shadow: 0 12px 22px -16px rgba(10,50,36,.6); }
   #rosterMuridTasmik .roster-row.active { background: #EEF6EA; border-color: var(--green-2); box-shadow: 0 0 0 2px rgba(22,95,68,.25); }
   #rosterMuridTasmik .roster-bil { width: auto; min-width: 20px; height: auto; background: transparent; color: var(--ink-faint); font-family: var(--font-display); font-size: .9rem; font-weight: 700; }
-  .roster-avatar, .chip-avatar { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: #fff; background: linear-gradient(150deg, #6C8E83, #3E5F54); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 4px 8px -4px rgba(10,50,36,.5); }
-  .roster-avatar.l, .chip-avatar.l { background: linear-gradient(150deg, #2F8F72, #14503C); }
-  .roster-avatar.p, .chip-avatar.p { background: linear-gradient(150deg, #C7627A, #8C2D45); }
   #rosterMuridTasmik .roster-nama, #rosterMuridLaporan .roster-nama { font-size: 1rem; font-weight: 800; }
   #rosterMuridTasmik .roster-meta { gap: 10px; margin-top: 5px; }
   .tangga-mini { display: inline-flex; align-items: center; gap: 3px; }
@@ -4327,7 +4325,6 @@
     .rr-angka b { font-size: 2rem; }
     .rr-nota { font-size: 1.2rem; }
     #rosterMuridTasmik .roster-bil { display: none; }
-    .roster-avatar { width: 38px; height: 38px; }
     .btn-traffic small { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .rr-bar i, .kat-chip, .roster-row { transition: none !important; } }
@@ -4739,7 +4736,232 @@
   .hero-skyline-stars circle:nth-child(6) { animation-delay: 3s; }
   .hero-skyline-stars circle:nth-child(7) { animation-delay: .9s; }
   .hero-skyline-stars circle:nth-child(8) { animation-delay: 2.1s; }
-  @media (prefers-reduced-motion: reduce) { .hero-skyline-cahaya-bulan { animation: none; } .hero-skyline-stars circle { animation: none; opacity: .75; } }</style>
+  @media (prefers-reduced-motion: reduce) { .hero-skyline-cahaya-bulan { animation: none; } .hero-skyline-stars circle { animation: none; opacity: .75; } }
+
+  /* =====================================================================
+     v22 - REKA BENTUK DALAMAN PREMIUM ("kertas gading & zamrud"): satu bahasa reka bentuk untuk SEMUA skrin dalaman (selain menu utama & Konsol PPD).
+       - bekas berpusat (maks 1240px), bar atas dengan butang "Menu", jalan pintas modul (#modulNav), tajuk halaman besar, kad kertas bergaris halus
+       - Enrolmen: kepala ringkas bergading + lejar statistik; kad tahun berkertas (jalur warna nipis, bukan pelangi); senarai murid gaya lejar
+       - Rekod Bacaan: cincin tahap (8 segmen) menggantikan avatar huruf pertama; ikon jantina kecil
+       - Sijil: dua lajur (borang + panduan); Papan Pemuka: kad angka bersih
+     Disengajakan TIDAK memakai gradien kilat di merata tempat; hanya emas halus pada butang utama, tab angka & garis.
+  ===================================================================== */
+  #appShell {
+    --k-latar: #F6F3E8; --k-kertas: #FFFFFF; --k-kertas2: #FBF8EE; --k-garis: #E4DDC7; --k-garis2: #D3CAAB;
+    --k-teks: #14261F; --k-redup: #5B6B63; --k-emas: #B8892F; --k-emas-t: #E6CC85;
+    --k-bayang: inset 0 1px 0 #fff, 0 14px 30px -24px rgba(14,64,46,.5), 0 2px 6px -3px rgba(14,64,46,.12);
+  }
+
+  /* ---------- 1. bekas berpusat ---------- */
+  .main-content > .top-view:not(#view-menu):not(#view-ppd) { max-width: 1240px; margin-left: auto; margin-right: auto; }
+
+  /* ---------- 2. bar atas: butang "Menu" berteks ---------- */
+  #appShell .app-topbar .btn-back { width: auto; height: 40px; padding: 0 16px 0 13px; gap: 8px; font-size: .88rem; font-weight: 700; letter-spacing: .01em; }
+  #appShell .app-topbar .btn-back-teks { line-height: 1; }
+  #appShell .app-topbar #topbarTajuk { font-family: var(--font-display); font-size: 1.12rem; font-weight: 800; letter-spacing: .01em; }
+  @media (max-width: 575px) {
+    #appShell .app-topbar .btn-back { width: 40px; padding: 0; justify-content: center; }
+    #appShell .app-topbar .btn-back-teks { display: none; }
+  }
+
+  /* ---------- 3. jalan pintas modul (sentiasa kelihatan pada skrin dalaman) ---------- */
+  .modul-nav {
+    display: flex; justify-content: center; gap: 4px; overflow-x: auto; scrollbar-width: none;
+    max-width: 1240px; margin: 14px auto 4px; padding: 5px;
+    background: rgba(255,255,255,.78); border: 1px solid var(--k-garis); border-radius: 18px;
+    box-shadow: 0 12px 26px -22px rgba(14,64,46,.6), inset 0 1px 0 #fff;
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+  .modul-nav::-webkit-scrollbar { display: none; }
+  .modul-nav button {
+    flex: none; display: inline-flex; align-items: center; gap: 9px; padding: 10px 17px; border: 0; border-radius: 13px; background: transparent;
+    color: var(--k-teks); font: inherit; font-size: .92rem; font-weight: 700; white-space: nowrap; cursor: pointer;
+    transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .modul-nav button i { width: 1.1em; text-align: center; color: var(--k-redup); transition: color .2s ease; }
+  .modul-nav button:hover { background: var(--k-kertas2); }
+  .modul-nav button:focus-visible { outline: 2px solid var(--k-emas); outline-offset: 1px; }
+  .modul-nav button.aktif { color: #fff; background: linear-gradient(180deg, #14573F, #0C3B2B); box-shadow: 0 10px 18px -12px rgba(10,50,36,.9), inset 0 1px 0 rgba(255,255,255,.18); }
+  .modul-nav button.aktif i { color: var(--k-emas-t); }
+  @media (max-width: 767px) { .modul-nav { justify-content: flex-start; margin: 10px 8px 2px; } .modul-nav button { padding: 9px 13px; font-size: .86rem; } }
+
+  /* ---------- 4. tajuk halaman ---------- */
+  .main-content h5.section-title {
+    display: flex; align-items: center; gap: 14px; margin: 18px 0 12px !important;
+    font-family: var(--font-display); font-size: clamp(1.55rem, 2.6vw, 2.1rem); font-weight: 800; line-height: 1.15; color: var(--green-1);
+  }
+  .main-content h5.section-title::before, .main-content h5.section-title::after { display: none; }
+  .main-content h5.section-title > i {
+    flex: none; display: grid; place-items: center; width: 46px; height: 46px; margin: 0; border-radius: 14px; font-size: 1.1rem; color: var(--k-emas-t);
+    background: linear-gradient(160deg, #14573F, #0B3A2A); box-shadow: 0 10px 18px -12px rgba(10,50,36,.8), inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .main-content .section-title + p.text-muted.small { margin-top: -2px; }
+  .main-content .top-view p.text-muted.small { max-width: 74ch; margin-bottom: 18px; font-size: 1rem; line-height: 1.55; color: var(--k-redup) !important; }
+
+  /* ---------- 5. kad, borang & butang ---------- */
+  .main-content .card { background: var(--k-kertas); border: 1px solid var(--k-garis); border-radius: 20px; box-shadow: var(--k-bayang); overflow: hidden; }
+  .main-content .card-header {
+    display: flex; align-items: center; gap: 10px; padding: 16px 22px; font-size: 1.02rem; font-weight: 800; letter-spacing: 0; color: var(--green-1);
+    background: linear-gradient(180deg, #FFFDF6, #FBF7EA); border-bottom: 1px solid var(--k-garis) !important;
+  }
+  .main-content .card-header::before { display: none; }
+  .main-content .card-header > i, .main-content .card-header span > i { color: var(--k-emas); }
+  .main-content .card-body { padding: 22px; }
+  .main-content .form-control, .main-content .form-select { min-height: 46px; font-size: 1rem; border-radius: 12px; border: 1.5px solid var(--k-garis2); background-color: #fff; box-shadow: none; }
+  .main-content .form-control:focus, .main-content .form-select:focus { border-color: var(--green-2); box-shadow: 0 0 0 4px rgba(31,124,91,.14); }
+  .main-content .form-control:disabled, .main-content .form-select:disabled { background-color: #F2EFE3; color: #8A958F; }
+  .main-content .btn { border-radius: 12px; font-weight: 700; }
+  .main-content .btn-success { border: 0; background: linear-gradient(180deg, #18694F, #0E4A36); box-shadow: 0 12px 22px -14px rgba(10,60,43,.9), inset 0 1px 0 rgba(255,255,255,.2); }
+  .main-content .btn-success:hover { background: linear-gradient(180deg, #1C7557, #115240); }
+  .module-subtabs { max-width: 440px; margin: 12px 16px 0; justify-content: flex-start; border-radius: 16px; background: rgba(255,255,255,.78); border: 1px solid var(--k-garis); box-shadow: inset 0 1px 0 #fff; }
+  .main-content .stat-card { background: #fff !important; border: 1px solid var(--k-garis); border-left: 4px solid var(--green-2); border-radius: 18px; box-shadow: var(--k-bayang); text-align: left; padding: 18px 22px; }
+  .main-content .stat-card .stat-value { font-family: var(--font-display); font-size: clamp(1.9rem, 3.4vw, 2.6rem); font-weight: 800; line-height: 1.05; color: var(--green-1); }
+  .main-content .stat-card .stat-label { margin-top: 4px; font-size: .74rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--k-redup); }
+
+  /* ---------- 6. ENROLMEN: kepala bergading + lejar statistik ---------- */
+  #view-murid .enrol-hero {
+    display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; align-items: center; position: relative; overflow: hidden;
+    padding: 30px 34px; border-radius: 24px; color: var(--k-teks); background: linear-gradient(180deg, #FFFFFF, #FCF9EF); border: 1px solid var(--k-garis); box-shadow: var(--k-bayang);
+  }
+  #view-murid .enrol-hero::before { content: ""; position: absolute; left: 34px; top: 0; right: auto; width: 88px; height: 4px; border-radius: 0 0 4px 4px; background: linear-gradient(90deg, #E6CC85, #B8892F); opacity: 1; }
+  #view-murid .enrol-hero-corak { display: none; }
+  #view-murid .enrol-jenama { margin-bottom: 18px; gap: 14px; }
+  #view-murid .enrol-jenama-nama { font-size: 1.05rem; color: var(--green-1); }
+  #view-murid .enrol-jenama-moto { color: var(--k-redup); letter-spacing: .08em; }
+  #view-murid .enrol-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; box-shadow: none; font-size: .72rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--k-emas); }
+  #view-murid .enrol-tajuk { margin: 8px 0 6px; font-size: clamp(1.75rem, 3.2vw, 2.45rem); color: var(--green-1); text-shadow: none; }
+  #view-murid .enrol-sub { max-width: 520px; font-size: 1rem; color: var(--k-redup); }
+  #view-murid .enrol-statistik { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; position: relative; z-index: 1; border-left: 1px solid var(--k-garis); }
+  #view-murid .enrol-stat {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 14px 22px; border: 0; border-radius: 0; background: none; box-shadow: none;
+    border-bottom: 1px solid var(--k-garis); color: var(--k-teks);
+  }
+  #view-murid .enrol-stat:nth-child(odd) { border-right: 1px solid var(--k-garis); }
+  #view-murid .enrol-stat:nth-last-child(-n+2) { border-bottom: 0; }
+  #view-murid .enrol-stat i { width: auto; height: auto; margin: 0 0 2px; border-radius: 0; background: none; font-size: .95rem; color: var(--k-emas); }
+  #view-murid .enrol-stat b { font-size: 2.1rem; font-weight: 800; color: var(--green-1); }
+  #view-murid .enrol-stat span { font-size: .7rem; font-weight: 800; letter-spacing: .12em; color: var(--k-redup); }
+  #view-murid .enrol-tindakan { margin: 18px 0 14px; gap: 10px; }
+  #view-murid .btn-enrol { height: 46px; padding: 0 20px; border-radius: 13px; font-size: .95rem; font-weight: 700; background: #fff; color: var(--green-1); border: 1.5px solid var(--k-garis2); box-shadow: none; }
+  #view-murid .btn-enrol:hover { border-color: var(--green-2); box-shadow: 0 10px 18px -14px rgba(14,64,46,.6); transform: translateY(-1px); }
+  #view-murid .btn-enrol.utama { color: #fff; border-color: transparent; background: linear-gradient(180deg, #18694F, #0E4A36); box-shadow: 0 12px 22px -14px rgba(10,60,43,.9), inset 0 1px 0 rgba(255,255,255,.2); }
+  #view-murid .btn-enrol.emas { color: #6A4A0A; background: #FBF1CF; border-color: #E1C877; box-shadow: none; }
+  #view-murid .enrol-petua { border-radius: 14px; background: #FFF9E6; border: 1px solid #EBD79B; color: #5E4710; }
+
+  /* kad tahun: kertas dengan jalur warna nipis di atas + tab angka */
+  #view-murid .tahun-grid-enrolmen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 4px; }
+  @media (max-width: 1099px) { #view-murid .tahun-grid-enrolmen { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 699px) { #view-murid .tahun-grid-enrolmen { grid-template-columns: minmax(0, 1fr); } #view-murid .enrol-hero { grid-template-columns: minmax(0, 1fr); padding: 24px 22px; } #view-murid .enrol-statistik { border-left: 0; border-top: 1px solid var(--k-garis); } }
+  #view-murid .tahun-grid-enrolmen .tahun-kad {
+    position: relative; overflow: hidden; border-radius: 20px; color: var(--k-teks); background: #fff; border: 1px solid var(--k-garis); box-shadow: var(--k-bayang);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  #view-murid .tahun-grid-enrolmen .tahun-kad::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--w1); }
+  #view-murid .tahun-grid-enrolmen .tahun-kad::after { display: none; }
+  #view-murid .tahun-grid-enrolmen .tahun-kad, #view-murid .tahun-grid-enrolmen .tahun-kelas-senarai { background: #fff; background-image: none; }
+  #view-murid .tahun-grid-enrolmen .tahun-kad:hover { transform: translateY(-3px); border-color: var(--w1); box-shadow: inset 0 1px 0 #fff, 0 20px 34px -24px rgba(14,64,46,.6); }
+  #view-murid .tahun-grid-enrolmen .tahun-kad-kepala { display: flex; align-items: center; gap: 14px; padding: 20px 20px 8px; background: none; color: var(--k-teks); box-shadow: none; border: 0; }
+  #view-murid .tahun-grid-enrolmen .tahun-no { width: 46px; height: 46px; border-radius: 14px; font-size: 1.5rem; color: #fff; background: var(--w2); box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
+  #view-murid .tahun-grid-enrolmen .tahun-info b { font-size: 1.2rem; color: var(--green-1); }
+  #view-murid .tahun-grid-enrolmen .tahun-info small { font-size: .82rem; color: var(--k-redup); opacity: 1; }
+  #view-murid .tahun-grid-enrolmen .tahun-kelas-senarai { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 8px 14px 16px; }
+  #view-murid .tahun-grid-enrolmen .kelas-gate-btn {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "nama bil chev"; align-items: center; column-gap: 12px; text-align: left;
+    min-height: 62px; padding: 10px 14px; border-radius: 14px; background: var(--k-kertas2); border: 1px solid var(--k-garis); box-shadow: none; color: var(--k-teks);
+  }
+  #view-murid .tahun-grid-enrolmen .kelas-gate-btn:hover { background: #fff; border-color: var(--w1); transform: none; box-shadow: 0 10px 18px -14px rgba(14,64,46,.55); }
+  #view-murid .kg-nama { grid-area: nama; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-items: center; }
+  #view-murid .kg-nama > i { grid-row: 1 / span 2; color: var(--w1); font-size: 1rem; }
+  #view-murid .kg-teks { font-size: 1.02rem; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; color: var(--k-teks); }
+  #view-murid .kg-sub { grid-column: 2; font-size: .76rem; font-weight: 600; color: var(--k-redup); }
+  #view-murid .kg-bil { grid-area: bil; display: inline-flex; align-items: baseline; gap: 4px; padding: 5px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--k-garis); color: var(--green-1); }
+  #view-murid .kg-bil b { font-size: 1.1rem; }
+  #view-murid .kg-bil small { font-size: .6rem; font-weight: 800; letter-spacing: .1em; color: var(--k-redup); }
+  #view-murid .kg-bil.kosong { background: transparent; color: var(--k-redup); }
+  #view-murid .kelas-gate-btn-chev { grid-area: chev; color: var(--k-redup); }
+  .tahun-grid-poster .kg-sub { display: none; }
+  #view-murid .enrol-kaki { margin-top: 20px; }
+
+  /* kelas dibuka: kepala bergading + bar alat + senarai gaya lejar */
+  #view-murid .enrol-kelas-kepala {
+    display: flex; align-items: center; justify-content: flex-start; gap: 22px; flex-wrap: wrap; padding: 20px 26px; border-radius: 22px; position: relative; overflow: hidden;
+    background: linear-gradient(180deg, #FFFFFF, #FCF9EF); border: 1px solid var(--k-garis); box-shadow: var(--k-bayang); color: var(--k-teks); margin-bottom: 16px;
+  }
+  #view-murid .enrol-kelas-kepala::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--w1); }
+  #view-murid .enrol-kelas-kepala .tahun-no { width: 56px; height: 56px; border-radius: 16px; font-size: 1.8rem; color: #fff; background: var(--w2); box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
+  #view-murid .enrol-kelas-tajuk { font-size: clamp(1.4rem, 2.6vw, 1.9rem); color: var(--green-1); }
+  #view-murid .enrol-kelas-meta { font-size: .9rem; color: var(--k-redup); }
+  #view-murid .btn-kembali-kelas { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--k-garis2); background: #fff; color: var(--green-1); font-weight: 700; }
+  #view-murid .btn-kembali-kelas:hover { border-color: var(--green-2); background: var(--k-kertas2); }
+  #view-murid .enrol-carian input { height: 46px; border-radius: 13px; border: 1.5px solid var(--k-garis2); background: #fff; font-weight: 600; box-shadow: none; }
+  .roster-cari input, #carianMuridTasmik, #carianMuridLaporan, #carianPerkasa { background-color: #fff; }
+  #senaraiMuridCard { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; background: #fff; border: 1px solid var(--k-garis); border-radius: 20px; box-shadow: var(--k-bayang); overflow: hidden; }
+  #senaraiMuridCard .murid-item {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px; padding: 14px 22px; margin: 0; border: 0; border-radius: 0; background: #fff; box-shadow: none;
+    border-bottom: 1px solid #EFE9D7; transform: none; animation: none;
+  }
+  #senaraiMuridCard .murid-item:last-child { border-bottom: 0; }
+  #senaraiMuridCard .murid-item:hover { background: var(--k-kertas2); transform: none; box-shadow: none; }
+  #senaraiMuridCard .murid-item-info { display: flex; align-items: center; gap: 16px; min-width: 0; }
+  #senaraiMuridCard .murid-bil { flex: none; width: 34px; height: auto; background: none; color: var(--k-redup); font-family: var(--font-display); font-size: 1rem; font-weight: 700; text-align: right; }
+  #senaraiMuridCard .murid-item-teks strong { font-size: 1rem; letter-spacing: .01em; }
+  #senaraiMuridCard .murid-meta { font-size: .8rem; }
+  .murid-jantina { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: .74rem; font-weight: 800; letter-spacing: .04em; }
+  .murid-jantina.j-l { color: #14604A; background: rgba(31,124,91,.1); }
+  .murid-jantina.j-p { color: #9F2D49; background: rgba(196,64,95,.1); }
+  #senaraiMuridCard .murid-tindakan .btn { width: 38px; height: 38px; border-radius: 11px; }
+  @media (max-width: 575px) { #senaraiMuridCard .murid-item { grid-template-columns: minmax(0, 1fr) auto; padding: 12px 14px; } #senaraiMuridCard .murid-jantina { display: none; } #senaraiMuridCard .murid-bil { width: 24px; } }
+
+  /* ---------- 7. REKOD BACAAN: cincin tahap (ganti avatar huruf) ---------- */
+  .cincin-tahap { position: relative; flex: none; display: grid; place-items: center; width: 54px; height: 54px; }
+  .cincin-tahap.kecil { width: 46px; height: 46px; }
+  .cincin-tahap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cincin-tahap path { fill: none; stroke: #E6E0CC; stroke-width: 4.4; stroke-linecap: round; }
+  .cincin-tahap path.on { stroke: #0F6A4B; }
+  .cincin-tahap path.kini { stroke: #C9A24D; filter: drop-shadow(0 0 2.5px rgba(201,162,77,.65)); }
+  .ct-teras { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; color: var(--k-teks); }
+  .ct-teras b { font-family: var(--font-display); font-size: 1.22rem; font-weight: 800; font-variant-numeric: lining-nums; }
+  .ct-teras small { margin-top: 2px; font-size: .46rem; font-weight: 800; letter-spacing: .16em; color: var(--k-redup); }
+  .ct-teras i { font-size: 1.02rem; color: #0F6A4B; }
+  .cincin-tahap.kecil .ct-teras b { font-size: 1.02rem; }
+  .cincin-tahap.kecil .ct-teras small { font-size: .4rem; }
+  .jan { display: inline-grid; place-items: center; width: 20px; height: 20px; margin-left: 9px; border-radius: 50%; font-size: .62rem; vertical-align: middle; }
+  .jan.j-l { color: #14604A; background: rgba(31,124,91,.12); }
+  .jan.j-p { color: #9F2D49; background: rgba(196,64,95,.12); }
+  #rosterMuridTasmik .roster-row, #rosterMuridLaporan .roster-row { gap: 14px; padding-top: 12px; padding-bottom: 12px; }
+  #rosterMuridTasmik .roster-nama, #rosterMuridLaporan .roster-nama { font-size: 1rem; }
+  #formTasmikMuridChip, #rekodMuridChip { align-items: center; gap: 12px; }
+  .perkasa-baris-nama { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .kelas-aktif-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; padding: 16px 22px; border-radius: 20px;
+    background: #fff; border: 1px solid var(--k-garis); border-left: 5px solid var(--green-2); box-shadow: var(--k-bayang);
+  }
+  .kelas-aktif-bar > span:first-child { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-display); font-size: clamp(1.35rem, 2.4vw, 1.8rem); font-weight: 800; line-height: 1.1; color: var(--green-1); }
+  .kelas-aktif-bar > span:first-child::before { content: "KELAS SEMASA"; font-family: var(--font-body); font-size: .68rem; font-weight: 800; letter-spacing: .16em; color: var(--k-emas); }
+  .kelas-aktif-bar .btn-tukar-kelas { height: 42px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--k-garis2); background: #fff; color: var(--green-1); font-weight: 700; }
+  .kelas-aktif-bar .btn-tukar-kelas:hover { border-color: var(--green-2); background: var(--k-kertas2); }
+
+  /* ---------- 8. SIJIL / TRANSKRIP: borang + panduan ---------- */
+  .sijil-susun { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start; }
+  .sijil-panduan { padding: 24px 24px 22px; border-radius: 22px; background: linear-gradient(180deg, #FFFFFF, #FBF7EA); border: 1px solid var(--k-garis); box-shadow: var(--k-bayang); position: relative; overflow: hidden; }
+  .sijil-panduan::before { content: ""; position: absolute; left: 24px; top: 0; width: 70px; height: 4px; border-radius: 0 0 4px 4px; background: linear-gradient(90deg, #E6CC85, #B8892F); }
+  .sijil-panduan h6 { margin: 6px 0 14px; font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--green-1); }
+  .sijil-panduan ol { margin: 0 0 18px; padding: 0; list-style: none; counter-reset: langkah; display: grid; gap: 12px; }
+  .sijil-panduan li { counter-increment: langkah; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; font-size: .95rem; line-height: 1.45; color: var(--k-teks); }
+  .sijil-panduan li::before { content: counter(langkah); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; font-family: var(--font-display); font-weight: 800; color: #fff; background: var(--green-1); }
+  .sijil-panduan li b { display: block; color: var(--green-1); }
+  .sijil-contoh { display: block; width: 100%; height: auto; border-radius: 12px; }
+  @media (max-width: 991px) { .sijil-susun { grid-template-columns: minmax(0, 1fr); } }
+  .kad-pilihan { background: #fff; border: 1px solid var(--k-garis); border-radius: 22px; box-shadow: var(--k-bayang); padding: 4px 24px 22px; }
+
+  /* ---------- 9. cetakan: elemen skrin sahaja disembunyikan ---------- */
+  @media print {
+    .modul-nav, .sijil-panduan { display: none !important; }
+    .main-content > .top-view { max-width: none !important; }
+    .sijil-susun { display: block !important; }
+  }
+  @media (prefers-reduced-motion: reduce) { .modul-nav button, #view-murid .tahun-grid-enrolmen .tahun-kad { transition: none !important; } }
+</style>
 </head>
 <body>
 
@@ -4887,7 +5109,7 @@
       <div class="container-fluid">
         <div class="d-flex align-items-center" style="min-width:0;">
           <button class="btn-back d-none" id="btnKeMenu" onclick="navigasi('menu')" title="Kembali ke Menu Utama">
-            <i class="fa-solid fa-arrow-left"></i>
+            <i class="fa-solid fa-arrow-left"></i><span class="btn-back-teks">Menu</span>
           </button>
           <span class="navbar-brand mb-0 fw-bold text-truncate">
             <span class="logo-emblem kecil" style="--em:40px" role="img" aria-label="Logo E-Tasmik"><span class="em-aura"></span><svg class="em-tanda" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="47" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="1.1 3.45"/></svg><svg class="em-bintang" viewBox="-50 -50 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><rect x="-28" y="-28" width="56" height="56"/><rect x="-28" y="-28" width="56" height="56" transform="rotate(45)"/></g></svg><span class="em-cincin"></span><span class="em-orbit o1"><span class="em-kilau"></span></span><span class="em-orbit o2"><span class="em-kilau"></span></span><span class="em-inti"><i class="fa-solid fa-book-quran" aria-hidden="true"></i><img id="logoSekolahMaster" class="em-logo-sekolah" data-logo-sekolah="1" alt=""></span></span>
@@ -4914,6 +5136,16 @@
           <button class="btn btn-sm btn-outline-light" id="btnLogout"><i class="fa-solid fa-power-off"></i></button>
         </div>
       </div>
+    </nav>
+
+    <!-- JALAN PINTAS MODUL: lompat terus antara modul tanpa pulang ke menu (disorok pada Menu Utama & Konsol PPD; .aktif ditetapkan oleh navigasi()) -->
+    <nav class="modul-nav d-none" id="modulNav" aria-label="Modul sistem">
+      <button type="button" data-nav="menu"><i class="fa-solid fa-house"></i> Menu</button>
+      <button type="button" data-nav="murid"><i class="fa-solid fa-user-plus"></i> Enrolmen</button>
+      <button type="button" data-nav="tasmik"><i class="fa-solid fa-book-quran"></i> Rekod Bacaan</button>
+      <button type="button" data-nav="dashboard"><i class="fa-solid fa-chart-pie"></i> Analisis</button>
+      <button type="button" data-nav="perkasa"><i class="fa-solid fa-bullseye"></i> PERKASA</button>
+      <button type="button" data-nav="transkrip"><i class="fa-solid fa-file-lines"></i> Sijil</button>
     </nav>
 
     <!-- KANDUNGAN UTAMA -->
@@ -5635,6 +5867,8 @@
           <h5 class="fw-bold mb-3 section-title"><i class="fa-solid fa-scroll"></i> Sijil / Transkrip</h5>
           <p class="text-muted small">Sijil ini menunjukkan tahap bacaan terkini murid (pencapaian akhir) - sesuai diserahkan kepada ibu bapa. Boleh dicetak atau disimpan sebagai PDF.</p>
 
+          <div class="sijil-susun">
+          <div class="sijil-kiri">
           <div class="kad-pilihan mb-3" id="pemilihTranskrip">
             <div class="ft-seksyen">
               <div class="ft-tajuk"><span class="ft-no">1</span> Kelas mana?</div>
@@ -5665,6 +5899,30 @@
           <button class="btn btn-success btn-lg w-100 mb-3 py-3 d-none shine-hover" id="btnCetakTranskrip">
             <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
           </button>
+          </div>
+          <aside class="sijil-panduan" aria-label="Panduan ringkas">
+            <h6>Panduan ringkas</h6>
+            <ol>
+              <li><span><b>Pilih kelas</b>Tahun dahulu, kemudian kelas.</span></li>
+              <li><span><b>Pilih sijil untuk siapa</b>Seluruh kelas sekali gus, atau seorang murid sahaja.</span></li>
+              <li><span><b>Cetak atau simpan PDF</b>Sijil terus tersedia untuk diserahkan kepada ibu bapa.</span></li>
+            </ol>
+            <svg class="sijil-contoh" viewBox="0 0 320 214" role="img" aria-label="Contoh susun atur sijil">
+              <rect x="1" y="1" width="318" height="212" rx="10" fill="#FFFDF6" stroke="#D3CAAB"/>
+              <rect x="12" y="12" width="296" height="190" rx="6" fill="none" stroke="#B8892F" stroke-width="2"/>
+              <rect x="18" y="18" width="284" height="178" rx="4" fill="none" stroke="#E6CC85" stroke-width="1"/>
+              <circle cx="160" cy="52" r="15" fill="none" stroke="#B8892F" stroke-width="1.6"/>
+              <path d="M152 52h16M160 44v16" stroke="#B8892F" stroke-width="1.4"/>
+              <rect x="94" y="80" width="132" height="8" rx="4" fill="#0F4A36"/>
+              <rect x="116" y="96" width="88" height="5" rx="2.5" fill="#CFC6A8"/>
+              <rect x="60" y="116" width="200" height="6" rx="3" fill="#E4DDC7"/>
+              <rect x="80" y="130" width="160" height="6" rx="3" fill="#E4DDC7"/>
+              <rect x="40" y="166" width="70" height="4" rx="2" fill="#CFC6A8"/>
+              <rect x="210" y="166" width="70" height="4" rx="2" fill="#CFC6A8"/>
+              <path d="M146 150l14 -12 14 12v18l-14 -8 -14 8z" fill="#B8892F" opacity=".85"/>
+            </svg>
+          </aside>
+          </div>
 
           <!-- Kandungan sijil (satu atau lebih .sijil-bingkai) dibina
                SEPENUHNYA secara dinamik oleh renderSijil() dlm JS.html -
@@ -7301,9 +7559,14 @@ function renderGridKelas(containerId, onPilih, semuaKelasTetapan) {
     const butang = kelasSenarai.length
       ? kelasSenarai.map(k => {
           const bil = bilMuridKelas_(tahun, k);
+          // baris kecil di bawah nama kelas (dipaparkan pada Enrolmen sahaja): pecahan lelaki / perempuan
+          const lp = (cacheSenaraiMurid || []).filter(m => String(m.Tahun) === String(tahun) && String(m.Kelas) === String(k));
+          const bilL = lp.filter(m => String(m.Jantina || '').charAt(0).toUpperCase() === 'L').length;
+          const bilP = lp.filter(m => String(m.Jantina || '').charAt(0).toUpperCase() === 'P').length;
+          const sub = bil ? bilL + ' lelaki &middot; ' + bilP + ' perempuan' : 'Belum ada murid';
           return `
           <button type="button" class="kelas-gate-btn" data-tahun="${th}" data-kelas="${escapeHtml(k)}" aria-label="Tahun ${th} ${escapeHtml(k)}, ${bil} murid">
-            <span class="kg-nama"><i class="fa-solid fa-book-open"></i><span class="kg-teks">${escapeHtml(k)}</span></span>
+            <span class="kg-nama"><i class="fa-solid fa-book-open"></i><span class="kg-teks">${escapeHtml(k)}</span><span class="kg-sub">${sub}</span></span>
             <span class="kg-bil${bil ? '' : ' kosong'}"><b>${bil}</b><small>murid</small></span>
             <i class="fa-solid fa-chevron-right kelas-gate-btn-chev"></i>
           </button>`;
@@ -7455,6 +7718,11 @@ const PETA_VIEW = {
   ppd:        { kontena: 'view-ppd' }
 };
 
+document.getElementById('modulNav').addEventListener('click', function (e) {
+  const b = e.target.closest('[data-nav]');
+  if (b) navigasi(b.dataset.nav);
+});
+
 function navigasi(view) {
   const info = PETA_VIEW[view];
   if (!info) return;
@@ -7480,6 +7748,16 @@ function navigasi(view) {
   // "berlanggar" (topbar + menu-hero bertindih), sebab menu-hero sendiri
   // sudah ada logo/tajuk/cip pengguna. Muncul semula pada semua sub-modul.
   document.querySelector('.app-topbar').classList.toggle('d-none', view === 'menu');
+
+  // Jalan pintas modul: kelihatan pada semua skrin dalaman (bukan Menu Utama / Konsol PPD); modul semasa ditandakan.
+  const modulNav = document.getElementById('modulNav');
+  modulNav.classList.toggle('d-none', view === 'menu' || view === 'ppd');
+  const kunciNav = view === 'laporan' ? 'dashboard' : view;
+  modulNav.querySelectorAll('[data-nav]').forEach(function (b) {
+    const aktif = b.dataset.nav === kunciNav;
+    b.classList.toggle('aktif', aktif);
+    if (aktif) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
 
   // Tajuk pada topbar - ikut modul semasa (senang orientasi pengguna)
   const TAJUK_MODUL = {
@@ -8727,10 +9005,33 @@ function kategoriCssClass_(kategori) {
 let rosterPenapisTasmik_ = 'semua';   // 'semua' | 'belum' | 'sudah'
 let rosterSusunTasmik_ = 'nama';      // 'nama' | 'lama'
 
-/** Huruf pertama nama (untuk avatar bulat). */
-function inisialNama_(nama) {
-  const s = String(nama || '').trim();
-  return s ? s.charAt(0).toUpperCase() : '?';
+/** Ikon jantina kecil (lelaki/perempuan) - kosong jika tidak diketahui. */
+function ikonJantina_(j) {
+  if (j === 'L') return '<span class="jan j-l" title="Lelaki"><i class="fa-solid fa-mars" aria-hidden="true"></i></span>';
+  if (j === 'P') return '<span class="jan j-p" title="Perempuan"><i class="fa-solid fa-venus" aria-hidden="true"></i></span>';
+  return '';
+}
+
+/** Cincin tahap bacaan (ganti avatar huruf pertama): satu segmen setiap tahap (8 tahap lalai), terisi hingga tahap semasa (emas = tahap kini).
+ *  Teras: nombor Iqra' / ikon Al-Quran / bintang Khatam / sengkang (belum mula). Maklumat berguna, bukan hiasan. */
+function cincinTahap_(kategori, kecil) {
+  const senarai = (tetapanSistem && tetapanSistem.SenaraiKategoriBacaan && tetapanSistem.SenaraiKategoriBacaan.length)
+    ? tetapanSistem.SenaraiKategoriBacaan : SENARAI_KATEGORI_LALAI_;
+  const n = senarai.length, idx = senarai.indexOf(kategori), R = 20, C = 24, celah = 6;
+  const titik = function (a) { return (C + R * Math.cos(a)).toFixed(2) + ' ' + (C + R * Math.sin(a)).toFixed(2); };
+  let segmen = '';
+  for (let i = 0; i < n; i++) {
+    const a1 = (-90 + i * 360 / n + celah / 2) * Math.PI / 180, a2 = (-90 + (i + 1) * 360 / n - celah / 2) * Math.PI / 180;
+    segmen += '<path class="' + (i < idx ? 'on' : (i === idx ? 'kini' : '')) + '" d="M' + titik(a1) + ' A' + R + ' ' + R + ' 0 0 1 ' + titik(a2) + '"/>';
+  }
+  const m = /^Iqra[\s']*(\d+)/i.exec(String(kategori));
+  let teras;
+  if (m) teras = '<b>' + m[1] + '</b><small>IQRA</small>';
+  else if (kategori === 'Khatam') teras = '<i class="fa-solid fa-star"></i>';
+  else if (kategori === 'Al-Quran') teras = '<i class="fa-solid fa-book-quran"></i>';
+  else if (idx >= 0) teras = '<b>' + (idx + 1) + '</b>';
+  else teras = '<i class="fa-solid fa-minus"></i>';
+  return '<span class="cincin-tahap' + (kecil ? ' kecil' : '') + '" title="' + escapeHtml(String(kategori)) + '" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false">' + segmen + '</svg><span class="ct-teras">' + teras + '</span></span>';
 }
 
 /** Jantina murid (L/P) daripada cache Enrolmen; '' jika tidak diketahui. */
@@ -8758,15 +9059,6 @@ function tarikhRelatif_(dmy) {
   return { teks: teks, hari: Math.max(0, hari) };
 }
 function hariSejak_(m) { const h = tarikhRelatif_(m.Tarikh_Terakhir).hari; return h === null ? 99999 : h; }
-
-/** Tangga bacaan mini: satu titik setiap tahap; terisi hingga tahap semasa. */
-function tanggaMini_(kategori) {
-  const senarai = (tetapanSistem && tetapanSistem.SenaraiKategoriBacaan && tetapanSistem.SenaraiKategoriBacaan.length)
-    ? tetapanSistem.SenaraiKategoriBacaan : SENARAI_KATEGORI_LALAI_;
-  const idx = senarai.indexOf(kategori);
-  return '<span class="tangga-mini" aria-hidden="true">' +
-    senarai.map(function (k, i) { return '<i class="' + (i < idx ? 'on' : (i === idx ? 'kini' : '')) + '"></i>'; }).join('') + '</span>';
-}
 
 /** Kad ringkasan di atas senarai: berapa murid sudah ditasmik hari ini + nota ringkas + chip penapis. */
 function kemaskiniRingkasanRosterTasmik_() {
@@ -8819,13 +9111,12 @@ function renderRosterMuridTasmik(senarai) {
     return `
     <div class="roster-row ${kategoriCssClass_(m.Kategori_Semasa).replace('bk-', 'rs-')}${m.ID_Murid === idAktif ? ' active' : ''}" data-id="${m.ID_Murid}" onclick="pilihMuridDariRoster('${m.ID_Murid}')">
       <div class="roster-bil">${i + 1}</div>
-      <span class="roster-avatar${j === 'P' ? ' p' : (j === 'L' ? ' l' : '')}" aria-hidden="true">${escapeHtml(inisialNama_(m.Nama))}</span>
+      ${cincinTahap_(m.Kategori_Semasa)}
       <div class="roster-row-main">
-        <div class="roster-nama">${escapeHtml(m.Nama)}</div>
+        <div class="roster-nama">${escapeHtml(m.Nama)}${ikonJantina_(j)}</div>
         <div class="roster-meta">
           <span class="badge-kategori ${kategoriCssClass_(m.Kategori_Semasa)}">${escapeHtml(m.Kategori_Semasa)}</span>
           ${m.Muka_Surat_Semasa !== '-' ? `<span class="roster-ms">M/S ${escapeHtml(String(m.Muka_Surat_Semasa))}</span>` : ''}
-          ${tanggaMini_(m.Kategori_Semasa)}
         </div>
       </div>
       <div class="roster-row-side">
@@ -8857,7 +9148,7 @@ function pilihMuridDariRoster(idMurid) {
   if (info) {
     const jChip = jantinaMurid_(idMurid);
     document.getElementById('formTasmikMuridChip').innerHTML =
-      `<span class="chip-avatar${jChip === 'P' ? ' p' : (jChip === 'L' ? ' l' : '')}">${escapeHtml(inisialNama_(info.Nama))}</span>
+      `${cincinTahap_(info.Kategori_Semasa, true)}
        <span class="chip-teks"><strong>${escapeHtml(info.Nama)}</strong><small>${escapeHtml(document.getElementById('tasmikKelasAktifLabel').textContent)}</small></span>
        <button type="button" class="btn-tukar-murid" onclick="tukarMuridTasmik()">Tukar Murid</button>`;
   }
@@ -9054,13 +9345,12 @@ function renderRosterMuridLaporan(senarai) {
         <input class="form-check-input check-murid-laporan" type="checkbox" value="${m.ID_Murid}" aria-label="Tanda ${escapeHtml(m.Nama)}">
       </div>
       <div class="roster-bil">${i + 1}</div>
-      <span class="roster-avatar${j === 'P' ? ' p' : (j === 'L' ? ' l' : '')}" aria-hidden="true">${escapeHtml(inisialNama_(m.Nama))}</span>
+      ${cincinTahap_(m.Kategori_Semasa)}
       <div class="roster-row-main">
-        <div class="roster-nama">${escapeHtml(m.Nama)}</div>
+        <div class="roster-nama">${escapeHtml(m.Nama)}${ikonJantina_(j)}</div>
         <div class="roster-meta">
           <span class="badge-kategori ${kategoriCssClass_(m.Kategori_Semasa)}">${escapeHtml(m.Kategori_Semasa)}</span>
           ${m.Muka_Surat_Semasa !== '-' ? `<span class="roster-ms">M/S ${escapeHtml(String(m.Muka_Surat_Semasa))}</span>` : ''}
-          ${tanggaMini_(m.Kategori_Semasa)}
         </div>
       </div>
       <div class="roster-row-side">
@@ -9221,9 +9511,8 @@ function renderRekodPenuhMurid(hasil) {
   const r = hasil.ringkasan;
   const p = hasil.penandatangan || {};
 
-  const jRekod = jantinaMurid_(m.ID_Murid);
   document.getElementById('rekodMuridChip').innerHTML =
-    `<span class="chip-avatar${jRekod === 'P' ? ' p' : (jRekod === 'L' ? ' l' : '')}">${escapeHtml(inisialNama_(m.Nama))}</span>
+    `${cincinTahap_(r.Tahap_Semasa, true)}
      <span class="chip-teks"><strong>${escapeHtml(m.Nama)}</strong><small>Tahun ${escapeHtml(String(m.Tahun))} ${escapeHtml(m.Kelas)}</small></span>`;
 
   document.getElementById('rekodMuridRingkasan').innerHTML = ruangNaratifRekod_(m, r) + `
@@ -9506,18 +9795,16 @@ function renderSenaraiMuridCard(senarai) {
   const tersusun = senarai.slice().sort((a, b) => String(a.Nama).localeCompare(String(b.Nama)));
   container.innerHTML = tersusun.map((m, i) => {
     const j = String(m.Jantina || '').charAt(0).toUpperCase();
-    const ikonJ = j === 'P' ? 'fa-person-dress' : 'fa-person';
-    const kelasJ = j === 'P' ? 'p' : (j === 'L' ? 'l' : '');
     return `
         <div class="murid-item">
           <div class="murid-item-info">
             <span class="murid-bil">${i + 1}</span>
-            <span class="murid-avatar ${kelasJ}" title="${j === 'P' ? 'Perempuan' : (j === 'L' ? 'Lelaki' : '')}"><i class="fa-solid ${ikonJ}"></i></span>
             <div class="murid-item-teks">
               <strong>${escapeHtml(m.Nama)}</strong>
               <small class="murid-meta">Tahun ${escapeHtml(String(m.Tahun))} &middot; ${escapeHtml(String(m.Kelas))}${m.Status_Keperluan_Khas ? ' <span class="murid-khas"><i class="fa-solid fa-heart"></i> ' + escapeHtml(m.Status_Keperluan_Khas) + '</span>' : ''}</small>
             </div>
           </div>
+          ${j ? '<span class="murid-jantina ' + (j === 'P' ? 'j-p' : 'j-l') + '"><i class="fa-solid ' + (j === 'P' ? 'fa-venus' : 'fa-mars') + '" aria-hidden="true"></i> ' + (j === 'P' ? 'Perempuan' : 'Lelaki') + '</span>' : '<span></span>'}
           <div class="murid-tindakan">
             <button class="btn btn-sm btn-outline-secondary" onclick="bukaModalMuridById('${escapeHtml(m.ID_Murid)}')" title="Sunting"><i class="fa-solid fa-pen"></i></button>
             <button class="btn btn-sm btn-outline-danger" onclick="padamMuridUI('${escapeHtml(m.ID_Murid)}')" title="Padam"><i class="fa-solid fa-trash"></i></button>
@@ -9720,7 +10007,7 @@ function renderSenaraiPerkasa(senarai) {
   container.innerHTML = senarai.length === 0
     ? '<li class="list-group-item text-success"><i class="fa-solid fa-circle-check"></i> Tiada murid Tahun 6 di Iqra 1-3 buat masa ini.</li>'
     : senarai.map((m, i) => `<li class="list-group-item d-flex justify-content-between align-items-center">
-          <span class="perkasa-baris-nama"><span class="roster-bil">${i + 1}</span><span class="roster-avatar${jantinaMurid_(m.ID_Murid) === 'P' ? ' p' : (jantinaMurid_(m.ID_Murid) === 'L' ? ' l' : '')}" aria-hidden="true">${escapeHtml(inisialNama_(m.Nama))}</span><span class="perkasa-teks"><strong>${escapeHtml(m.Nama)}</strong><small class="text-muted">Tahun 6 ${escapeHtml(m.Kelas)}</small></span></span>
+          <span class="perkasa-baris-nama"><span class="roster-bil">${i + 1}</span>${cincinTahap_(m.Kategori_Semasa, true)}<span class="perkasa-teks"><strong>${escapeHtml(m.Nama)}</strong>${ikonJantina_(jantinaMurid_(m.ID_Murid))}<small class="text-muted">Tahun 6 ${escapeHtml(m.Kelas)}</small></span></span>
           <span class="text-end perkasa-sisi">
             <span class="badge bg-danger">${escapeHtml(m.Kategori_Semasa)}</span>
             <small class="text-muted">${escapeHtml(tarikhRelatif_(m.Tarikh_Terakhir).teks)}</small>
