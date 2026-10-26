@@ -5101,7 +5101,257 @@
   }
   @media (max-width: 420px) { #btnJanaSijilKelas { font-size: .88rem; padding-left: 8px; padding-right: 8px; } }
   @media (prefers-reduced-motion: reduce) { #appShell .topbar-aksi.buka { animation: none; } .btn-akaun-topbar { transition: none; } }
-</style>
+
+  /* =====================================================================
+     v26 - KONSOL PPD (pantas, padat, boleh dicetak) + amaran kata laluan lalai
+       bar muat nipis (data lama kekal terpapar semasa data baharu ditarik), jadual 14 lajur dengan kod+nama sekolah "melekat" semasa tatal ke sisi,
+       menu Laporan & Eksport, baris "Papar lagi", dan susun atur cetakan A4 mendatar (#areaCetakPpd) yang kemas untuk PDF.
+  ===================================================================== */
+  .ppd-konsol > .ppd-muat-bar { position: sticky; top: 0; z-index: 8; height: 3px; margin: 0 0 8px; border-radius: 3px; overflow: hidden; opacity: 0; transition: opacity .25s ease; pointer-events: none; }
+  .ppd-konsol > .ppd-muat-bar::before { content: ''; position: absolute; top: 0; bottom: 0; left: -40%; width: 40%; border-radius: 3px; background: linear-gradient(90deg, rgba(201,162,77,0), #D3B36A 42%, #1F946A 58%, rgba(31,148,106,0)); animation: ppdMuatLari 1.15s cubic-bezier(.45,0,.25,1) infinite; }
+  .ppd-konsol.sedang-memuat > .ppd-muat-bar, .ppd-konsol.sedang-memuat-sk > .ppd-muat-bar { opacity: 1; }
+  @keyframes ppdMuatLari { from { left: -40%; } to { left: 100%; } }
+
+  .ppd-bingkai-jadual { max-height: min(72vh, 780px); overflow: auto; overscroll-behavior: contain; }
+  .ppd-jadual-lebar { min-width: 1180px; }
+  .ppd-jadual-lebar thead th { background: #FBF7EA; }
+  .ppd-jadual-lebar tbody td:last-child, .ppd-jadual-lebar thead th:last-child { position: sticky; right: 0; z-index: 2; background: #fff; box-shadow: -8px 0 10px -10px rgba(14,64,46,.45); }
+  .ppd-jadual-lebar thead th:last-child { z-index: 4; background: #FBF7EA; }
+  .ppd-jadual-lebar .ppd-baris:hover > td:last-child { background: #F0F7F2; }
+  .ppd-jadual-lebar th, .ppd-jadual-lebar td { padding: .45rem .5rem; }
+  .ppd-jadual-lebar thead th { z-index: 3; }
+  .ppd-jadual-lebar tbody td:nth-child(1), .ppd-jadual-lebar thead th:nth-child(1) { position: sticky; left: 0; z-index: 2; min-width: 92px; background: #fff; }
+  .ppd-jadual-lebar tbody td:nth-child(2), .ppd-jadual-lebar thead th:nth-child(2) { position: sticky; left: 92px; z-index: 2; min-width: 210px; background: #fff; box-shadow: 8px 0 10px -10px rgba(14,64,46,.45); }
+  .ppd-jadual-lebar thead th:nth-child(1), .ppd-jadual-lebar thead th:nth-child(2) { z-index: 4; background: #FBF7EA; }
+  .ppd-jadual-lebar .ppd-baris:hover > td:nth-child(1), .ppd-jadual-lebar .ppd-baris:hover > td:nth-child(2) { background: #F0F7F2; }
+  @media (max-width: 767px) {
+    .ppd-jadual-lebar tbody td:nth-child(1), .ppd-jadual-lebar tbody td:nth-child(2), .ppd-jadual-lebar tbody td:last-child { position: static; min-width: 0; box-shadow: none; }
+    .ppd-jadual-lebar thead th:nth-child(1), .ppd-jadual-lebar thead th:nth-child(2), .ppd-jadual-lebar thead th:last-child { left: auto; right: auto; min-width: 0; box-shadow: none; }
+    .ppd-kepala { align-items: stretch; }
+    .ppd-tindakan { width: 100%; }
+    .ppd-tindakan > .btn, .ppd-tindakan > .dropdown { flex: 1 1 auto; }
+    .ppd-tindakan .dropdown > .btn { width: 100%; }
+    .ppd-menu-laporan { min-width: min(292px, calc(100vw - 32px)); }
+  }
+  .ppd-sub-sekolah { display: block; margin-top: 1px; font-size: .68rem; font-weight: 600; color: var(--k-redup, #5B6B63); }
+  .ppd-aksi-sel .btn { width: 32px; height: 30px; padding: 0; line-height: 1; }
+  .ppd-baris-lagi td { padding: 12px !important; background: #FBF7EA; }
+
+  .main-content .card.ppd-sk-kepala { overflow: visible; }
+  .ppd-sk-kepala::before { border-radius: 20px 20px 0 0; }
+  .ppd-menu-laporan { min-width: 292px; padding: 8px; border-radius: 16px; border: 1px solid var(--k-garis, #E4DDC7); box-shadow: 0 26px 50px -20px rgba(8,35,26,.55), 0 0 0 1px rgba(201,162,77,.28); }
+  .ppd-menu-laporan .dropdown-header { font-family: var(--font-body); padding: 6px 10px 4px; font-size: .64rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--k-emas, #B8892F); }
+  .ppd-menu-laporan .dropdown-divider { margin: 6px 4px; border-color: #EFE9D7; }
+  .ppd-menu-laporan .dropdown-item { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; padding: 8px 10px; border-radius: 11px; font-weight: 700; font-size: .88rem; color: var(--k-teks, #14261F); white-space: normal; }
+  .ppd-menu-laporan .dropdown-item i { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #F3EBD0; color: var(--green-1); font-size: .82rem; }
+  .ppd-menu-laporan .dropdown-item small { flex: 1 0 100%; margin: -4px 0 0 40px; font-weight: 600; font-size: .72rem; color: var(--k-redup, #5B6B63); }
+  .ppd-menu-laporan .dropdown-item:hover, .ppd-menu-laporan .dropdown-item:focus-visible { background: #F6F3E8; color: var(--k-teks, #14261F); }
+  .ppd-menu-laporan .dropdown-item:active { background: #EDE6CC; }
+  .ppd-kelayakan { padding: 10px 12px; margin-bottom: 8px; border-radius: 14px; background: #FBF7EA; border: 1px solid #E4DDC7; text-align: left; }
+  .ppd-kelayakan code { font-weight: 800; }
+
+  .sepandu-kl {
+    display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; width: min(1180px, calc(100% - 24px)); margin: 10px auto 0; padding: 10px 14px 10px 16px;
+    border-radius: 16px; background: linear-gradient(180deg, #FFF9E4, #FFF1C4); border: 1px solid #E4C877; color: #5A4210; font-size: .9rem;
+    box-shadow: 0 12px 24px -18px rgba(138,106,31,.7), inset 0 1px 0 #fff; animation: panelAkaunBuka .4s cubic-bezier(.22,1,.36,1);
+  }
+  .sepandu-kl.d-none { display: none !important; }
+  .sepandu-kl-ikon { font-size: 1.15rem; color: #B8892F; }
+  .sepandu-kl-teks { flex: 1 1 260px; min-width: 0; line-height: 1.35; }
+  .sepandu-kl-btn { padding: 6px 14px; border: 0; border-radius: 999px; font-weight: 800; color: #fff; background: linear-gradient(180deg, #18694F, #0E4A36); box-shadow: 0 8px 16px -10px rgba(10,60,43,.95); }
+  .sepandu-kl-btn:hover { color: #fff; background: linear-gradient(180deg, #1D7658, #115240); }
+  .sepandu-kl-tutup { flex: none; width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(90,66,16,.08); color: #5A4210; cursor: pointer; }
+  .sepandu-kl-tutup:hover { background: rgba(90,66,16,.16); }
+
+  /* ---------- cetakan Konsol PPD ---------- */
+  .cetak-ppd { display: none; }
+  @page ppd { size: A4 landscape; margin: 10mm; }
+  @media print {
+    body.mod-cetak-ppd { background: #fff !important; }
+    body.mod-cetak-ppd > *:not(#areaCetakPpd) { display: none !important; }
+    body.mod-cetak-ppd #areaCetakPpd { display: block !important; page: ppd; width: 100%; color: #14261F; font-family: var(--font-body); font-size: 9pt; line-height: 1.3; }
+    body.mod-cetak-ppd #areaCetakPpd, body.mod-cetak-ppd #areaCetakPpd * { visibility: visible; -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+    #areaCetakPpd h2 { margin: 11px 0 5px; padding-bottom: 3px; border-bottom: 1px solid #D3CAAB; font-family: var(--font-body); font-size: 10.5pt; font-weight: 800; color: #0E402E; break-after: avoid; }
+    #areaCetakPpd h3 { margin: 0 0 3px; font-size: 9pt; font-weight: 800; color: #0E402E; }
+    #areaCetakPpd p { margin: 0 0 3px; }
+    .cp-kepala { display: flex; align-items: center; gap: 12px; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 2.5px solid #B8892F; }
+    .cp-lambang { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; font-size: 17px; color: #F3DC93; background: linear-gradient(150deg, #1F7C5B, #0E402E); }
+    .cp-sistem { font-size: 7.5pt; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #8A6A1F; }
+    .cp-tajuk-blok h1 { margin: 0; font-family: var(--font-display); font-size: 17pt; line-height: 1.15; color: #0E402E; }
+    .cp-sub { font-size: 9.5pt; font-weight: 600; color: #2C3F37; }
+    .cp-masa { margin-left: auto; text-align: right; font-size: 7.5pt; color: #4B645C; }
+    .cp-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px; }
+    .cp-kpi-item { padding: 6px 9px; border: 1px solid #D3CAAB; border-radius: 8px; background: #FBF8EE; break-inside: avoid; }
+    .cp-kpi-item b { display: block; font-family: var(--font-display); font-size: 15pt; line-height: 1.1; color: #0E402E; }
+    .cp-kpi-item span { display: block; font-size: 7.5pt; font-weight: 800; color: #2C3F37; }
+    .cp-kpi-item small { display: block; font-size: 6.8pt; color: #5B6B63; }
+    .cp-dua { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; break-inside: avoid; }
+    .cp-tiga { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; break-inside: avoid; }
+    .cp-perhatian { padding: 6px 9px; border: 1px solid #E4DDC7; border-radius: 8px; background: #FBF8EE; }
+    .cp-perhatian p { font-size: 8pt; }
+    .cp-baik { color: #0B5F42; font-weight: 700; }
+    .cp-jadual { width: 100%; border-collapse: collapse; font-size: 8pt; }
+    .cp-jadual thead { display: table-header-group; }
+    .cp-jadual tr { break-inside: avoid; }
+    .cp-jadual th { padding: 4px 6px; text-align: left; font-size: 7.4pt; font-weight: 800; color: #fff; background: #0E402E; }
+    .cp-jadual td { padding: 3px 6px; border-bottom: 1px solid #E4DDC7; vertical-align: middle; }
+    .cp-jadual tbody tr:nth-child(even) td { background: #FBF8EE; }
+    .cp-jadual .r { text-align: right; font-variant-numeric: tabular-nums; }
+    .cp-kecil td, .cp-kecil th { padding: 2.5px 6px; }
+    .cp-amaran { color: #B3261E; font-weight: 800; }
+    .cp-agihan td { border-bottom: 1px dotted #E4DDC7; background: none !important; }
+    .cp-agihan .cp-label { width: 26%; font-weight: 700; }
+    .cp-agihan .cp-bar { width: 46%; }
+    .cp-bar i { display: block; height: 8px; border-radius: 4px; }
+    .cp-seg { display: flex; width: 100%; min-width: 120px; height: 8px; border-radius: 4px; overflow: hidden; background: #E4DDC7; }
+    .cp-seg i { display: block; height: 100%; }
+    .cp-senarai { margin: 0; padding-left: 16px; font-size: 8.5pt; }
+    .cp-tanda { display: inline-block; min-width: 12px; padding: 0 3px; border-radius: 6px; font-size: 6.5pt; text-align: center; color: #fff; background: #95233A; }
+    .cp-kaki { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; padding-top: 5px; border-top: 1px solid #D3CAAB; font-size: 7.3pt; color: #5B6B63; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ppd-konsol > .ppd-muat-bar::before { animation-duration: 3s; } .sepandu-kl { animation: none; } }
+
+  /* =====================================================================
+     v27 - SKRIN LOG MASUK PREMIUM
+       Desktop: satu "cangkerang" dua panel - kiri zamrud berkorak lattice bintang lapan, bismillah, jenama, tiga cip ciri & pemandangan masjid bercahaya senja;
+                kanan gading dengan lambang, medan berikon, butang mata kata laluan, amaran Caps Lock & butang zamrud bertepi emas.
+       Telefon (<900px): jalur jenama ringkas di atas, kad borang timbul menindih jalur dengan lambang separuh keluar. Id/kelas yang diuji (formLogin, input*, loginError, login-emblem, hakcipta-login) kekal.
+  ===================================================================== */
+  #screenLogin { padding: 30px 18px 78px; }
+  .lg-shell {
+    position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); width: min(1060px, 100%); min-height: clamp(580px, 84vh, 700px);
+    border-radius: 34px; overflow: hidden; background: #FBF8EE;
+    box-shadow: 0 64px 120px -44px rgba(2,14,10,.88), 0 0 0 1px rgba(214,178,94,.44), 0 0 90px -16px rgba(214,178,94,.18);
+    animation: lgMasuk .75s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes lgMasuk { from { opacity: 0; transform: translateY(24px) scale(.985); } to { opacity: 1; transform: none; } }
+  @keyframes lgNaik { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes lgKelip { 0%, 100% { opacity: .22; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.25); } }
+  @keyframes lgGegar { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+
+  /* ---- panel jenama ---- */
+  .lg-hero {
+    position: relative; isolation: isolate; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 38px 42px 0; overflow: hidden; color: #F4EFD9;
+    background:
+      radial-gradient(ellipse 540px 380px at 14% -6%, rgba(230,204,133,.3), transparent 62%),
+      radial-gradient(ellipse 600px 440px at 112% 44%, rgba(31,150,104,.4), transparent 60%),
+      linear-gradient(165deg, #04231A 0%, #0B4A35 54%, #116041 100%);
+  }
+  .lg-hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23E6CC85' stroke-opacity='.15' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='3'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 56px 56px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.5) 55%, transparent 82%); mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.5) 55%, transparent 82%);
+  }
+  .lg-hero::after { content: ''; position: absolute; inset: 14px; z-index: 3; border-radius: 24px; border: 1px solid rgba(230,204,133,.3); pointer-events: none; }
+  .lg-hero-bintang { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .lg-hero-bintang span { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #F6E2A3; box-shadow: 0 0 9px 2px rgba(246,226,163,.7); animation: lgKelip 3.8s ease-in-out infinite; }
+  .lg-hero-isi { position: relative; z-index: 2; width: 100%; max-width: 480px; animation: lgNaik .8s cubic-bezier(.22,1,.36,1) .15s both; }
+  .lg-bismillah { margin: 0 0 6px; font-family: var(--font-arab); font-size: 1.7rem; line-height: 2.1; color: #F3DC93; text-shadow: 0 2px 16px rgba(0,0,0,.45); }
+  .lg-jenama { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: .76rem; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; color: #E6CC85; }
+  .lg-jenama i { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(230,204,133,.6); background: rgba(230,204,133,.12); font-size: .78rem; }
+  #screenLogin .lg-daerah { margin: 0 0 6px; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.18; color: #fff; text-shadow: 0 3px 24px rgba(0,0,0,.4); text-wrap: balance; }
+  .lg-tagline { font-size: 1rem; font-style: italic; color: #E8DCB0; }
+  .lg-garis { position: relative; height: 1px; width: 190px; margin: 20px auto 20px; background: linear-gradient(90deg, transparent, rgba(230,204,133,.95), transparent); }
+  .lg-garis::before { content: ''; position: absolute; left: 50%; top: -4px; width: 9px; height: 9px; margin-left: -4.5px; transform: rotate(45deg); background: #E6CC85; box-shadow: 0 0 12px rgba(230,204,133,.8); }
+  .lg-ciri { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .lg-ciri li { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 6px 11px; border-radius: 16px; border: 1px solid rgba(230,204,133,.3); background: rgba(255,255,255,.06); font-size: .78rem; font-weight: 800; letter-spacing: .02em; color: #F4EFD9; }
+  .lg-ciri i { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; font-size: .92rem; color: #F3DC93; background: rgba(230,204,133,.14); box-shadow: inset 0 1px 0 rgba(255,255,255,.18); }
+  .lg-skyline { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; width: 100%; height: 286px; pointer-events: none; }
+
+  /* ---- panel borang ---- */
+  .lg-borang {
+    position: relative; display: flex; flex-direction: column; justify-content: center; padding: 34px 50px 26px;
+    background: radial-gradient(ellipse 380px 260px at 100% 0%, rgba(230,204,133,.2), transparent 70%), linear-gradient(180deg, #FFFDF7, #FBF8EE);
+  }
+  .lg-borang > * { animation: lgNaik .7s cubic-bezier(.22,1,.36,1) both; }
+  .lg-borang > :nth-child(1) { animation-delay: .1s; } .lg-borang > :nth-child(2) { animation-delay: .18s; } .lg-borang > :nth-child(3) { animation-delay: .24s; }
+  .lg-borang > :nth-child(4) { animation-delay: .3s; } .lg-borang > :nth-child(5) { animation-delay: .38s; }
+  #screenLogin .lg-borang .login-emblem { margin: 0 auto 12px; animation: lgNaik .7s cubic-bezier(.22,1,.36,1) .1s both; }
+  #screenLogin .login-emblem .logo-emblem { --em: 92px !important; }
+  #screenLogin .lg-borang .login-greeting { text-align: center; font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: 1.02rem; color: var(--gold-dark, #8A6A1F); letter-spacing: .01em; }
+  .lg-tajuk { text-align: center; margin: 0 0 4px; font-family: var(--font-display); font-weight: 800; font-size: 1.55rem; line-height: 1.2; color: #0E402E; }
+  .lg-form { display: grid; gap: 14px; margin-top: 18px; }
+  .lg-medan .form-label { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 0 0 6px; font-size: .74rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #3A4F46; }
+  .lg-pembantu { padding: 2px 10px; border-radius: 999px; font-size: .66rem; font-weight: 700; letter-spacing: .02em; text-transform: none; color: #7A5D18; background: #F6EBC8; }
+  .lg-kotak { position: relative; }
+  .lg-ikon { position: absolute; left: 17px; top: 27px; transform: translateY(-50%); z-index: 2; font-size: .98rem; color: #B8892F; pointer-events: none; transition: color .2s ease; }
+  #screenLogin .lg-kotak .form-control {
+    height: 54px; padding: 0 50px 0 48px; border-radius: 16px; border: 1.5px solid #E4DDC7; background: #FFFEFA; font-size: 1rem; font-weight: 600; color: #14261F;
+    box-shadow: inset 0 1px 2px rgba(14,64,46,.07); transition: border-color .2s ease, box-shadow .25s ease, background .2s ease;
+  }
+  #screenLogin .lg-kotak .form-control::placeholder { color: #9AA59F; font-weight: 500; text-transform: none; }
+  #screenLogin .lg-kotak .form-control:hover { border-color: #D3CAAB; }
+  #screenLogin .lg-kotak .form-control:focus { outline: 0; border-color: #1F7C5B; background: #fff; box-shadow: 0 0 0 4px rgba(201,162,77,.3), inset 0 1px 2px rgba(14,64,46,.04); }
+  #screenLogin .lg-kotak .form-control:-webkit-autofill { -webkit-box-shadow: 0 0 0 60px #FFFEFA inset; -webkit-text-fill-color: #14261F; }
+  .lg-kotak:focus-within .lg-ikon { color: #165F44; }
+  .lg-mata { position: absolute; right: 7px; top: 7px; z-index: 2; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 12px; background: transparent; color: #66776E; font-size: 1rem; cursor: pointer; transition: background .2s ease, color .2s ease; }
+  .lg-mata:hover { background: #F3EBD0; color: #165F44; }
+  .lg-mata:focus-visible { outline: 3px solid rgba(201,162,77,.7); outline-offset: 1px; }
+  .lg-caps { margin-top: 6px; font-size: .76rem; font-weight: 700; color: #8A5A0B; }
+  .lg-caps i { margin-right: 4px; }
+  #screenLogin .lg-hantar {
+    position: relative; overflow: hidden; height: 56px; margin-top: 6px; border: 0; border-radius: 16px; font-size: 1.05rem; font-weight: 800; letter-spacing: .02em; color: #fff;
+    background: linear-gradient(180deg, #1D7A58 0%, #0E4A36 100%);
+    box-shadow: 0 18px 30px -14px rgba(10,60,43,.95), inset 0 1px 0 rgba(255,255,255,.3), 0 0 0 1px rgba(214,178,94,.6);
+    transition: transform .2s ease, box-shadow .3s ease, background .3s ease;
+  }
+  #screenLogin .lg-hantar i { margin-right: 8px; color: #F3DC93; }
+  #screenLogin .lg-hantar::after { content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 36%; transform: skewX(-20deg); background: linear-gradient(100deg, transparent, rgba(255,255,255,.38), transparent); transition: left .8s ease; pointer-events: none; }
+  #screenLogin .lg-hantar:hover { color: #fff; background: linear-gradient(180deg, #218763, #115240); box-shadow: 0 22px 34px -14px rgba(10,60,43,1), inset 0 1px 0 rgba(255,255,255,.35), 0 0 0 1px rgba(230,204,133,.85), 0 0 24px -4px rgba(230,204,133,.5); }
+  #screenLogin .lg-hantar:hover::after { left: 130%; }
+  #screenLogin .lg-hantar:active { transform: translateY(1px); }
+  #screenLogin .lg-hantar:focus-visible { outline: 3px solid rgba(201,162,77,.75); outline-offset: 3px; }
+  .lg-ralat { margin: 0; text-align: center; font-size: .86rem; font-weight: 700; color: #9A1F3C; }
+  .lg-ralat:empty { display: none; }
+  .lg-ralat:not(:empty) { padding: 10px 14px; border-radius: 12px; border: 1px solid #F0C3CB; background: #FCEBEE; animation: lgGegar .45s ease; }
+  .lg-nota { margin-top: 18px; text-align: center; font-size: .76rem; font-weight: 600; color: #5B6B63; }
+  .lg-nota i { margin-right: 5px; color: #B8892F; }
+
+  @media (max-width: 1060px) and (min-width: 900px) {
+    .lg-hero { padding-left: 30px; padding-right: 30px; }
+    .lg-borang { padding-left: 36px; padding-right: 36px; }
+  }
+  @media (min-width: 900px) and (max-height: 760px) {
+    .lg-bismillah { display: none; }
+    .lg-hero { padding-top: 34px; }
+    .lg-skyline { height: 230px; }
+    .lg-garis { margin: 14px auto; }
+    .lg-borang { padding-top: 24px; padding-bottom: 18px; }
+    #screenLogin .login-emblem .logo-emblem { --em: 78px !important; }
+    .lg-form { gap: 11px; margin-top: 12px; }
+  }
+
+  /* ---- telefon & tablet kecil ---- */
+  @media (max-width: 899px) {
+    #screenLogin { align-items: flex-start !important; min-height: 100vh; min-height: 100dvh; padding: 0 0 86px; }
+    .lg-shell { display: block; width: 100%; min-height: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; animation: none; }
+    .lg-hero { padding: 30px 22px 156px; background: none; overflow: hidden; }
+    .lg-hero::after { display: none; }
+    .lg-hero::before { -webkit-mask-image: linear-gradient(180deg, #000, transparent 85%); mask-image: linear-gradient(180deg, #000, transparent 85%); }
+    .lg-bismillah, .lg-garis, .lg-ciri { display: none; }
+    .lg-hero-isi { max-width: 520px; }
+    .lg-jenama { margin-bottom: 8px; font-size: .7rem; }
+    #screenLogin .lg-daerah { font-size: clamp(1.4rem, 6.2vw, 1.9rem); }
+    .lg-tagline { font-size: .92rem; }
+    .lg-skyline { height: 156px; -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent); mask-image: linear-gradient(180deg, #000 72%, transparent); }
+    .lg-borang {
+      max-width: 520px; margin: -40px auto 0; padding: 20px 24px 22px; width: calc(100% - 28px); border-radius: 28px;
+      box-shadow: 0 34px 64px -30px rgba(2,14,10,.85), 0 0 0 1px rgba(214,178,94,.45);
+    }
+    #screenLogin .lg-borang .login-emblem { margin: 0 auto 8px; }
+    #screenLogin .login-emblem .logo-emblem { --em: 72px !important; }
+    .lg-tajuk { font-size: 1.38rem; }
+    .lg-form { margin-top: 14px; }
+  }
+  @media (max-width: 380px) {
+    .lg-borang { padding-left: 18px; padding-right: 18px; }
+    #screenLogin .lg-kotak .form-control { height: 52px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lg-shell, .lg-hero-isi, .lg-borang > *, #screenLogin .lg-borang .login-emblem, .lg-hero-bintang span, .lg-ralat:not(:empty) { animation: none !important; }
+    #screenLogin .lg-hantar, #screenLogin .lg-hantar::after { transition: none; }
+  }</style>
 </head>
 <body>
 
@@ -5178,7 +5428,6 @@
   <!-- SKRIN LOGIN                                                    -->
   <!-- ============================================================ -->
   <div id="screenLogin" class="login-wrapper d-flex align-items-center justify-content-center">
-    <div class="ambient-shimmer" aria-hidden="true"></div>
     <div class="islamic-pattern-layer" aria-hidden="true">
       <svg class="islamic-rosette rosette-1" viewBox="0 0 100 100">
         <g class="rosette-spin-cw"><polygon points="50,0 61,39 100,50 61,61 50,100 39,61 0,50 39,39"/></g>
@@ -5198,46 +5447,106 @@
       <span class="i-star" style="top:6%;left:55%;animation-delay:1s;"></span>
       <span class="i-star" style="top:90%;left:44%;animation-delay:2.8s;"></span>
     </div>
-    <div class="liquid-glow-blob" aria-hidden="true"></div>
-    <div class="card login-card shadow-lg">
-      <div class="glass-sheen" aria-hidden="true"></div>
-      <svg class="corner-ornament co-tl" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-corner-flourish"></use></svg>
-      <svg class="corner-ornament co-tr" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-corner-flourish"></use></svg>
-      <svg class="corner-ornament co-bl" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-corner-flourish"></use></svg>
-      <svg class="corner-ornament co-br" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-corner-flourish"></use></svg>
-      <div class="card-body p-4">
-        <div class="text-center mb-4">
-          <div class="login-emblem"><span class="logo-emblem cerah" style="--em:116px" role="img" aria-label="Logo E-Tasmik"><span class="em-aura"></span><svg class="em-tanda" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="47" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="1.1 3.45"/></svg><svg class="em-bintang" viewBox="-50 -50 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><rect x="-28" y="-28" width="56" height="56"/><rect x="-28" y="-28" width="56" height="56" transform="rotate(45)"/></g></svg><span class="em-cincin"></span><span class="em-orbit o1"><span class="em-kilau"></span></span><span class="em-orbit o2"><span class="em-kilau"></span></span><span class="em-inti"><i class="fa-solid fa-book-quran" aria-hidden="true"></i><img class="em-logo-sekolah" data-logo-sekolah="1" alt=""></span></span></div>
-          <div class="login-greeting">Ahlan Wasahlan ke</div>
-          <div class="brand-sub">Sistem e-Tasmik</div>
-          <h4 class="fw-bold mb-0">Log Masuk Sekolah</h4>
-          <div class="brand-tagline">Panitia Pendidikan Islam</div>
-          <div class="beads-divider mt-2" style="max-width:160px;margin-left:auto;margin-right:auto;"></div>
+    <div class="lg-shell">
+      <!-- PANEL KIRI/ATAS: jenama (zamrud + emas, pemandangan masjid). Telefon: jalur ringkas di atas borang. -->
+      <aside class="lg-hero" aria-label="Sistem e-Tasmik">
+        <div class="lg-hero-bintang" aria-hidden="true"><span style="top:9%;left:12%"></span><span style="top:17%;left:78%;animation-delay:.8s"></span><span style="top:30%;left:46%;animation-delay:1.6s"></span><span style="top:12%;left:58%;animation-delay:2.2s"></span><span style="top:38%;left:90%;animation-delay:1.1s"></span><span style="top:26%;left:6%;animation-delay:2.7s"></span></div>
+        <div class="lg-hero-isi">
+          <div class="lg-bismillah" lang="ar" dir="rtl">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+          <div class="lg-jenama"><i class="fa-solid fa-book-quran" aria-hidden="true"></i><span>Sistem e-Tasmik</span></div>
+          <h4 class="lg-daerah">Log Masuk Sekolah</h4>
+          <div class="lg-tagline">Panitia Pendidikan Islam</div>
+          <div class="lg-garis" aria-hidden="true"></div>
+          <ul class="lg-ciri">
+            <li><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i><span>Tasmik &amp; Hafazan</span></li>
+            <li><i class="fa-solid fa-chart-line" aria-hidden="true"></i><span>Analisis PERKASA</span></li>
+            <li><i class="fa-solid fa-award" aria-hidden="true"></i><span>Sijil &amp; Laporan</span></li>
+          </ul>
         </div>
-        <form id="formLogin">
-          <div class="mb-3">
-            <label class="form-label">Kod Sekolah <span class="text-muted small">(PPD: taip PPD)</span></label>
-            <input type="text" class="form-control form-control-lg text-uppercase" id="inputKodSekolah" value="" required maxlength="20" autocomplete="organization" autocapitalize="characters" spellcheck="false" placeholder="cth: XBA1234">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">ID Pengguna</label>
-            <input type="text" class="form-control form-control-lg" id="inputIdGuru" required autocomplete="username">
-          </div>
+        <svg class="lg-skyline" viewBox="0 0 800 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="lg-ufuk" cx=".5" cy="1" r=".78"><stop offset="0" stop-color="#FFE7A6" stop-opacity=".92"/><stop offset=".38" stop-color="#E3BF69" stop-opacity=".4"/><stop offset="1" stop-color="#D8B765" stop-opacity="0"/></radialGradient>
+            <linearGradient id="lg-siluet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A3828"/><stop offset="1" stop-color="#031610"/></linearGradient>
+            <linearGradient id="lg-siluet-jauh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#13553D" stop-opacity=".78"/><stop offset="1" stop-color="#0A3828" stop-opacity=".9"/></linearGradient>
+            <linearGradient id="lg-lampu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1BF"/><stop offset="1" stop-color="#EDB544"/></linearGradient>
+            <g id="lg-menara">
+              <path d="M-7 0L-5.5 -118H5.5L7 0Z"/>
+              <rect x="-12" y="-126" width="24" height="7" rx="2"/>
+              <path d="M-5.5 -126V-136H5.5V-126Z"/>
+              <path d="M-9 -136H9L0 -182Z"/>
+              <rect x="-.9" y="-196" width="1.8" height="16"/>
+              <circle cy="-198" r="2.6"/>
+              <path d="M-2 -100V-110Q-2 -113 0 -115Q2 -113 2 -110V-100Z M-2 -76V-86Q-2 -89 0 -91Q2 -89 2 -86V-76Z M-2 -52V-62Q-2 -65 0 -67Q2 -65 2 -62V-52Z" fill="url(#lg-lampu)" opacity=".9"/>
+            </g>
+            <g id="lg-kubah-kecil">
+              <path d="M-30 0C-30 -22 -20 -34 0 -46C20 -34 30 -22 30 0Z"/>
+              <rect x="-.8" y="-60" width="1.6" height="15"/>
+              <circle cy="-61" r="2.3"/>
+            </g>
+            <path id="lg-lengkung" d="M-8 0V-22Q-8 -34 0 -42Q8 -34 8 -22V0Z" fill="url(#lg-lampu)"/>
+          </defs>
+          <ellipse cx="400" cy="256" rx="560" ry="250" fill="url(#lg-ufuk)"/>
+          <g fill="url(#lg-siluet-jauh)">
+            <rect x="0" y="222" width="800" height="38"/>
+            <use href="#lg-kubah-kecil" x="64" y="222"/><use href="#lg-kubah-kecil" x="736" y="222"/>
+            <use href="#lg-kubah-kecil" transform="translate(196 224) scale(.8)"/>
+            <use href="#lg-kubah-kecil" transform="translate(604 224) scale(.8)"/>
+            <rect x="34" y="196" width="60" height="30"/><rect x="706" y="196" width="60" height="30"/>
+          </g>
+          <g fill="url(#lg-siluet)" stroke="#E6CC85" stroke-opacity=".38" stroke-width="1">
+            <use href="#lg-menara" x="118" y="244"/><use href="#lg-menara" x="682" y="244"/>
+            <rect x="140" y="204" width="120" height="42"/><rect x="540" y="204" width="120" height="42"/>
+            <use href="#lg-kubah-kecil" x="200" y="204"/><use href="#lg-kubah-kecil" x="600" y="204"/>
+            <rect x="262" y="168" width="276" height="78"/>
+            <rect x="272" y="160" width="256" height="10"/>
+            <path d="M318 160C318 116 350 88 400 70C450 88 482 116 482 160Z"/>
+            <rect x="399" y="40" width="2" height="31" stroke="none"/>
+            <circle cx="400" cy="38" r="3.2" stroke="none"/>
+            <rect x="0" y="244" width="800" height="16" stroke="none"/>
+          </g>
+          <path transform="translate(391 6) rotate(-24 9 12) scale(.95)" d="M14.5 3.5A8.5 8.5 0 1 0 14.5 20.5 10 10 0 1 1 14.5 3.5Z" fill="#F6E2A3"/>
+          <use href="#lg-lengkung" x="306" y="244"/><use href="#lg-lengkung" x="353" y="244"/><use href="#lg-lengkung" x="400" y="244"/><use href="#lg-lengkung" x="447" y="244"/><use href="#lg-lengkung" x="494" y="244"/>
+          <use href="#lg-lengkung" transform="translate(170 244) scale(.8)"/><use href="#lg-lengkung" transform="translate(230 244) scale(.8)"/>
+          <use href="#lg-lengkung" transform="translate(570 244) scale(.8)"/><use href="#lg-lengkung" transform="translate(630 244) scale(.8)"/>
+          <path d="M392 148V136Q392 128 400 122Q408 128 408 136V148Z" fill="url(#lg-lampu)" opacity=".85"/>
+        </svg>
+      </aside>
 
-          <div class="mb-3">
-            <label class="form-label">Kata Laluan</label>
-            <input type="password" class="form-control form-control-lg" id="inputKataLaluan" required autocomplete="current-password">
+      <!-- PANEL KANAN/BAWAH: borang -->
+      <section class="lg-borang">
+        <div class="login-emblem"><span class="logo-emblem cerah" style="--em:116px" role="img" aria-label="Logo E-Tasmik"><span class="em-aura"></span><svg class="em-tanda" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="47" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="1.1 3.45"/></svg><svg class="em-bintang" viewBox="-50 -50 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><rect x="-28" y="-28" width="56" height="56"/><rect x="-28" y="-28" width="56" height="56" transform="rotate(45)"/></g></svg><span class="em-cincin"></span><span class="em-orbit o1"><span class="em-kilau"></span></span><span class="em-orbit o2"><span class="em-kilau"></span></span><span class="em-inti"><i class="fa-solid fa-book-quran" aria-hidden="true"></i><img class="em-logo-sekolah" data-logo-sekolah="1" alt=""></span></span></div>
+        <div class="login-greeting">Ahlan Wasahlan</div>
+        <div class="lg-tajuk">Log masuk ke akaun anda</div>
+        <form id="formLogin" class="lg-form">
+          <div class="lg-medan">
+            <label class="form-label" for="inputKodSekolah">Kod Sekolah <span class="lg-pembantu">PPD: taip PPD</span></label>
+            <div class="lg-kotak"><i class="fa-solid fa-school lg-ikon" aria-hidden="true"></i>
+              <input type="text" class="form-control form-control-lg text-uppercase" id="inputKodSekolah" value="" required maxlength="20" autocomplete="organization" autocapitalize="characters" spellcheck="false" placeholder="cth: XBA1234"></div>
           </div>
-          <button type="submit" class="btn btn-success btn-lg w-100">
+          <div class="lg-medan">
+            <label class="form-label" for="inputIdGuru">ID Pengguna</label>
+            <div class="lg-kotak"><i class="fa-solid fa-user lg-ikon" aria-hidden="true"></i>
+              <input type="text" class="form-control form-control-lg" id="inputIdGuru" required autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="ID anda"></div>
+          </div>
+          <div class="lg-medan">
+            <label class="form-label" for="inputKataLaluan">Kata Laluan</label>
+            <div class="lg-kotak"><i class="fa-solid fa-lock lg-ikon" aria-hidden="true"></i>
+              <input type="password" class="form-control form-control-lg" id="inputKataLaluan" required autocomplete="current-password" placeholder="Kata laluan anda">
+              <button type="button" class="lg-mata" id="btnLihatKl" aria-label="Tunjukkan kata laluan" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button></div>
+            <div class="lg-caps d-none" id="lgCaps" role="status"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Caps Lock sedang hidup</div>
+          </div>
+          <button type="submit" class="btn btn-success btn-lg w-100 lg-hantar">
             <i class="fa-solid fa-right-to-bracket"></i> Log Masuk
           </button>
-          <div id="loginError" class="text-danger small mt-2 text-center"></div>
+          <div id="loginError" class="lg-ralat" role="alert" aria-live="polite"></div>
         </form>
-      </div>
+        <div class="lg-nota"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Setiap sekolah hanya melihat data sekolahnya sendiri</div>
+      </section>
     </div>
     <footer class="hakcipta hakcipta-login" role="contentinfo">
       <div class="hc-baris">&copy; 2026 <strong>Cikgu Rizwan Yusop</strong> <span class="hc-titik" aria-hidden="true">&middot;</span> Hakcipta Terpelihara</div>
-    </footer>  </div>
+    </footer>
+  </div>
 
   <!-- ============================================================ -->
   <!-- APLIKASI UTAMA (SPA)                                           -->
@@ -5289,6 +5598,14 @@
       <button type="button" data-nav="perkasa"><i class="fa-solid fa-bullseye"></i> PERKASA</button>
       <button type="button" data-nav="transkrip"><i class="fa-solid fa-file-lines"></i> Sijil</button>
     </nav>
+
+    <!-- AMARAN KATA LALUAN LALAI: muncul selepas log masuk jika kata laluan masih abcd1234 (tidak menyekat kerja; hilang apabila kata laluan ditukar) -->
+    <div id="sepanduKataLaluan" class="sepandu-kl d-none" role="status">
+      <i class="fa-solid fa-shield-halved sepandu-kl-ikon" aria-hidden="true"></i>
+      <span class="sepandu-kl-teks"><b>Kata laluan anda masih kata laluan lalai.</b> Tukar sekarang supaya data sekolah selamat.</span>
+      <button type="button" class="btn btn-sm sepandu-kl-btn" id="btnSepanduTukar"><i class="fa-solid fa-key"></i> Tukar sekarang</button>
+      <button type="button" class="sepandu-kl-tutup" id="btnSepanduTutup" aria-label="Tutup amaran"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
 
     <!-- KANDUNGAN UTAMA -->
     <main class="main-content">
@@ -6058,6 +6375,7 @@
            (butiran) memaparkan nama murid/guru dan setiap capaian dicatat dalam Log_Akses di pelayan. -->
       <section id="view-ppd" class="top-view d-none">
         <div class="p-3 ppd-konsol">
+          <div class="ppd-muat-bar" aria-hidden="true"></div>
 
           <!-- ============ PAPARAN DAERAH ============ -->
           <div id="ppdPaparanDaerah">
@@ -6067,6 +6385,18 @@
                 <p class="text-muted small mb-0" id="ppdNamaDaerah"></p>
               </div>
               <div class="ppd-tindakan">
+                <div class="dropdown">
+                  <button type="button" class="btn btn-sm btn-outline-success dropdown-toggle" id="btnPpdLaporanDaerah" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-file-pdf"></i> Laporan &amp; Eksport</button>
+                  <ul class="dropdown-menu dropdown-menu-end ppd-menu-laporan" aria-labelledby="btnPpdLaporanDaerah">
+                    <li><h6 class="dropdown-header">Cetak / simpan PDF</h6></li>
+                    <li><button type="button" class="dropdown-item" data-laporan="cetak-daerah"><i class="fa-solid fa-print"></i> Laporan Daerah <small>ringkasan + semua sekolah</small></button></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><h6 class="dropdown-header">Muat turun Excel (CSV)</h6></li>
+                    <li><button type="button" class="dropdown-item" data-laporan="csv-sekolah"><i class="fa-solid fa-file-csv"></i> Senarai &amp; prestasi sekolah</button></li>
+                    <li><button type="button" class="dropdown-item" data-laporan="csv-tahun"><i class="fa-solid fa-file-csv"></i> Penguasaan mengikut tahun &amp; tahap</button></li>
+                  </ul>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPpdMuat" title="Ambil data terkini (abaikan simpanan sementara)"><i class="fa-solid fa-arrows-rotate"></i> Muat semula</button>
                 <button type="button" class="btn btn-sm btn-outline-success" id="btnPpdSegarkan"><i class="fa-solid fa-rotate"></i> Segar Ringkasan</button>
                 <button type="button" class="btn btn-sm btn-success" id="btnPpdDaftar"><i class="fa-solid fa-plus"></i> Daftar Sekolah</button>
               </div>
@@ -6130,10 +6460,10 @@
                     </select>
                   </span>
                 </div>
-                <div class="table-responsive">
-                  <table class="table table-sm align-middle mb-0 ppd-jadual" id="tablePpdSekolah">
+                <div class="table-responsive ppd-bingkai-jadual">
+                  <table class="table table-sm align-middle mb-0 ppd-jadual ppd-jadual-lebar" id="tablePpdSekolah">
                     <thead>
-                      <tr><th>Kod</th><th>Sekolah</th><th>Status</th><th class="text-end">Murid</th><th>Thn 6 Al-Quran</th><th class="text-end">PERKASA</th><th class="text-end">Ditasmik 30h</th><th>Rekod terakhir</th><th>Dikemas kini</th><th></th></tr>
+                      <tr><th>Kod</th><th>Sekolah</th><th>Status</th><th class="text-end">Murid</th><th class="text-end">Guru</th><th class="text-end">Iqra'</th><th class="text-end">Al-Quran</th><th class="text-end">Khatam</th><th>Thn 6 Al-Quran</th><th class="text-end">PERKASA</th><th class="text-end">Ditasmik 30h</th><th>Rekod terakhir</th><th>Dikemas kini</th><th class="text-end">Tindakan</th></tr>
                     </thead>
                     <tbody></tbody>
                   </table>
@@ -6192,9 +6522,23 @@
                     <div class="small text-muted" id="ppdSkMeta"></div>
                   </div>
                   <div class="ppd-tindakan">
+                    <div class="dropdown">
+                      <button type="button" class="btn btn-sm btn-outline-success dropdown-toggle" id="btnPpdLaporanSekolah" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-file-pdf"></i> Laporan &amp; Eksport</button>
+                      <ul class="dropdown-menu dropdown-menu-end ppd-menu-laporan" aria-labelledby="btnPpdLaporanSekolah">
+                        <li><h6 class="dropdown-header">Cetak / simpan PDF</h6></li>
+                        <li><button type="button" class="dropdown-item" data-laporan="cetak-sekolah"><i class="fa-solid fa-print"></i> Laporan Sekolah <small>ringkasan, kelas, guru, PERKASA</small></button></li>
+                        <li><button type="button" class="dropdown-item" data-laporan="cetak-murid"><i class="fa-solid fa-print"></i> Senarai Murid <small>ikut penapis semasa</small></button></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Muat turun Excel (CSV)</h6></li>
+                        <li><button type="button" class="dropdown-item" data-laporan="csv-murid"><i class="fa-solid fa-file-csv"></i> Murid <small>ikut penapis semasa</small></button></li>
+                        <li><button type="button" class="dropdown-item" data-laporan="csv-kelas"><i class="fa-solid fa-file-csv"></i> Prestasi mengikut kelas</button></li>
+                        <li><button type="button" class="dropdown-item" data-laporan="csv-guru"><i class="fa-solid fa-file-csv"></i> Guru &amp; pentadbir</button></li>
+                      </ul>
+                    </div>
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPpdSkMuat"><i class="fa-solid fa-rotate"></i> Muat semula</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPpdSkReset"><i class="fa-solid fa-key"></i> Tetap semula Admin</button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" id="btnPpdSkStatus"><i class="fa-solid fa-pause"></i> Gantung</button>
+                    <button type="button" class="btn btn-sm btn-outline-warning" id="btnPpdSkStatus"><i class="fa-solid fa-pause"></i> Gantung</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" id="btnPpdSkPadam"><i class="fa-solid fa-trash-can"></i> Padam</button>
                   </div>
                 </div>
               </div>
@@ -6795,6 +7139,9 @@
   </div>
 
   <!-- Bootstrap 5 JS -->
+  <!-- Kawasan cetak laporan PPD (anak terus <body>): dikosongkan/diisi oleh cetakPpd_() sebelum window.print(); hanya ini kelihatan semasa cetakan -->
+  <div id="areaCetakPpd" class="cetak-ppd" aria-hidden="true"></div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -7227,6 +7574,8 @@ const apiPpdKemaskiniTetapanDaerah = gs('ppdKemaskiniTetapanDaerah');
 const apiPpdButiranSekolah = gs('ppdButiranSekolah');
 const apiPpdRekodMurid = gs('ppdRekodMurid');
 const apiPpdLogAkses = gs('ppdLogAkses');
+const apiPpdPadamSekolah = gs('ppdPadamSekolah');
+const apiPpdCatatEksport = gs('ppdCatatEksport');
 
 // ---------------------------------------------------------------
 // UTILITI UMUM
@@ -7373,9 +7722,15 @@ window.addEventListener('offline', kemaskiniStatusSambungan);
 const KUNCI_SESI_TEMPATAN = 'hubTasmik_sesi';        // sessionStorage: { token, user, sekolah }
 const KUNCI_KOD_TERAKHIR = 'hubTasmik_kodSekolah';   // localStorage: kod sekolah terakhir (pra-isi borang sahaja)
 let sedangTamatSesi_ = false;
+let kataLaluanLalai_ = false;   // pelayan memberitahu semasa log masuk bahawa kata laluan masih kata laluan lalai (abcd1234)
 
 function simpanSesiTempatan_() {
-  try { sessionStorage.setItem(KUNCI_SESI_TEMPATAN, JSON.stringify({ token: sesiToken, user: currentUser, sekolah: infoSekolah })); } catch (e) { /* abaikan */ }
+  try { sessionStorage.setItem(KUNCI_SESI_TEMPATAN, JSON.stringify({ token: sesiToken, user: currentUser, sekolah: infoSekolah, kl: kataLaluanLalai_ })); } catch (e) { /* abaikan */ }
+}
+/** Sepanduk amaran (tidak menyekat kerja) - hanya untuk akaun sekolah; PPD tidak pernah menerimanya. */
+function paparSepanduKl_(tunjuk) {
+  const el = document.getElementById('sepanduKataLaluan');
+  if (el) el.classList.toggle('d-none', !(tunjuk && kataLaluanLalai_ && currentUser && currentUser.Peranan !== 'PPD'));
 }
 function padamSesiTempatan_() {
   try { sessionStorage.removeItem(KUNCI_SESI_TEMPATAN); } catch (e) { /* abaikan */ }
@@ -7411,7 +7766,8 @@ function bersihkanPaparanData_() {
 
 /** Kembali ke skrin log masuk dan buang semua keadaan sesi/data. */
 function keluarKeLogin_(mesej) {
-  sesiToken = null; currentUser = null; infoSekolah = null;
+  sesiToken = null; currentUser = null; infoSekolah = null; kataLaluanLalai_ = false;
+  paparSepanduKl_(false);
   padamSesiTempatan_();
   bersihkanPaparanData_();
   tutupLoading();
@@ -7422,6 +7778,7 @@ function keluarKeLogin_(mesej) {
   document.getElementById('appShell').classList.add('d-none');
   document.getElementById('screenLogin').classList.remove('d-none');
   document.getElementById('inputKataLaluan').value = '';
+  sembunyiKataLaluan_();
   document.getElementById('loginError').textContent = mesej || '';
   terapkanPenjenamaan_();
   kemaskiniBadgeMenunggu();
@@ -7432,6 +7789,30 @@ function tamatkanSesiKlien_(mesej) {
   sedangTamatSesi_ = true;               // direset apabila log masuk berjaya
   keluarKeLogin_(mesej);
 }
+
+// Skrin log masuk: butang mata (tunjuk/sembunyi kata laluan) + amaran Caps Lock
+function sembunyiKataLaluan_() {
+  const inp = document.getElementById('inputKataLaluan'), btn = document.getElementById('btnLihatKl');
+  inp.type = 'password';
+  btn.setAttribute('aria-pressed', 'false'); btn.setAttribute('aria-label', 'Tunjukkan kata laluan');
+  btn.firstElementChild.className = 'fa-regular fa-eye';
+}
+document.getElementById('btnLihatKl').addEventListener('click', function () {
+  const inp = document.getElementById('inputKataLaluan');
+  const tunjuk = inp.type === 'password';
+  inp.type = tunjuk ? 'text' : 'password';
+  this.setAttribute('aria-pressed', tunjuk ? 'true' : 'false');
+  this.setAttribute('aria-label', tunjuk ? 'Sembunyikan kata laluan' : 'Tunjukkan kata laluan');
+  this.firstElementChild.className = tunjuk ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+  inp.focus();
+});
+['keydown', 'keyup'].forEach(function (ev) {
+  document.getElementById('inputKataLaluan').addEventListener(ev, function (e) {
+    const hidup = typeof e.getModifierState === 'function' && e.getModifierState('CapsLock');
+    document.getElementById('lgCaps').classList.toggle('d-none', !hidup);
+  });
+});
+document.getElementById('inputKataLaluan').addEventListener('blur', function () { document.getElementById('lgCaps').classList.add('d-none'); });
 
 document.getElementById('formLogin').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -7453,9 +7834,11 @@ document.getElementById('formLogin').addEventListener('submit', async function (
     sesiToken = hasil.token;
     currentUser = hasil.guru;
     infoSekolah = hasil.sekolah || null;
+    kataLaluanLalai_ = !!hasil.kataLaluanLalai;
     try { localStorage.setItem(KUNCI_KOD_TERAKHIR, kod); } catch (err) { /* abaikan */ }
     simpanSesiTempatan_();
     document.getElementById('inputKataLaluan').value = '';
+    sembunyiKataLaluan_();
     // `true` = papar mesej "Selamat Datang" - HANYA pada log masuk sebenar (bukan sambung semula sesi senyap).
     if (currentUser.Peranan === 'PPD') mulakanAppPPD(); else mulakanApp(true);
   } catch (err) {
@@ -7481,6 +7864,7 @@ function semakSesiSediaAda() {
     const simpan = JSON.parse(sessionStorage.getItem(KUNCI_SESI_TEMPATAN) || 'null');
     if (simpan && simpan.token && simpan.user) {
       sesiToken = simpan.token; currentUser = simpan.user; infoSekolah = simpan.sekolah || null;
+      kataLaluanLalai_ = !!simpan.kl;
       if (currentUser.Peranan === 'PPD') mulakanAppPPD(); else mulakanApp();
     }
   } catch (e) { /* abaikan */ }
@@ -7494,6 +7878,7 @@ async function mulakanApp(papatSelamatDatang) {
   document.getElementById('appShell').classList.remove('d-none');
   document.getElementById('navNamaGuru').textContent = currentUser.Nama + ' (' + currentUser.Peranan + ')';
   document.getElementById('navNamaGuruMenu').textContent = currentUser.Nama;
+  paparSepanduKl_(true);
   kemaskiniBadgeMenunggu();   // segera: lencana "menunggu sync" mesti mengikut queue pengguna INI (bukan sisa sesi sebelumnya) sebelum data dimuat
   // Ucapan hero kini TETAP ("Selamat Datang ke Sistem E-Tasmik <nama sekolah>") - tiada nama guru.
   isiTarikhHero_();
@@ -11134,6 +11519,8 @@ function salinTeks_(teks) {
 // ---------------------------------------------------------------
 // TUKAR KATA LALUAN SENDIRI (semua peranan)
 // ---------------------------------------------------------------
+document.getElementById('btnSepanduTukar').addEventListener('click', function () { document.getElementById('btnTukarKataLaluan').click(); });
+document.getElementById('btnSepanduTutup').addEventListener('click', function () { document.getElementById('sepanduKataLaluan').classList.add('d-none'); });
 document.getElementById('btnTukarKataLaluan').addEventListener('click', async function () {
   const { value: nilai, isConfirmed } = await Swal.fire({
     title: 'Tukar Kata Laluan',
@@ -11159,6 +11546,7 @@ document.getElementById('btnTukarKataLaluan').addEventListener('click', async fu
     tutupLoading();
     if (!hasil.success) { toastRalat(hasil.message || 'Gagal menukar kata laluan.'); return; }
     toastKejayaan(hasil.message || 'Kata laluan ditukar!');
+    kataLaluanLalai_ = false; paparSepanduKl_(false); simpanSesiTempatan_();
   } catch (err) {
     tutupLoading();
     toastRalat('Gagal menukar kata laluan (' + ((err && err.message) || 'ralat tidak diketahui') + ').');
@@ -11633,16 +12021,38 @@ function tunjukPaparanDaerahPpd_() {
   document.getElementById('ppdPaparanDaerah').classList.remove('d-none');
 }
 
-async function muatPpd() {
+/**
+ * Muat Konsol PPD dengan strategi "tunjuk dahulu, kemas kini kemudian" (stale-while-revalidate):
+ *  - jika sesi ini sudah ada data (cachePpd), ia dipaparkan SERTA-MERTA dan data baharu ditarik di latar (bar nipis di atas konsol);
+ *    paparan hanya dilukis semula jika data benar-benar berbeza (penanda dijanaPada) - elak kelipan & carta dilukis berulang;
+ *  - kali pertama: rangka (skeleton) sementara menunggu; pelayan pula menyimpan senarai dalam cache 5 minit.
+ * `paksa` = abaikan cache pelayan (butang "Segar semula" / selepas tindakan yang mengubah senarai).
+ */
+let muatPpdSiri_ = 0;
+async function muatPpd(paksa) {
+  const konsol = document.querySelector('.ppd-konsol');
   const badan = document.querySelector('#tablePpdSekolah tbody');
-  badan.innerHTML = '<tr><td colspan="10">' + skeletonSenarai_(3) + '</td></tr>';
+  const adaData = !!(cachePpd && cachePpd.success);
+  const siri = ++muatPpdSiri_;
+  if (!adaData) badan.innerHTML = '<tr><td colspan="14">' + skeletonSenarai_(3) + '</td></tr>';   // data lama (jika ada) kekal terpapar sementara menunggu
+  konsol.classList.add('sedang-memuat');
   try {
-    const hasil = await cubaSemulaClient_(function () { return apiPpdSenaraiSekolah(); });
-    if (!hasil.success) { badan.innerHTML = '<tr><td colspan="10" class="text-danger">' + escapeHtml(hasil.message || 'Gagal memuatkan senarai sekolah.') + '</td></tr>'; return; }
+    const hasil = await cubaSemulaClient_(function () { return apiPpdSenaraiSekolah(!!paksa); });
+    if (siri !== muatPpdSiri_) return;           // permintaan lebih baharu sudah dimulakan
+    if (!hasil.success) {
+      if (!adaData) badan.innerHTML = '<tr><td colspan="14" class="text-danger">' + escapeHtml(hasil.message || 'Gagal memuatkan senarai sekolah.') + '</td></tr>';
+      else toastRalat(hasil.message || 'Gagal mengemas kini data PPD.');
+      return;
+    }
+    const berubah = !adaData || !cachePpd || hasil.dijanaPada !== cachePpd.dijanaPada || !!paksa;
     cachePpd = hasil;
-    renderPpd(hasil);
+    if (berubah) renderPpd(hasil);
   } catch (err) {
-    badan.innerHTML = '<tr><td colspan="10" class="text-danger">Gagal memuatkan senarai sekolah (' + escapeHtml((err && err.message) || 'ralat') + ').</td></tr>';
+    if (siri !== muatPpdSiri_) return;
+    if (!adaData) badan.innerHTML = '<tr><td colspan="14" class="text-danger">Gagal memuatkan senarai sekolah (' + escapeHtml((err && err.message) || 'ralat') + ').</td></tr>';
+    else toastRalat('Tidak dapat mengemas kini data PPD (menunjukkan data terakhir).');
+  } finally {
+    if (siri === muatPpdSiri_) konsol.classList.remove('sedang-memuat');
   }
 }
 
@@ -11673,6 +12083,7 @@ function renderPpd(hasil) {
   const nota = [];
   if (a.kemaskiniTertua) nota.push('Ringkasan paling lama dikemas kini: ' + a.kemaskiniTertua);
   if (a.belumRingkasan.length) nota.push(a.belumRingkasan.length + ' sekolah belum ada analisis penuh - tekan "Segar Ringkasan".');
+  if (hasil.dijanaPada) nota.push('Data dikira ' + stempelMasa_(hasil.dijanaPada) + (hasil.dariCache ? ' (paparan pantas dari simpanan sementara; tekan "Muat semula" untuk data terkini)' : ''));
   setTeks_('ppdNotaSegar', nota.join(' · '));
 
   // bar sasaran
@@ -11741,35 +12152,41 @@ function renderSenaraiSekolahPpd_() {
   const badan = document.querySelector('#tablePpdSekolah tbody');
   const semua = cachePpd ? cachePpd.senarai : [];
   if (semua.length === 0) {
-    badan.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Belum ada sekolah didaftarkan. Tekan "Daftar Sekolah".</td></tr>';
+    badan.innerHTML = '<tr><td colspan="14" class="text-center text-muted">Belum ada sekolah didaftarkan. Tekan "Daftar Sekolah".</td></tr>';
     setTeks_('ppdBilSekolah', '');
     return;
   }
   const senarai = sekolahTertapis_();
   setTeks_('ppdBilSekolah', senarai.length === semua.length ? '(' + semua.length + ')' : '(' + senarai.length + ' daripada ' + semua.length + ')');
-  if (!senarai.length) { badan.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Tiada sekolah sepadan dengan carian.</td></tr>'; return; }
+  if (!senarai.length) { badan.innerHTML = '<tr><td colspan="14" class="text-center text-muted">Tiada sekolah sepadan dengan carian.</td></tr>'; return; }
+  const sasaran = (cachePpd.daerah && cachePpd.daerah.Sasaran_PPD_Tahun6) || 65;
   badan.innerHTML = senarai.map(function (p) {
     const s = p.s, r = s.Ringkasan, x = p.a;
     const aktifKah = s.Status === 'Aktif';
     const t6 = r && r.Tahun6_Murid ? Math.round((r.Tahun6_Menguasai / r.Tahun6_Murid) * 100) : null;
-    const sasaran = (cachePpd.daerah && cachePpd.daerah.Sasaran_PPD_Tahun6) || 65;
-    return '<tr class="ppd-baris" tabindex="0" data-buka="' + escapeHtml(s.Kod_Sekolah) + '">' +
-      '<td><code>' + escapeHtml(s.Kod_Sekolah) + '</code></td>' +
-      '<td class="ppd-nama-sekolah">' + escapeHtml(s.Nama_Sekolah) + '</td>' +
+    const nombor = function (v) { return v === null || v === undefined ? '<span class="text-muted">-</span>' : formatNombor_(v); };
+    const kod = escapeHtml(s.Kod_Sekolah), nama = escapeHtml(s.Nama_Sekolah);
+    return '<tr class="ppd-baris" tabindex="0" data-buka="' + kod + '">' +
+      '<td><code>' + kod + '</code></td>' +
+      '<td class="ppd-nama-sekolah">' + nama + '<small class="ppd-sub-sekolah">Didaftar ' + escapeHtml(s.Tarikh_Daftar || '-') + '</small></td>' +
       '<td>' + lencanaStatusPpd_(s.Status) + '</td>' +
       '<td class="text-end">' + (r ? formatNombor_(r.Jumlah_Murid) : '-') + '</td>' +
+      '<td class="text-end">' + nombor(x ? x.guru : null) + '</td>' +
+      '<td class="text-end">' + nombor(r ? r.Jumlah_Iqra : null) + '</td>' +
+      '<td class="text-end">' + nombor(r ? r.Jumlah_Quran : null) + '</td>' +
+      '<td class="text-end">' + nombor(r ? r.Jumlah_Khatam : null) + '</td>' +
       '<td>' + (t6 === null ? '<span class="text-muted">-</span>' : '<div class="ppd-mini-trek" title="' + t6 + '% (sasaran ' + sasaran + '%)"><div class="ppd-mini-trek-isi' + (t6 >= sasaran ? ' tercapai' : '') + '" style="width:' + t6 + '%"></div></div><span class="ppd-mini-trek-teks">' + t6 + '%</span>') + '</td>' +
       '<td class="text-end">' + (r ? r.Perkasa : '-') + '</td>' +
       '<td class="text-end">' + (x && x.aktif30Peratus !== null ? x.aktif30Peratus + '%' : '-') + '</td>' +
       '<td class="small">' + (x && x.adaAnalisis ? escapeHtml(hariTeks_(x.hariSejak)) : '-') + '</td>' +
       '<td class="small">' + (r ? escapeHtml(r.Dikemaskini) : '-') + '</td>' +
-      '<td class="text-nowrap">' +
-        '<button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Tetapkan semula kata laluan Admin sekolah" data-aksi="reset" data-kod="' + escapeHtml(s.Kod_Sekolah) + '" data-nama="' + escapeHtml(s.Nama_Sekolah) + '"><i class="fa-solid fa-key"></i></button>' +
-        '<button type="button" class="btn btn-sm ' + (aktifKah ? 'btn-outline-danger' : 'btn-outline-success') + '" title="' + (aktifKah ? 'Gantung sekolah' : 'Aktifkan sekolah') + '" data-aksi="status" data-kod="' + escapeHtml(s.Kod_Sekolah) + '" data-nama="' + escapeHtml(s.Nama_Sekolah) + '" data-status="' + (aktifKah ? 'Digantung' : 'Aktif') + '"><i class="fa-solid ' + (aktifKah ? 'fa-pause' : 'fa-play') + '"></i></button>' +
+      '<td class="text-nowrap ppd-aksi-sel">' +
+        '<button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Tetapkan semula kata laluan Admin sekolah" aria-label="Tetapkan semula kata laluan Admin ' + nama + '" data-aksi="reset" data-kod="' + kod + '" data-nama="' + nama + '"><i class="fa-solid fa-key"></i></button>' +
+        '<button type="button" class="btn btn-sm me-1 ' + (aktifKah ? 'btn-outline-warning' : 'btn-outline-success') + '" title="' + (aktifKah ? 'Gantung sekolah' : 'Aktifkan sekolah') + '" aria-label="' + (aktifKah ? 'Gantung ' : 'Aktifkan ') + nama + '" data-aksi="status" data-kod="' + kod + '" data-nama="' + nama + '" data-status="' + (aktifKah ? 'Digantung' : 'Aktif') + '"><i class="fa-solid ' + (aktifKah ? 'fa-pause' : 'fa-play') + '"></i></button>' +
+        '<button type="button" class="btn btn-sm btn-outline-danger" title="Padam sekolah" aria-label="Padam ' + nama + '" data-aksi="padam" data-kod="' + kod + '" data-nama="' + nama + '"><i class="fa-solid fa-trash-can"></i></button>' +
       '</td></tr>';
   }).join('');
 }
-
 // ------------------------- segmen (tab) -------------------------
 function pasangSegmenPpd_(idSegmen, awalanPane, pemuat) {
   document.getElementById(idSegmen).addEventListener('click', function (e) {
@@ -11797,32 +12214,51 @@ pasangSegmenPpd_('ppdSegmenSekolah', 'ppdSkPane', function (pane) {
 // ------------------------- butiran sekolah -------------------------
 let kodSekolahPpdAktif_ = null;
 
-async function bukaButiranSekolah_(kod) {
+// Butiran sekolah yang pernah dibuka disimpan dalam ingatan pelayar sahaja (dikosongkan semasa log keluar): buka semula serta-merta, segar di latar.
+const simpanButiranPpd_ = {};
+async function bukaButiranSekolah_(kod, paksa) {
   kodSekolahPpdAktif_ = kod;
-  cacheButiranSekolah_ = null;
+  const simpan = !paksa && simpanButiranPpd_[kod] ? simpanButiranPpd_[kod] : null;
+  cacheButiranSekolah_ = simpan;
+  const ruangan = document.querySelector('.ppd-konsol');   // penanda bar muat: kelas berasingan daripada muat senarai
   document.getElementById('ppdPaparanDaerah').classList.add('d-none');
   document.getElementById('ppdPaparanSekolah').classList.remove('d-none');
   const s = cachePpd && cachePpd.senarai.filter(function (x) { return x.Kod_Sekolah === kod; })[0];
   setTeks_('ppdSkKod', kod);
   setTeks_('ppdSkNama', s ? s.Nama_Sekolah : kod);
   document.getElementById('ppdSkStatus').innerHTML = s ? lencanaStatusPpd_(s.Status) : '';
-  setTeks_('ppdSkMeta', 'Memuatkan data sekolah...');
-  document.getElementById('ppdSkKpi').innerHTML = '';
-  ['tablePpdSkKelas', 'tablePpdSkMurid', 'tablePpdSkGuru', 'tablePpdSkAktiviti'].forEach(function (id) {
-    document.querySelector('#' + id + ' tbody').innerHTML = '<tr><td colspan="9">' + skeletonSenarai_(3) + '</td></tr>';
-  });
   // segmen kembali ke Ringkasan
   document.querySelectorAll('#ppdSegmenSekolah .ppd-segmen-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.pane === 'ringkasan'); });
   document.querySelectorAll('#ppdPaparanSekolah .ppd-pane').forEach(function (p) { p.classList.toggle('d-none', p.id !== 'ppdSkPaneRingkasan'); });
   window.scrollTo({ top: 0, behavior: 'auto' });
+  if (simpan) {
+    renderButiranSekolah_(simpan);
+    ruangan.classList.add('sedang-memuat-sk');
+  } else {
+    setTeks_('ppdSkMeta', 'Memuatkan data sekolah...');
+    document.getElementById('ppdSkKpi').innerHTML = '';
+    ['tablePpdSkKelas', 'tablePpdSkMurid', 'tablePpdSkGuru', 'tablePpdSkAktiviti'].forEach(function (id) {
+      document.querySelector('#' + id + ' tbody').innerHTML = '<tr><td colspan="9">' + skeletonSenarai_(3) + '</td></tr>';
+    });
+    ruangan.classList.add('sedang-memuat-sk');
+  }
   try {
-    const hasil = await cubaSemulaClient_(function () { return apiPpdButiranSekolah(kod); });
+    const hasil = await cubaSemulaClient_(function () { return apiPpdButiranSekolah(kod, !!paksa); });
     if (kodSekolahPpdAktif_ !== kod) return;     // pengguna sudah beralih
-    if (!hasil.success) { setTeks_('ppdSkMeta', hasil.message || 'Gagal memuatkan butiran sekolah.'); toastRalat(hasil.message || 'Gagal memuatkan butiran sekolah.'); return; }
+    if (!hasil.success) {
+      if (!simpan) setTeks_('ppdSkMeta', hasil.message || 'Gagal memuatkan butiran sekolah.');
+      toastRalat(hasil.message || 'Gagal memuatkan butiran sekolah.');
+      return;
+    }
+    simpanButiranPpd_[kod] = hasil;
+    if (simpan && hasil.janaPada === simpan.janaPada) return;   // tiada perubahan: tidak perlu lukis semula
     cacheButiranSekolah_ = hasil;
     renderButiranSekolah_(hasil);
   } catch (err) {
-    setTeks_('ppdSkMeta', 'Gagal memuatkan butiran sekolah (' + ((err && err.message) || 'ralat') + ').');
+    if (!simpan) setTeks_('ppdSkMeta', 'Gagal memuatkan butiran sekolah (' + ((err && err.message) || 'ralat') + ').');
+    else toastRalat('Tidak dapat mengemas kini data sekolah (menunjukkan data terakhir).');
+  } finally {
+    if (kodSekolahPpdAktif_ === kod) ruangan.classList.remove('sedang-memuat-sk');
   }
 }
 
@@ -11939,14 +12375,18 @@ function muridTertapisPpd_() {
   });
 }
 
-function renderMuridPpd_() {
+const LANGKAH_MURID_PPD_ = 150;
+let hadMuridPpd_ = LANGKAH_MURID_PPD_;
+/** tambah=false: senarai baharu (kembali ke 150 pertama); tambah=true: "Papar lagi". */
+function renderMuridPpd_(tambah) {
   const h = cacheButiranSekolah_;
   const badan = document.querySelector('#tablePpdSkMurid tbody');
   if (!h) { badan.innerHTML = ''; return; }
+  if (tambah !== true) hadMuridPpd_ = LANGKAH_MURID_PPD_;
   const senarai = muridTertapisPpd_();
   setTeks_('ppdBilMurid', senarai.length === h.murid.length ? '(' + h.murid.length + ')' : '(' + senarai.length + ' daripada ' + h.murid.length + ')');
   if (!senarai.length) { badan.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Tiada murid sepadan.</td></tr>'; return; }
-  const had = 400;
+  const had = hadMuridPpd_;
   badan.innerHTML = senarai.slice(0, had).map(function (m) {
     return '<tr class="ppd-baris" tabindex="0" data-murid="' + escapeHtml(m.id) + '">' +
       '<td class="ppd-nama-murid">' + escapeHtml(m.nama) + (m.perkasa ? ' <span class="ppd-tanda perkasa" title="PERKASA">P</span>' : '') + (m.khas ? ' <span class="ppd-tanda khas" title="' + escapeHtml(m.khas) + '">K</span>' : '') + '</td>' +
@@ -11957,10 +12397,15 @@ function renderMuridPpd_() {
       '<td class="text-end ' + (m.hari !== null && m.hari > 30 ? 'text-danger fw-bold' : '') + '">' + (m.hari === null ? '-' : m.hari) + '</td>' +
       '<td class="text-end">' + m.bil + '</td>' +
       '<td>' + lencanaMutu_(m.status) + '</td></tr>';
-  }).join('') + (senarai.length > had ? '<tr><td colspan="8" class="text-center text-muted small">Memaparkan ' + had + ' pertama daripada ' + senarai.length + '. Gunakan carian/penapis untuk mengecilkan senarai.</td></tr>' : '');
+  }).join('') + (senarai.length > had ? '<tr class="ppd-baris-lagi"><td colspan="8" class="text-center"><span class="text-muted small me-2">Memaparkan ' + had + ' daripada ' + senarai.length + ' murid.</span><button type="button" class="btn btn-sm btn-outline-success" data-aksi="lagi"><i class="fa-solid fa-angles-down"></i> Papar ' + Math.min(LANGKAH_MURID_PPD_, senarai.length - had) + ' lagi</button></td></tr>' : '');
 }
-['ppdCariMurid', 'ppdTapisTahun', 'ppdTapisKelas', 'ppdTapisKategori', 'ppdTapisKhas'].forEach(function (id) {
-  document.getElementById(id).addEventListener(id === 'ppdCariMurid' ? 'input' : 'change', renderMuridPpd_);
+let masaCariMuridPpd_ = null;
+document.getElementById('ppdCariMurid').addEventListener('input', function () {
+  clearTimeout(masaCariMuridPpd_);
+  masaCariMuridPpd_ = setTimeout(function () { renderMuridPpd_(); }, 160);
+});
+['ppdTapisTahun', 'ppdTapisKelas', 'ppdTapisKategori', 'ppdTapisKhas'].forEach(function (id) {
+  document.getElementById(id).addEventListener('change', function () { renderMuridPpd_(); });
 });
 
 function renderGuruPpd_(h) {
@@ -12029,15 +12474,15 @@ function paparKelayakan_(tajuk, kodSekolah, akaun) {
     return '<div class="ppd-kelayakan">' +
       '<div><span class="text-muted small">Kod Sekolah</span> <code>' + escapeHtml(kodSekolah) + '</code></div>' +
       '<div><span class="text-muted small">ID</span> <code>' + escapeHtml(a.ID_Guru) + '</code>' + (a.Peranan ? ' <span class="text-muted small">(' + escapeHtml(a.Peranan) + ')</span>' : '') + '</div>' +
-      '<div><span class="text-muted small">Kata laluan sementara</span> <code class="ppd-kata-laluan">' + escapeHtml(a.kataLaluanSementara) + '</code></div>' +
+      '<div><span class="text-muted small">Kata laluan lalai</span> <code class="ppd-kata-laluan">' + escapeHtml(a.kataLaluanSementara) + '</code></div>' +
       (a.sebab ? '<div class="small text-muted">' + escapeHtml(a.sebab) + '</div>' : '') + '</div>';
   }).join('');
   const teksSalin = akaun.map(function (a) {
-    return 'Kod Sekolah: ' + kodSekolah + '\nID: ' + a.ID_Guru + '\nKata laluan sementara: ' + a.kataLaluanSementara;
+    return 'Kod Sekolah: ' + kodSekolah + '\nID: ' + a.ID_Guru + '\nKata laluan lalai: ' + a.kataLaluanSementara;
   }).join('\n\n');
   return Swal.fire({
     title: tajuk, icon: 'success', width: 520, allowOutsideClick: false,
-    html: blok + '<p class="small text-danger mt-2 mb-0">Paparan ini SEKALI sahaja. Salin dan serahkan kepada pentadbir sekolah; mereka dinasihatkan menukar kata laluan selepas log masuk pertama.</p>',
+    html: blok + '<p class="small text-danger mt-2 mb-0">Ini kata laluan lalai sistem. Serahkan kepada pentadbir sekolah; sistem akan mengingatkan mereka menukarnya selepas log masuk.</p>',
     showCancelButton: true, confirmButtonText: 'Salin & Tutup', cancelButtonText: 'Tutup', confirmButtonColor: '#1F7C5B'
   }).then(function (r) { if (r.isConfirmed) salinTeks_(teksSalin); });
 }
@@ -12065,7 +12510,7 @@ document.getElementById('formDaftarSekolah').addEventListener('submit', async fu
     tutupLoading();
     if (!hasil.success) { ralatEl.textContent = hasil.message || 'Gagal mendaftarkan sekolah.'; return; }
     modalDaftarSekolahInstance.hide();
-    muatPpd();
+    muatPpd(true);
     if (hasil.akaun && hasil.akaun.length) await paparKelayakan_('Sekolah berjaya didaftarkan', hasil.kod, hasil.akaun);
     else toastKejayaan(hasil.message || 'Sekolah didaftarkan.');
   } catch (err) {
@@ -12093,7 +12538,7 @@ async function tukarStatusSekolahPpd_(kod, nama, status) {
 
 async function resetAdminSekolahPpd_(kod, nama) {
   const sah = await Swal.fire({
-    title: 'Tetapkan semula kata laluan Admin?', text: 'Kata laluan sementara baharu dijana untuk akaun Admin ' + nama + '. Sesi Admin itu ditamatkan. Tindakan ini dicatat dalam Log Capaian PPD.',
+    title: 'Tetapkan semula kata laluan Admin?', text: 'Kata laluan Admin ' + nama + ' dikembalikan kepada kata laluan lalai sistem. Sesi Admin itu ditamatkan. Tindakan ini dicatat dalam Log Capaian PPD.',
     icon: 'question', showCancelButton: true, confirmButtonText: 'Tetapkan semula', cancelButtonText: 'Batal', confirmButtonColor: '#1F7C5B'
   });
   if (!sah.isConfirmed) return;
@@ -12102,10 +12547,277 @@ async function resetAdminSekolahPpd_(kod, nama) {
     const hasil = await apiPpdTetapSemulaAdminSekolah(kod);
     tutupLoading();
     if (!hasil.success) { toastRalat(hasil.message || 'Gagal menetapkan semula.'); return; }
-    await paparKelayakan_('Kata laluan sementara Admin', hasil.kod, [{ ID_Guru: hasil.ID_Guru, Peranan: 'Admin', kataLaluanSementara: hasil.kataLaluanSementara }]);
+    await paparKelayakan_('Kata laluan lalai Admin', hasil.kod, [{ ID_Guru: hasil.ID_Guru, Peranan: 'Admin', kataLaluanSementara: hasil.kataLaluanSementara }]);
   } catch (err) { tutupLoading(); toastRalat('Gagal menetapkan semula kata laluan.'); }
 }
 
+// ------------------------- padam sekolah -------------------------
+/** Padam sekolah daripada registri PPD. Pengesahan: taip semula kod sekolah (pelayan menyemak sekali lagi). Fail data TIDAK dipadam. */
+async function padamSekolahPpd_(kod, nama) {
+  const sah = await Swal.fire({
+    icon: 'warning', title: 'Padam sekolah ini?', width: 540,
+    html: '<div class="text-start small">' +
+      '<p class="mb-2"><b>' + escapeHtml(nama) + '</b> (<code>' + escapeHtml(kod) + '</code>) akan dikeluarkan daripada senarai PPD dan <b>tidak boleh log masuk lagi</b>.</p>' +
+      '<p class="mb-2">Fail data sekolah (Google Sheet) <b>tidak dipadam</b> &mdash; ia kekal dalam Google Drive. Tindakan ini dicatat dalam Log Capaian PPD.</p>' +
+      '<p class="mb-1">Taip kod sekolah <b>' + escapeHtml(kod) + '</b> untuk mengesahkan:</p></div>',
+    input: 'text', inputPlaceholder: kod,
+    inputAttributes: { autocapitalize: 'characters', autocomplete: 'off', spellcheck: 'false', 'aria-label': 'Taip kod sekolah untuk mengesahkan pemadaman' },
+    showCancelButton: true, confirmButtonText: 'Padam sekolah', cancelButtonText: 'Batal', confirmButtonColor: '#B3261E',
+    inputValidator: function (v) { if (String(v || '').trim().toUpperCase() !== String(kod).toUpperCase()) return 'Kod tidak sepadan. Taip ' + kod + ' dengan tepat.'; }
+  });
+  if (!sah.isConfirmed) return false;
+  tunjukLoading('Memadam sekolah...');
+  try {
+    const hasil = await apiPpdPadamSekolah(kod, String(sah.value).trim());
+    tutupLoading();
+    if (!hasil.success) { toastRalat(hasil.message || 'Gagal memadam sekolah.'); return false; }
+    if (cachePpd) {
+      cachePpd.senarai = cachePpd.senarai.filter(function (s) { return s.Kod_Sekolah !== kod; });
+      if (cachePpd.analisis) cachePpd.analisis.sekolahSenarai = cachePpd.analisis.sekolahSenarai.filter(function (s) { return s.kod !== kod; });
+    }
+    await Swal.fire({ icon: 'success', title: 'Sekolah dipadam', html: '<div class="small text-start">' + escapeHtml(hasil.message || '') + '</div>', confirmButtonColor: '#1F7C5B' });
+    return true;
+  } catch (err) { tutupLoading(); toastRalat('Gagal memadam sekolah (' + ((err && err.message) || 'ralat') + ').'); return false; }
+}
+
+// ------------------------- cetak (PDF) & eksport (CSV) -------------------------
+// Semua dijana di pelayar daripada data yang SUDAH dimuat. Setiap cetakan/eksport dicatat di pelayan DAHULU (gagal-tertutup: jika log gagal, tiada fail/cetakan).
+function stempelMasa_(ms) {
+  const d = ms ? new Date(ms) : new Date(), p = function (n) { return ('0' + n).slice(-2); };
+  return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
+function tarikhFail_() { const d = new Date(), p = function (n) { return ('0' + n).slice(-2); }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+function namaFailBersih_(s) { return String(s || '').replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 40) || 'laporan'; }
+
+async function catatEksportPpd_(kod, jenis) {
+  try {
+    const h = await apiPpdCatatEksport(kod || '', jenis);
+    if (h && h.success) return true;
+    toastRalat((h && h.message) || 'Dibatalkan: eksport tidak dapat dicatat dalam log capaian.');
+  } catch (err) { toastRalat('Dibatalkan: eksport tidak dapat dicatat (' + ((err && err.message) || 'ralat') + ').'); }
+  return false;
+}
+
+/** Sel CSV: petik berganda digandakan; teks bermula = + - @ diberi awalan ' supaya Excel tidak mentafsirnya sebagai formula (nombor tidak disentuh). */
+function selCsv_(v) {
+  if (v === null || v === undefined) return '""';
+  if (typeof v === 'number') return String(v);
+  let s = String(v);
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return '"' + s.replace(/"/g, '""') + '"';
+}
+function muatTurunCsv_(namaFail, tajuk, baris) {
+  const teks = '\uFEFF' + [tajuk].concat(baris).map(function (r) { return r.map(selCsv_).join(','); }).join('\r\n');
+  const blob = new Blob([teks], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = namaFail;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  return teks;
+}
+
+/** Letakkan HTML laporan dalam #areaCetakPpd, kemudian cetak. Kawasan dikosongkan selepas cetakan (afterprint). */
+function cetakPpd_(html) {
+  const area = document.getElementById('areaCetakPpd');
+  area.innerHTML = html;
+  document.body.classList.add('mod-cetak-ppd');
+  const bersih = function () {
+    window.removeEventListener('afterprint', bersih);
+    clearTimeout(cetakPpd_.penjaga);
+    document.body.classList.remove('mod-cetak-ppd');
+    area.innerHTML = '';
+  };
+  window.addEventListener('afterprint', bersih);
+  cetakPpd_.penjaga = setTimeout(bersih, 180000);
+  setTimeout(function () { window.print(); }, 80);
+}
+
+function kepalaCetak_(tajuk, subtajuk) {
+  return '<header class="cp-kepala"><div class="cp-lambang"><i class="fa-solid fa-book-quran"></i></div>' +
+    '<div class="cp-tajuk-blok"><div class="cp-sistem">Sistem E-Tasmik &middot; Panitia Pendidikan Islam</div><h1>' + escapeHtml(tajuk) + '</h1><div class="cp-sub">' + escapeHtml(subtajuk || '') + '</div></div>' +
+    '<div class="cp-masa">Dijana ' + escapeHtml(stempelMasa_()) + '<br>oleh ' + escapeHtml((currentUser && currentUser.Nama) || 'PPD') + '</div></header>';
+}
+function kakiCetak_(nota) {
+  return '<footer class="cp-kaki"><span>' + escapeHtml(nota || '') + '</span><span>&copy; 2026 Cikgu Rizwan Yusop &middot; Hakcipta Terpelihara</span></footer>';
+}
+function kpiCetak_(senarai) {
+  return '<div class="cp-kpi">' + senarai.map(function (k) {
+    return '<div class="cp-kpi-item"><b>' + escapeHtml(String(k[0])) + '</b><span>' + escapeHtml(k[1]) + '</span>' + (k[2] ? '<small>' + escapeHtml(k[2]) + '</small>' : '') + '</div>';
+  }).join('') + '</div>';
+}
+function jadualCetak_(kepala, baris, kelasTambahan) {
+  return '<table class="cp-jadual ' + (kelasTambahan || '') + '"><thead><tr>' + kepala.map(function (k) {
+    return '<th' + (k.k ? ' class="' + k.k + '"' : '') + '>' + escapeHtml(k.t) + '</th>';
+  }).join('') + '</tr></thead><tbody>' + baris.join('') + '</tbody></table>';
+}
+function agihanCetak_(kategoriObj) {
+  const jumlah = URUTAN_KATEGORI_.reduce(function (n, c) { return n + (kategoriObj[c] || 0); }, 0);
+  return '<table class="cp-jadual cp-agihan"><tbody>' + URUTAN_KATEGORI_.map(function (c) {
+    const n = kategoriObj[c] || 0, pct = jumlah ? Math.round(n / jumlah * 100) : 0;
+    return '<tr><td class="cp-label">' + escapeHtml(c) + '</td><td class="cp-bar"><i style="width:' + pct + '%;background:' + WARNA_KATEGORI_[c] + '"></i></td><td class="r">' + formatNombor_(n) + '</td><td class="r">' + pct + '%</td></tr>';
+  }).join('') + '</tbody></table>';
+}
+
+// --- Laporan DAERAH ---
+function binaLaporanDaerahHtml_() {
+  const h = cachePpd, a = h.analisis, d = h.daerah || {}, sasaran = d.Sasaran_PPD_Tahun6 || 65;
+  const t6 = a.tahun6;
+  const kpi = kpiCetak_([
+    [a.sekolah.aktif + ' / ' + a.sekolah.jumlah, 'Sekolah aktif', a.sekolah.digantung ? a.sekolah.digantung + ' digantung' : ''],
+    [formatNombor_(a.murid), 'Jumlah murid', a.jantina ? formatNombor_(a.jantina.Lelaki) + ' L / ' + formatNombor_(a.jantina.Perempuan) + ' P' : ''],
+    [formatNombor_(a.guru), 'Guru & pentadbir', ''],
+    [t6.peratus === null ? '-' : t6.peratus + '%', 'Thn 6 menguasai Al-Quran', 'sasaran ' + sasaran + '%' + (t6.jurang === null ? '' : (t6.jurang >= 0 ? ' · +' + t6.jurang : ' · ' + t6.jurang) + ' mata')],
+    [formatNombor_(a.perkasa), 'PERKASA (Thn 6, Iqra 1-3)', ''],
+    [formatNombor_(a.khatam), 'Murid Khatam', ''],
+    [a.aktiviti.peratusAktif === null ? '-' : a.aktiviti.peratusAktif + '%', 'Murid ditasmik (30 hari)', formatNombor_(a.aktiviti.murid30) + ' murid'],
+    [formatNombor_(a.aktiviti.rekod30), 'Rekod tasmik (30 hari)', '']
+  ]);
+  const tahun = jadualCetak_([{ t: 'Tahun' }, { t: 'Murid', k: 'r' }, { t: 'Al-Quran / Khatam', k: 'r' }, { t: 'Peratus', k: 'r' }, { t: 'Khatam', k: 'r' }],
+    ['1', '2', '3', '4', '5', '6'].map(function (t) {
+      const x = a.tahun[t] || { j: 0, m: 0, k: 0 };
+      return '<tr><td>Tahun ' + t + '</td><td class="r">' + formatNombor_(x.j) + '</td><td class="r">' + formatNombor_(x.m) + '</td><td class="r">' + (x.j ? Math.round(x.m / x.j * 100) + '%' : '-') + '</td><td class="r">' + formatNombor_(x.k) + '</td></tr>';
+    }), 'cp-kecil');
+  const sekolah = a.sekolahSenarai.slice().sort(function (x, y) { return x.kod.localeCompare(y.kod); });
+  const jadualSekolah = jadualCetak_([{ t: 'Kod' }, { t: 'Sekolah' }, { t: 'Status' }, { t: 'Murid', k: 'r' }, { t: 'Guru', k: 'r' }, { t: "Iqra'", k: 'r' }, { t: 'Quran', k: 'r' }, { t: 'Khatam', k: 'r' },
+    { t: 'Thn 6 Quran', k: 'r' }, { t: 'PERKASA', k: 'r' }, { t: 'Aktif 30h', k: 'r' }, { t: 'Terakhir', k: 'r' }],
+    sekolah.map(function (s) {
+      const n = function (v) { return v === null || v === undefined ? '-' : formatNombor_(v); };
+      const t6txt = s.t6Murid ? s.t6Menguasai + '/' + s.t6Murid + ' (' + s.t6Peratus + '%)' : '-';
+      const bawah = s.t6Peratus !== null && s.t6Murid > 0 && s.t6Peratus < sasaran;
+      return '<tr><td>' + escapeHtml(s.kod) + '</td><td>' + escapeHtml(s.nama) + '</td><td>' + escapeHtml(s.status) + '</td><td class="r">' + n(s.murid) + '</td><td class="r">' + n(s.guru) + '</td><td class="r">' + n(s.iqra) + '</td><td class="r">' + n(s.quran) + '</td><td class="r">' + n(s.khatam) + '</td>' +
+        '<td class="r' + (bawah ? ' cp-amaran' : '') + '">' + t6txt + '</td><td class="r">' + n(s.perkasa) + '</td><td class="r">' + (s.aktif30Peratus === null || s.aktif30Peratus === undefined ? '-' : s.aktif30Peratus + '%') + '</td><td class="r">' + (s.hariSejak === null || s.hariSejak === undefined ? '-' : s.hariSejak + 'h') + '</td></tr>';
+    }), 'cp-sekolah');
+  const peta = {}; a.sekolahSenarai.forEach(function (s) { peta[s.kod] = s; });
+  const senaraiPerhatian = function (tajuk, kodList, kosong) {
+    return '<div class="cp-perhatian"><h3>' + tajuk + ' (' + kodList.length + ')</h3>' + (kodList.length ? '<p>' + kodList.map(function (k) { return escapeHtml(k + ' ' + (peta[k] ? peta[k].nama : '')); }).join(' &nbsp;&bull;&nbsp; ') + '</p>' : '<p class="cp-baik">' + kosong + '</p>') + '</div>';
+  };
+  return kepalaCetak_('Laporan Pencapaian Tasmik Daerah', d.Nama_Daerah || 'Nama daerah belum ditetapkan') +
+    kpi +
+    '<div class="cp-dua"><section><h2>Agihan tahap bacaan</h2>' + agihanCetak_(a.kategori) + '</section><section><h2>Penguasaan Al-Quran mengikut tahun</h2>' + tahun + '</section></div>' +
+    '<h2>Prestasi setiap sekolah</h2>' + jadualSekolah +
+    '<h2>Perlu perhatian</h2><div class="cp-tiga">' +
+      senaraiPerhatian('Bawah sasaran Tahun 6', a.bawahSasaran, 'Semua sekolah mencapai sasaran') +
+      senaraiPerhatian('Tidak aktif (&gt;30 hari)', a.tidakAktif, 'Semua sekolah aktif') +
+      senaraiPerhatian('Belum ada analisis', a.belumRingkasan, 'Semua sekolah ada analisis') + '</div>' +
+    kakiCetak_('Ringkasan paling lama dikemas kini: ' + (a.kemaskiniTertua || '-') + ' · Pecahan sasaran PPD: ' + sasaran + '%');
+}
+
+function csvSekolahDaerah_() {
+  const a = cachePpd.analisis;
+  const tajuk = ['Kod Sekolah', 'Nama Sekolah', 'Status', 'Tarikh Daftar', 'Murid', 'Guru', 'Iqra', 'Al-Quran', 'Khatam', 'Belum Mula', 'Murid Tahun 6', 'Tahun 6 Menguasai Al-Quran', 'Tahun 6 (%)',
+    'PERKASA', 'Murid Ditasmik 30 Hari (%)', 'Rekod 30 Hari', 'Hari Sejak Rekod Terakhir', 'Dikemas Kini'];
+  const baris = a.sekolahSenarai.slice().sort(function (x, y) { return x.kod.localeCompare(y.kod); }).map(function (s) {
+    return [s.kod, s.nama, s.status, s.tarikhDaftar || '', s.murid, s.guru, s.iqra, s.quran, s.khatam, s.belumMula, s.t6Murid, s.t6Menguasai, s.t6Peratus, s.perkasa, s.aktif30Peratus, s.rekod30, s.hariSejak, s.dikemaskini || ''];
+  });
+  return { tajuk: tajuk, baris: baris };
+}
+function csvTahunTahap_() {
+  const a = cachePpd.analisis;
+  const baris = [['Tahun', 'Murid', 'Al-Quran / Khatam', 'Khatam', 'Peratus Menguasai']];
+  ['1', '2', '3', '4', '5', '6'].forEach(function (t) { const x = a.tahun[t] || { j: 0, m: 0, k: 0 }; baris.push(['Tahun ' + t, x.j, x.m, x.k, x.j ? Math.round(x.m / x.j * 100) : '']); });
+  baris.push([]); baris.push(['Tahap Bacaan', 'Murid']);
+  URUTAN_KATEGORI_.forEach(function (c) { baris.push([c, a.kategori[c] || 0]); });
+  return { tajuk: baris[0], baris: baris.slice(1) };
+}
+
+// --- Laporan SEKOLAH ---
+function binaLaporanSekolahHtml_() {
+  const h = cacheButiranSekolah_, sk = h.sekolah, r = h.ringkasan, sasaran = h.sasaranTahun6;
+  const jumlah = h.murid.length;
+  const t6 = r.tahun['6'] || { j: 0, m: 0, k: 0 };
+  const aktif30 = h.murid.filter(function (m) { return m.hari !== null && m.hari <= 30; }).length;
+  const quran = (r.kategori['Al-Quran'] || 0) + (r.kategori['Khatam'] || 0);
+  const perkasaSenarai = h.murid.filter(function (m) { return m.perkasa; });
+  const tidakAktif = h.murid.filter(function (m) { return m.bil > 0 && m.hari !== null && m.hari > 30; }).length;
+  const tiadaRekod = h.murid.filter(function (m) { return m.bil === 0; }).length;
+  const khas = h.murid.filter(function (m) { return m.khas; }).length;
+  const kpi = kpiCetak_([
+    [formatNombor_(jumlah), 'Murid', formatNombor_(r.jantina.Lelaki) + ' L / ' + formatNombor_(r.jantina.Perempuan) + ' P'],
+    [formatNombor_(h.guru.length), 'Guru & pentadbir', ''],
+    [t6.j ? Math.round(t6.m / t6.j * 100) + '%' : '-', 'Thn 6 menguasai Al-Quran', t6.j ? t6.m + ' / ' + t6.j + ' murid · sasaran ' + sasaran + '%' : 'Tiada murid Tahun 6'],
+    [jumlah ? Math.round(quran / jumlah * 100) + '%' : '-', 'Peringkat Al-Quran / Khatam', formatNombor_(quran) + ' daripada ' + formatNombor_(jumlah)],
+    [formatNombor_(perkasaSenarai.length), 'PERKASA (Thn 6, Iqra 1-3)', ''],
+    [formatNombor_(r.kategori['Khatam'] || 0), 'Murid Khatam', ''],
+    [jumlah ? Math.round(aktif30 / jumlah * 100) + '%' : '-', 'Ditasmik (30 hari)', formatNombor_(aktif30) + ' murid · ' + formatNombor_(r.aktif.rekod30) + ' rekod'],
+    [r.aktif.terakhir ? tarikhTeksPpd_(r.aktif.terakhir) : '-', 'Rekod tasmik terakhir', '']
+  ]);
+  const tahun = jadualCetak_([{ t: 'Tahun' }, { t: 'Murid', k: 'r' }, { t: 'Al-Quran / Khatam', k: 'r' }, { t: 'Peratus', k: 'r' }, { t: 'Khatam', k: 'r' }],
+    ['1', '2', '3', '4', '5', '6'].map(function (t) {
+      const x = r.tahun[t] || { j: 0, m: 0, k: 0 };
+      return '<tr><td>Tahun ' + t + '</td><td class="r">' + x.j + '</td><td class="r">' + x.m + '</td><td class="r">' + (x.j ? Math.round(x.m / x.j * 100) + '%' : '-') + '</td><td class="r">' + x.k + '</td></tr>';
+    }), 'cp-kecil');
+  const kelas = jadualCetak_([{ t: 'Kelas' }, { t: 'Murid', k: 'r' }, { t: 'Agihan tahap bacaan' }, { t: 'Quran/Khatam', k: 'r' }, { t: 'Ditasmik 30h', k: 'r' }, { t: 'Tiada rekod', k: 'r' }],
+    h.kelas.map(function (k) {
+      const seg = URUTAN_KATEGORI_.filter(function (c) { return (k.kategori[c] || 0) > 0; }).map(function (c) { return '<i style="flex:' + k.kategori[c] + ';background:' + WARNA_KATEGORI_[c] + '"></i>'; }).join('');
+      return '<tr><td>Thn ' + escapeHtml(k.tahun) + ' ' + escapeHtml(k.kelas) + '</td><td class="r">' + k.jumlah + '</td><td><div class="cp-seg">' + seg + '</div></td><td class="r">' + k.menguasai + ' (' + Math.round(k.menguasai / k.jumlah * 100) + '%)</td><td class="r">' + k.aktif30 + '</td><td class="r">' + k.tiadaRekod + '</td></tr>';
+    }));
+  const guru = jadualCetak_([{ t: 'ID' }, { t: 'Nama' }, { t: 'Peranan' }, { t: 'Rekod', k: 'r' }, { t: '30 hari', k: 'r' }, { t: 'Aktif terakhir' }],
+    h.guru.map(function (g) { return '<tr><td>' + escapeHtml(g.id) + '</td><td>' + escapeHtml(g.nama) + '</td><td>' + escapeHtml(g.peranan) + '</td><td class="r">' + formatNombor_(g.rekod) + '</td><td class="r">' + formatNombor_(g.rekod30) + '</td><td>' + escapeHtml(g.terakhir || '-') + '</td></tr>'; }), 'cp-kecil');
+  const perkasa = perkasaSenarai.length ? jadualCetak_([{ t: 'Nama' }, { t: 'Kelas' }, { t: 'Tahap' }, { t: 'Bacaan terakhir' }],
+    perkasaSenarai.map(function (m) { return '<tr><td>' + escapeHtml(m.nama) + '</td><td>' + escapeHtml(m.tahun + ' ' + m.kelas) + '</td><td>' + escapeHtml(m.kategori) + '</td><td>' + escapeHtml(m.terakhir || 'Tiada rekod') + '</td></tr>'; }), 'cp-kecil') : '<p class="cp-baik">Tiada murid PERKASA.</p>';
+  return kepalaCetak_('Laporan Sekolah: ' + sk.nama, 'Kod ' + sk.kod + ' · ' + sk.status + ' · didaftar ' + sk.tarikhDaftar + (sk.catatan ? ' · ' + sk.catatan : '')) +
+    kpi +
+    '<div class="cp-dua"><section><h2>Agihan tahap bacaan</h2>' + agihanCetak_(r.kategori) + '</section><section><h2>Penguasaan Al-Quran mengikut tahun</h2>' + tahun + '</section></div>' +
+    '<h2>Prestasi mengikut kelas</h2>' + kelas +
+    '<div class="cp-dua"><section><h2>Perlu perhatian</h2><ul class="cp-senarai"><li><b>' + perkasaSenarai.length + '</b> murid PERKASA</li><li><b>' + tidakAktif + '</b> murid tidak ditasmik lebih 30 hari</li><li><b>' + tiadaRekod + '</b> murid belum ada sebarang rekod</li><li><b>' + khas + '</b> murid keperluan khas</li></ul></section>' +
+    '<section><h2>Guru &amp; pentadbir</h2>' + guru + '</section></div>' +
+    '<h2>Murid PERKASA (Tahun 6, Iqra 1-3)</h2>' + perkasa +
+    kakiCetak_('Data dijana ' + h.janaPada + ' · mengandungi nama murid: edarkan secara terhad');
+}
+
+function binaSenaraiMuridHtml_(senarai, penerangan) {
+  const h = cacheButiranSekolah_, sk = h.sekolah;
+  const baris = senarai.map(function (m, i) {
+    return '<tr><td class="r">' + (i + 1) + '</td><td>' + escapeHtml(m.nama) + (m.perkasa ? ' <b class="cp-tanda">P</b>' : '') + (m.khas ? ' <b class="cp-tanda">K</b>' : '') + '</td><td>' + escapeHtml(m.tahun + ' ' + m.kelas) + '</td><td>' + escapeHtml(m.kategori) + '</td><td>' +
+      (m.muka !== '' ? 'ms ' + escapeHtml(String(m.muka)) : '') + (m.juzuk !== '' ? ' · juzuk ' + escapeHtml(String(m.juzuk)) : '') + (m.muka === '' && m.juzuk === '' ? '-' : '') + '</td><td>' + escapeHtml(m.terakhir || '-') + '</td><td class="r">' + (m.hari === null ? '-' : m.hari) + '</td><td class="r">' + m.bil + '</td><td>' + escapeHtml(m.status || '-') + '</td></tr>';
+  });
+  return kepalaCetak_('Senarai Murid: ' + sk.nama, 'Kod ' + sk.kod + ' · ' + senarai.length + ' murid' + (penerangan ? ' · ' + penerangan : '')) +
+    jadualCetak_([{ t: 'Bil.', k: 'r' }, { t: 'Nama' }, { t: 'Kelas' }, { t: 'Tahap' }, { t: 'Muka / Juzuk' }, { t: 'Bacaan terakhir' }, { t: 'Hari', k: 'r' }, { t: 'Rekod', k: 'r' }, { t: 'Mutu' }], baris, 'cp-murid') +
+    kakiCetak_('P = PERKASA · K = keperluan khas · Data dijana ' + h.janaPada + ' · mengandungi nama murid: edarkan secara terhad');
+}
+function penerangTapisanMurid_() {
+  const bahagian = [];
+  const q = document.getElementById('ppdCariMurid').value.trim(); if (q) bahagian.push('carian "' + q + '"');
+  [['ppdTapisTahun', 'Tahun '], ['ppdTapisKelas', 'Kelas '], ['ppdTapisKategori', 'Tahap ']].forEach(function (p) { const v = document.getElementById(p[0]).value; if (v) bahagian.push(p[1] + v); });
+  const ks = document.getElementById('ppdTapisKhas'); if (ks.value) bahagian.push(ks.options[ks.selectedIndex].text);
+  return bahagian.join(', ');
+}
+
+/** Tindakan menu "Laporan & Eksport" (daerah & sekolah). */
+async function laksanakanLaporanPpd_(jenis) {
+  if (jenis === 'cetak-daerah' || jenis === 'csv-sekolah' || jenis === 'csv-tahun') {
+    if (!cachePpd || !cachePpd.success) { toastRalat('Data daerah belum dimuatkan.'); return; }
+  } else if (!cacheButiranSekolah_ || !kodSekolahPpdAktif_) { toastRalat('Data sekolah belum dimuatkan.'); return; }
+  const kod = (jenis === 'cetak-daerah' || jenis === 'csv-sekolah' || jenis === 'csv-tahun') ? '' : kodSekolahPpdAktif_;
+  const label = { 'cetak-daerah': 'Cetak laporan daerah', 'csv-sekolah': 'CSV senarai sekolah', 'csv-tahun': 'CSV tahun dan tahap', 'cetak-sekolah': 'Cetak laporan sekolah', 'cetak-murid': 'Cetak senarai murid', 'csv-murid': 'CSV murid', 'csv-kelas': 'CSV kelas', 'csv-guru': 'CSV guru' }[jenis];
+  if (!label) return;
+  if (!(await catatEksportPpd_(kod, label))) return;
+  const daerah = (cachePpd && cachePpd.daerah && cachePpd.daerah.Nama_Daerah) || 'Daerah';
+  const tarikh = tarikhFail_();
+  if (jenis === 'cetak-daerah') { cetakPpd_(binaLaporanDaerahHtml_()); return; }
+  if (jenis === 'csv-sekolah') { const c = csvSekolahDaerah_(); muatTurunCsv_('Sekolah_' + namaFailBersih_(daerah) + '_' + tarikh + '.csv', c.tajuk, c.baris); toastKejayaan('Fail CSV dimuat turun.'); return; }
+  if (jenis === 'csv-tahun') { const c = csvTahunTahap_(); muatTurunCsv_('Tahun_Tahap_' + namaFailBersih_(daerah) + '_' + tarikh + '.csv', c.tajuk, c.baris); toastKejayaan('Fail CSV dimuat turun.'); return; }
+  const h = cacheButiranSekolah_, nama = namaFailBersih_(h.sekolah.kod);
+  if (jenis === 'cetak-sekolah') { cetakPpd_(binaLaporanSekolahHtml_()); return; }
+  if (jenis === 'cetak-murid') { cetakPpd_(binaSenaraiMuridHtml_(muridTertapisPpd_(), penerangTapisanMurid_())); return; }
+  if (jenis === 'csv-murid') {
+    const baris = muridTertapisPpd_().map(function (m) { return [m.nama, m.tahun, m.kelas, m.jantina || '', m.khas || '', m.kategori, m.muka, m.juzuk, m.status, m.terakhir, m.hari, m.bil, m.hafazanLulus, m.perkasa ? 'Ya' : '']; });
+    muatTurunCsv_(nama + '_Murid_' + tarikh + '.csv', ['Nama', 'Tahun', 'Kelas', 'Jantina', 'Keperluan Khas', 'Tahap Semasa', 'Muka Surat', 'Juzuk', 'Status Bacaan', 'Bacaan Terakhir', 'Hari Sejak', 'Bilangan Rekod', 'Hafazan Lulus', 'PERKASA'], baris);
+  } else if (jenis === 'csv-kelas') {
+    const baris = h.kelas.map(function (k) { return ['Tahun ' + k.tahun, k.kelas, k.jumlah].concat(URUTAN_KATEGORI_.map(function (c) { return k.kategori[c] || 0; })).concat([k.menguasai, k.jumlah ? Math.round(k.menguasai / k.jumlah * 100) : '', k.aktif30, k.tiadaRekod]); });
+    muatTurunCsv_(nama + '_Kelas_' + tarikh + '.csv', ['Tahun', 'Kelas', 'Murid'].concat(URUTAN_KATEGORI_).concat(['Al-Quran/Khatam', 'Menguasai (%)', 'Ditasmik 30 Hari', 'Tiada Rekod']), baris);
+  } else if (jenis === 'csv-guru') {
+    muatTurunCsv_(nama + '_Guru_' + tarikh + '.csv', ['ID', 'Nama', 'Peranan', 'Rekod Disimpan', 'Rekod 30 Hari', 'Aktif Terakhir'], h.guru.map(function (g) { return [g.id, g.nama, g.peranan, g.rekod, g.rekod30, g.terakhir || '']; }));
+  }
+  toastKejayaan('Fail CSV dimuat turun.');
+}
+document.querySelectorAll('.ppd-menu-laporan').forEach(function (menu) {
+  menu.addEventListener('click', function (e) {
+    const b = e.target.closest('[data-laporan]');
+    if (b) laksanakanLaporanPpd_(b.dataset.laporan);
+  });
+});
 document.querySelector('#tablePpdSekolah tbody').addEventListener('click', async function (e) {
   const btn = e.target.closest('button[data-aksi]');
   if (!btn) {
@@ -12115,9 +12827,11 @@ document.querySelector('#tablePpdSekolah tbody').addEventListener('click', async
   }
   const kod = btn.dataset.kod, nama = btn.dataset.nama;
   if (btn.dataset.aksi === 'status') {
-    if (await tukarStatusSekolahPpd_(kod, nama, btn.dataset.status)) muatPpd();
+    if (await tukarStatusSekolahPpd_(kod, nama, btn.dataset.status)) muatPpd(true);
   } else if (btn.dataset.aksi === 'reset') {
     await resetAdminSekolahPpd_(kod, nama);
+  } else if (btn.dataset.aksi === 'padam') {
+    if (await padamSekolahPpd_(kod, nama)) { renderSenaraiSekolahPpd_(); muatPpd(true); }
   }
 });
 document.querySelector('#tablePpdSekolah tbody').addEventListener('keydown', function (e) {
@@ -12130,6 +12844,7 @@ document.getElementById('ppdPerhatian').addEventListener('click', function (e) {
   if (c) bukaButiranSekolah_(c.dataset.buka);
 });
 document.querySelector('#tablePpdSkMurid tbody').addEventListener('click', function (e) {
+  if (e.target.closest('button[data-aksi="lagi"]')) { hadMuridPpd_ += LANGKAH_MURID_PPD_; renderMuridPpd_(true); return; }
   const baris = e.target.closest('tr[data-murid]');
   if (baris) bukaRekodMuridPpd_(baris.dataset.murid);
 });
@@ -12141,24 +12856,35 @@ document.querySelector('#tablePpdSkMurid tbody').addEventListener('keydown', fun
 
 document.getElementById('btnPpdKembali').addEventListener('click', function () {
   kodSekolahPpdAktif_ = null; cacheButiranSekolah_ = null;
+  document.querySelector('.ppd-konsol').classList.remove('sedang-memuat-sk');
   ['skKategori', 'skTahun', 'skAktiviti', 'skStatus', 'skRalat'].forEach(musnahkanCartaPpd_);
   tunjukPaparanDaerahPpd_();
   Object.keys(chartPpd_).forEach(function (k) { try { chartPpd_[k].resize(); } catch (e) { /* abaikan */ } });
   window.scrollTo({ top: 0, behavior: 'auto' });
 });
-document.getElementById('btnPpdSkMuat').addEventListener('click', function () { if (kodSekolahPpdAktif_) bukaButiranSekolah_(kodSekolahPpdAktif_); });
+document.getElementById('btnPpdSkMuat').addEventListener('click', function () { if (kodSekolahPpdAktif_) bukaButiranSekolah_(kodSekolahPpdAktif_, true); });
 document.getElementById('btnPpdSkReset').addEventListener('click', function () {
   if (kodSekolahPpdAktif_ && cacheButiranSekolah_) resetAdminSekolahPpd_(kodSekolahPpdAktif_, cacheButiranSekolah_.sekolah.nama);
+});
+document.getElementById('btnPpdSkPadam').addEventListener('click', async function () {
+  if (!kodSekolahPpdAktif_ || !cacheButiranSekolah_) return;
+  const kod = kodSekolahPpdAktif_;
+  if (await padamSekolahPpd_(kod, cacheButiranSekolah_.sekolah.nama)) {
+    document.getElementById('btnPpdKembali').click();
+    renderSenaraiSekolahPpd_();
+    muatPpd(true);
+  }
 });
 document.getElementById('btnPpdSkStatus').addEventListener('click', async function () {
   if (!kodSekolahPpdAktif_ || !cacheButiranSekolah_) return;
   const kod = kodSekolahPpdAktif_;
   if (await tukarStatusSekolahPpd_(kod, cacheButiranSekolah_.sekolah.nama, this.dataset.status)) {
-    await muatPpd();
-    bukaButiranSekolah_(kod);
+    await muatPpd(true);
+    bukaButiranSekolah_(kod, true);
   }
 });
 
+document.getElementById('btnPpdMuat').addEventListener('click', function () { muatPpd(true); });
 document.getElementById('btnPpdSegarkan').addEventListener('click', async function () {
   tunjukLoading('Mengira ringkasan semua sekolah...');
   try {
@@ -12167,7 +12893,7 @@ document.getElementById('btnPpdSegarkan').addEventListener('click', async functi
     if (!hasil.success) { toastRalat(hasil.message || 'Gagal menyegarkan ringkasan.'); return; }
     toastKejayaan(hasil.dikemaskini + ' sekolah dikemaskini' + (hasil.tinggal ? ' (' + hasil.tinggal + ' lagi - tekan sekali lagi)' : '') + '.');
     if (hasil.gagal && hasil.gagal.length) toastRalat(hasil.gagal.length + ' sekolah gagal dikira.');
-    muatPpd();
+    muatPpd(true);
   } catch (err) { tutupLoading(); toastRalat('Gagal menyegarkan ringkasan.'); }
 });
 
@@ -12184,7 +12910,7 @@ document.getElementById('formTetapanDaerah').addEventListener('submit', async fu
     tutupLoading();
     if (!hasil.success) { ralatEl.textContent = hasil.message || 'Gagal menyimpan.'; return; }
     toastKejayaan(hasil.message || 'Tetapan daerah disimpan.');
-    muatPpd();
+    muatPpd(true);
   } catch (err) { tutupLoading(); ralatEl.textContent = 'Gagal menyimpan (' + ((err && err.message) || 'ralat') + ').'; }
 });
 
@@ -12192,6 +12918,11 @@ document.getElementById('formTetapanDaerah').addEventListener('submit', async fu
 function bersihkanPaparanPpd_() {
   musnahkanSemuaCartaPpd_();
   cachePpd = null; cacheButiranSekolah_ = null; kodSekolahPpdAktif_ = null;
+  Object.keys(simpanButiranPpd_).forEach(function (k) { delete simpanButiranPpd_[k]; });
+  hadMuridPpd_ = LANGKAH_MURID_PPD_;
+  clearTimeout(masaCariMuridPpd_);
+  document.body.classList.remove('mod-cetak-ppd');
+  const areaCetak = document.getElementById('areaCetakPpd'); if (areaCetak) areaCetak.innerHTML = '';
   ['ppdPerhatian', 'ppdSkKpi', 'ppdSkInfoTambahan', 'ppdTahapMini', 'ppdMuridIsi', 'ppdLegendaKategori', 'ppdNotaSegar'].forEach(function (id) { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
   ['#tablePpdSkKelas tbody', '#tablePpdSkMurid tbody', '#tablePpdSkGuru tbody', '#tablePpdSkAktiviti tbody', '#tablePpdLog tbody'].forEach(function (s) { const el = document.querySelector(s); if (el) el.innerHTML = ''; });
   ['ppdStatSekolah', 'ppdStatMurid', 'ppdStatTahun6', 'ppdStatPerkasa', 'ppdStatKhatam', 'ppdStatGuru', 'ppdStatAktif', 'ppdStatRekod30'].forEach(function (id) { setTeks_(id, '-'); });
