@@ -5373,7 +5373,31 @@
     #screenLogin .lg-borang .login-emblem { min-height: 78px; }
     .ppd-logo-kepala { width: 54px; height: 54px; }
   }
-  @media (prefers-reduced-motion: reduce) { #screenLogin.lg-mode-ppd .lg-logo-ppd { animation: none; } }</style>
+  @media (prefers-reduced-motion: reduce) { #screenLogin.lg-mode-ppd .lg-logo-ppd { animation: none; } }
+
+  /* =====================================================================
+     v29 - SEMAKAN SKRIN SEKOLAH (PC & telefon): ikon carian kelihatan, jalur penapis Tasmik tidak berlipat, bar alat Enrolmen kemas, sepanduk kata laluan padat.
+  ===================================================================== */
+  .enrol-carian i, .roster-cari i { z-index: 3; }
+  @media (max-width: 899px) {
+    .enrol-bar-alat { gap: 8px; }
+    .enrol-carian { flex: 1 1 100%; }
+    .enrol-bar-alat > .btn-enrol { flex: 1 1 0; justify-content: center; }
+    .roster-alat { flex-wrap: wrap; }
+    .roster-cari { flex: 1 1 100%; }
+    .roster-chip-grup { flex: 1 1 0; min-width: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .roster-chip-grup::-webkit-scrollbar { display: none; }
+    .roster-chip-grup > * { flex: none; }
+    .btn-susun { flex: none; }
+  }
+  .rumusan-mode-tabs { display: inline-flex; width: max-content; max-width: 100%; padding: 4px; border-radius: 999px; background: #EEE8D2; border: 1px solid #E0D7B8; box-shadow: inset 0 1px 2px rgba(14,64,46,.1); }
+  .rumusan-mode-tabs .subtab-btn { border-radius: 999px; padding: 8px 20px; font-weight: 800; color: var(--green-1); }
+  .rumusan-mode-tabs .subtab-btn.active { color: #fff; background: linear-gradient(180deg, #1D7A58, #0E4A36); box-shadow: 0 8px 14px -8px rgba(10,60,43,.9), inset 0 1px 0 rgba(255,255,255,.25); }  @media (max-width: 599px) {
+    .sepandu-kl { flex-wrap: nowrap; gap: 8px; width: calc(100% - 20px); margin-top: 8px; padding: 8px 8px 8px 12px; }
+    .sepandu-kl-sub { display: none; }
+    .sepandu-kl-teks { flex: 1 1 auto; font-size: .82rem; line-height: 1.25; }
+    .sepandu-kl-btn { padding: 6px 12px; font-size: .8rem; white-space: nowrap; }
+  }</style>
 </head>
 <body>
 
@@ -5624,7 +5648,7 @@
     <!-- AMARAN KATA LALUAN LALAI: muncul selepas log masuk jika kata laluan masih abcd1234 (tidak menyekat kerja; hilang apabila kata laluan ditukar) -->
     <div id="sepanduKataLaluan" class="sepandu-kl d-none" role="status">
       <i class="fa-solid fa-shield-halved sepandu-kl-ikon" aria-hidden="true"></i>
-      <span class="sepandu-kl-teks"><b>Kata laluan anda masih kata laluan lalai.</b> Tukar sekarang supaya data sekolah selamat.</span>
+      <span class="sepandu-kl-teks"><b>Kata laluan anda masih kata laluan lalai.</b> <span class="sepandu-kl-sub">Tukar sekarang supaya data sekolah selamat.</span></span>
       <button type="button" class="btn btn-sm sepandu-kl-btn" id="btnSepanduTukar"><i class="fa-solid fa-key"></i> Tukar sekarang</button>
       <button type="button" class="sepandu-kl-tutup" id="btnSepanduTutup" aria-label="Tutup amaran"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
