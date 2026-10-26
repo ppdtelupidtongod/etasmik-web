@@ -4535,7 +4535,118 @@
     96%  { opacity: 0; transform: scaleX(-1) skewY(0deg); }
     100% { opacity: 0; transform: scaleX(1) skewY(0deg); }
   }
-  @media (prefers-reduced-motion: reduce) { .hero-welcome-arab, .menu-hero::before { animation: none !important; } .arab-kilat { display: none; } .lq-selak { animation: none !important; opacity: 0; } }</style>
+  @media (prefers-reduced-motion: reduce) { .hero-welcome-arab, .menu-hero::before { animation: none !important; } .arab-kilat { display: none; } .lq-selak { animation: none !important; opacity: 0; } }
+
+  /* =====================================================================
+     v16 - JUBIN MENU UTAMA bergaya "kad poster": bingkai emas + gelang gelap, corak bintang di penjuru, ikon besar dengan lencana emas,
+           tajuk HURUF BESAR + garis halus, butang bulat gelap bergelang emas. Warna kekal palet permata (zamrud/emas/burgundi/teal/tembaga).
+           Selektor panjang (.menu-pentas .menu-grid .menu-card) supaya mengatasi lapisan lama tanpa !important.
+  ===================================================================== */
+  .menu-pentas .menu-grid {
+    gap: 14px; padding: 18px 14px 20px;
+    background: linear-gradient(165deg, rgba(250,252,246,.9), rgba(238,244,232,.84)), var(--foto-sekolah, var(--foto-generik)); background-size: cover; background-position: center 30%;
+    border: 1px solid rgba(201,162,77,.55);
+  }
+  .menu-pentas .menu-grid .menu-card {
+    --ik: #fff; --teks: #fff; --kilau: 10,70,50;
+    min-height: 262px; padding: 24px 12px 20px; gap: 9px; justify-content: flex-start;
+    border: 2.5px solid transparent; border-radius: 26px; color: var(--teks);
+    box-shadow: inset 0 0 0 1.5px rgba(0,0,0,.3), inset 0 2px 1px rgba(255,255,255,.28), 0 20px 30px -16px rgba(var(--kilau), .75), 0 3px 8px rgba(0,0,0,.16);
+    transition: transform .35s var(--spring, cubic-bezier(.34,1.56,.64,1)), box-shadow .3s ease;
+  }
+  .menu-pentas .menu-grid .menu-card:hover { transform: translateY(-8px); box-shadow: inset 0 0 0 1.5px rgba(0,0,0,.3), inset 0 2px 1px rgba(255,255,255,.34), 0 28px 38px -16px rgba(var(--kilau), .9), 0 4px 10px rgba(0,0,0,.2); }
+  .menu-pentas .menu-grid .menu-card:active { transform: translateY(-2px) scale(.98); }
+  .menu-pentas .menu-grid .menu-card:focus-visible { outline: 3px solid #E6CC85; outline-offset: 3px; }
+  .menu-pentas .menu-grid .menu-card > * { position: relative; z-index: 1; }
+
+  /* warna: isian (cahaya atas + kecerunan menegak) di dalam bingkai emas berkecerunan */
+  .menu-pentas .menu-grid .menu-card.c-green  { --kilau: 9,74,52;
+    background: radial-gradient(120% 62% at 50% 0%, rgba(86,201,153,.55), transparent 70%) padding-box, linear-gradient(172deg, #1C805D 0%, #0D5238 58%, #073A27 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
+  .menu-pentas .menu-grid .menu-card.c-gold   { --ik: #3A2606; --teks: #2B1D04; --kilau: 150,104,18;
+    background: radial-gradient(120% 62% at 50% 0%, rgba(255,246,208,.8), transparent 70%) padding-box, linear-gradient(172deg, #EBC561 0%, #D2A236 55%, #B07C17 100%) padding-box, linear-gradient(150deg, #FFF3C6, #E2BD62 38%, #FAE8AA 62%, #B98A2D) border-box; }
+  .menu-pentas .menu-grid .menu-card.c-red    { --kilau: 107,17,37;
+    background: radial-gradient(120% 62% at 50% 0%, rgba(236,110,141,.5), transparent 70%) padding-box, linear-gradient(172deg, #B8304F 0%, #7E1A33 58%, #560E20 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
+  .menu-pentas .menu-grid .menu-card.c-blue   { --kilau: 11,91,99;
+    background: radial-gradient(120% 62% at 50% 0%, rgba(70,199,210,.5), transparent 70%) padding-box, linear-gradient(172deg, #158A96 0%, #0D6672 58%, #094A53 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
+  .menu-pentas .menu-grid .menu-card.c-purple { --kilau: 122,55,11;
+    background: radial-gradient(120% 62% at 50% 0%, rgba(245,170,104,.5), transparent 70%) padding-box, linear-gradient(172deg, #C9702A 0%, #9A4C14 58%, #6E330A 100%) padding-box, linear-gradient(150deg, #FBEBB5, #D8B04F 38%, #F5DC94 62%, #A87A26) border-box; }
+
+  /* corak bintang halus (kuat di penjuru, pudar ke tengah) menggantikan bulatan lama */
+  .menu-pentas .menu-grid .menu-card::after {
+    top: 0; right: 0; bottom: 0; left: 0; width: auto; height: auto; border-radius: 22px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1'%3E%3Crect x='9' y='9' width='38' height='38'/%3E%3Crect x='9' y='9' width='38' height='38' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E") center / 56px 56px;
+    opacity: .2; pointer-events: none;
+    -webkit-mask-image: radial-gradient(ellipse 70% 62% at 50% 46%, transparent 20%, #000 92%); mask-image: radial-gradient(ellipse 70% 62% at 50% 46%, transparent 20%, #000 92%);
+  }
+  .menu-pentas .menu-grid .menu-card.c-gold::after { filter: brightness(0); opacity: .12; }
+
+  /* ikon besar + lencana emas */
+  .menu-ikon { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 86px; margin-top: 2px; font-size: 3.7rem; color: var(--ik); filter: drop-shadow(0 4px 5px rgba(0,0,0,.35)); }
+  .menu-ikon::before { content: ""; position: absolute; width: 96px; height: 96px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.2), transparent 68%); }
+  .menu-ikon > i:first-child { position: relative; }
+  .menu-ikon .ikon-lencana { position: absolute; left: 50%; top: 50%; margin: 10px 0 0 17px; font-size: 1.5rem; color: #F2CF6B; filter: drop-shadow(0 0 0 #000) drop-shadow(0 2px 3px rgba(0,0,0,.45)); -webkit-text-stroke: 2.5px rgba(8,38,27,.9); paint-order: stroke fill; }
+  .menu-card.c-gold .ikon-lencana { color: #7A1F2B; -webkit-text-stroke: 2.5px rgba(255,243,200,.95); }
+  .menu-card.c-red .ikon-lencana { margin: -44px 0 0 12px; font-size: 1.75rem; }
+  .menu-card.c-blue .ikon-lencana { margin: -46px 0 0 18px; }
+  .menu-card.c-gold .ikon-lencana { margin: 10px 0 0 -4px; font-size: 1.35rem; }
+
+  /* tajuk satu baris & dua baris menduduki ketinggian sama (dua baris + garis) supaya penerangan di bawahnya sejajar antara jubin */
+  .menu-pentas .menu-grid .menu-card .menu-card-title { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: calc(2.36em + 11px); font-size: .98rem; font-weight: 900; letter-spacing: .035em; text-transform: uppercase; line-height: 1.18; text-shadow: 0 2px 5px rgba(0,0,0,.45); }
+  .menu-pentas .menu-grid .menu-card .menu-card-title::after { content: ""; display: block; width: 46px; height: 2px; margin: 9px auto 0; border-radius: 2px; background: linear-gradient(90deg, transparent, #E6CC85, transparent); }
+  .menu-pentas .menu-grid .menu-card.c-gold .menu-card-title { text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+  .menu-pentas .menu-grid .menu-card.c-gold .menu-card-title::after { background: linear-gradient(90deg, transparent, #7A5410, transparent); }
+  .menu-pentas .menu-grid .menu-card .menu-card-desc { color: var(--teks); opacity: .95; font-size: .76rem; line-height: 1.32; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+  .menu-pentas .menu-grid .menu-card.c-gold .menu-card-desc { opacity: .92; text-shadow: none; }
+  .nb { white-space: nowrap; }
+
+  /* butang anak panah: bulat gelap, gelang emas */
+  .menu-pentas .menu-grid .menu-card .menu-card-arrow {
+    margin-top: auto; width: 38px; height: 38px; font-size: .85rem; color: #F6E2A3;
+    background: radial-gradient(circle at 50% 30%, #17503B, #062418); border: 2px solid #E6CC85;
+    box-shadow: 0 4px 10px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.2); transition: transform .3s ease;
+  }
+  .menu-pentas .menu-grid .menu-card:hover .menu-card-arrow { transform: translateX(3px) scale(1.06); }
+
+  @media (max-width: 619px) {
+    .menu-pentas .menu-grid .menu-card:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 7px); }
+    .menu-pentas .menu-grid .menu-card { min-height: 246px; padding: 20px 8px 18px; }
+    .menu-ikon { height: 74px; font-size: 3.1rem; }
+    .menu-ikon::before { width: 80px; height: 80px; }
+    .menu-ikon .ikon-lencana { font-size: 1.25rem; margin: 8px 0 0 14px; }
+    .menu-card.c-red .ikon-lencana { margin: -36px 0 0 10px; font-size: 1.45rem; }
+    .menu-card.c-blue .ikon-lencana { margin: -38px 0 0 14px; }
+    .menu-card.c-gold .ikon-lencana { margin: 8px 0 0 -3px; font-size: 1.15rem; }
+    .menu-pentas .menu-grid .menu-card .menu-card-title { font-size: .86rem; letter-spacing: .02em; }
+    .menu-pentas .menu-grid .menu-card .menu-card-desc { font-size: .72rem; }
+  }
+  @media (min-width: 620px) and (max-width: 899px) {
+    .menu-pentas .menu-grid { grid-template-columns: repeat(6, 1fr); }
+    .menu-pentas .menu-grid .menu-card { grid-column: span 2; min-height: 280px; }
+    .menu-pentas .menu-grid .menu-card:nth-child(4) { grid-column: 2 / 4; }
+    .menu-pentas .menu-grid .menu-card:nth-child(5) { grid-column: 4 / 6; }
+  }
+  @media (min-width: 900px) {
+    .menu-pentas .menu-grid { max-width: 1000px; gap: 16px; padding: 24px 22px; }
+    .menu-pentas .menu-grid .menu-card { min-height: 296px; padding: 28px 12px 22px; }
+    .menu-ikon { height: 92px; font-size: 4rem; }
+    .menu-pentas .menu-grid .menu-card .menu-card-title { font-size: 1.04rem; }
+    .menu-pentas .menu-grid .menu-card .menu-card-desc { font-size: .8rem; }
+  }
+  @media (min-width: 1180px) {
+    .menu-pentas .menu-grid { max-width: 1180px; gap: 20px; padding: 30px 32px; }
+    .menu-pentas .menu-grid .menu-card { min-height: 326px; padding: 32px 16px 26px; gap: 11px; }
+    .menu-ikon { height: 108px; font-size: 4.7rem; }
+    .menu-ikon::before { width: 116px; height: 116px; }
+    .menu-ikon .ikon-lencana { font-size: 1.8rem; margin: 12px 0 0 21px; }
+    .menu-card.c-red .ikon-lencana { margin: -52px 0 0 14px; font-size: 2.1rem; }
+    .menu-card.c-blue .ikon-lencana { margin: -54px 0 0 22px; }
+    .menu-card.c-gold .ikon-lencana { margin: 12px 0 0 -5px; font-size: 1.6rem; }
+    .menu-pentas .menu-grid .menu-card .menu-card-title { font-size: 1.14rem; }
+    .menu-pentas .menu-grid .menu-card .menu-card-desc { font-size: .86rem; }
+    .menu-pentas .menu-grid .menu-card .menu-card-arrow { width: 44px; height: 44px; font-size: .95rem; }
+  }
+  @media (min-width: 1600px) { .menu-pentas .menu-grid { max-width: 1260px; } }
+  @media (prefers-reduced-motion: reduce) { .menu-pentas .menu-grid .menu-card, .menu-pentas .menu-grid .menu-card .menu-card-arrow { transition: none !important; } }</style>
 </head>
 <body>
 
@@ -4783,7 +4894,7 @@
                 <i class="arab-kilat k1" aria-hidden="true"></i><i class="arab-kilat k2" aria-hidden="true"></i><i class="arab-kilat k3" aria-hidden="true"></i>
                 <div class="hero-welcome-sapa">
                   <span class="hero-welcome-icon" aria-hidden="true"></span>
-                  <span>Selamat Datang ke Sistem E-Tasmik <strong class="nama-sekolah"></strong></span>
+                  <span>Selamat Datang ke Sistem <span class="nb">E-Tasmik</span> <strong class="nama-sekolah"></strong></span>
                   <span class="hero-welcome-icon" aria-hidden="true"></span>
                 </div>
               </div>
@@ -4830,35 +4941,35 @@
             <span class="pentas-bintang kanan"><span class="b-emas"></span></span>
           </div>
         <div class="menu-grid">
-          <div class="menu-card c-green" onclick="navigasi('murid')">
-            <div class="menu-icon-circle"><i class="fa-solid fa-user-plus"></i></div>
+          <div class="menu-card c-green" role="button" tabindex="0" onclick="navigasi('murid')">
+            <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-users"></i><i class="fa-solid fa-circle-plus ikon-lencana"></i></div>
             <div class="menu-card-title">Enrolmen Murid</div>
-            <div class="menu-card-desc">Daftar &amp; urus maklumat murid</div>
-            <div class="menu-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="menu-card-desc">Daftar &amp; kemas kini maklumat murid</div>
+            <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
-          <div class="menu-card c-gold" onclick="navigasi('tasmik')">
-            <div class="menu-icon-circle"><i class="fa-solid fa-book-quran"></i></div>
-            <div class="menu-card-title">Rekod Bacaan Al-Quran &amp; Iqra</div>
-            <div class="menu-card-desc">Kemasukan rekod tasmik murid</div>
-            <div class="menu-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="menu-card c-gold" role="button" tabindex="0" onclick="navigasi('tasmik')">
+            <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-book-open"></i><i class="fa-solid fa-bookmark ikon-lencana"></i></div>
+            <div class="menu-card-title">Rekod Bacaan <span class="nb">Al-Quran</span> &amp; Iqra</div>
+            <div class="menu-card-desc">Catat dan pantau kemajuan bacaan</div>
+            <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
-          <div class="menu-card c-red" onclick="navigasi('dashboard')">
-            <div class="menu-icon-circle"><i class="fa-solid fa-chart-pie"></i></div>
+          <div class="menu-card c-red" role="button" tabindex="0" onclick="navigasi('dashboard')">
+            <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-chart-simple"></i><i class="fa-solid fa-arrow-trend-up ikon-lencana"></i></div>
             <div class="menu-card-title">Analisis Keseluruhan</div>
-            <div class="menu-card-desc">Papan pemuka, rumusan kelas &amp; laporan</div>
-            <div class="menu-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="menu-card-desc">Laporan &amp; statistik pencapaian</div>
+            <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
-          <div class="menu-card c-blue" onclick="navigasi('perkasa')">
-            <div class="menu-icon-circle"><i class="fa-solid fa-award"></i></div>
+          <div class="menu-card c-blue" role="button" tabindex="0" onclick="navigasi('perkasa')">
+            <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-bullseye"></i><i class="fa-solid fa-location-arrow ikon-lencana"></i></div>
             <div class="menu-card-title">PERKASA</div>
-            <div class="menu-card-desc">Murid Thn 6 di Iqra 1-3</div>
-            <div class="menu-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="menu-card-desc">Program Pengukuhan Al-Quran Sekolah Anda</div>
+            <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
-          <div class="menu-card c-purple" onclick="navigasi('transkrip')">
-            <div class="menu-icon-circle"><i class="fa-solid fa-scroll"></i></div>
+          <div class="menu-card c-purple" role="button" tabindex="0" onclick="navigasi('transkrip')">
+            <div class="menu-ikon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i><i class="fa-solid fa-award ikon-lencana"></i></div>
             <div class="menu-card-title">Sijil / Transkrip</div>
-            <div class="menu-card-desc">Rekod bacaan pelajar (PDF)</div>
-            <div class="menu-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="menu-card-desc">Cetak sijil &amp; transkrip pencapaian</div>
+            <div class="menu-card-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></div>
           </div>
         </div>
         </div>
@@ -10460,6 +10571,11 @@ function tukarTahunImport_() {
   selK.innerHTML = kelasUntukTahun(selT.value).map(function (k) { return '<option value="' + escapeHtml(k) + '">' + escapeHtml(k) + '</option>'; }).join('');
   segarPratontonImport_();
 }
+
+// Jubin menu utama ialah <div role="button">: Enter / Spasi mesti berfungsi seperti klik (papan kekunci & pembaca skrin).
+document.querySelectorAll('.menu-card[role="button"]').forEach(function (k) {
+  k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); k.click(); } });
+});
 
 document.getElementById('btnImportMurid').addEventListener('click', async function () {
   const tahunSenarai = (tetapanSistem && tetapanSistem.Tahun ? tetapanSistem.Tahun : []).map(String);
