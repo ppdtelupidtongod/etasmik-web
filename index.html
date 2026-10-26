@@ -4461,14 +4461,53 @@
   .hero-welcome { padding: 12px 32px 13px; border-radius: 30px; }
   .hero-welcome-arab {
     padding: 0 8px; font-size: clamp(2.4rem, 4.8vw, 3.4rem); line-height: 1.55;
-    background: linear-gradient(100deg, #D8B45A 0%, #FFF4D2 28%, #E6CC85 48%, #FFFBEA 60%, #C9A24D 100%); background-size: 260% 100%;
+    /* emas berkilat: kecerunan BERKALA (hujung kiri = hujung kanan) supaya sapuan kilat boleh berulang tanpa lompatan */
+    background: linear-gradient(105deg, #D9B65C 0%, #C9A24D 16.6%, #EBD491 33.3%, #FFFFFF 45%, #FFF8DE 50%, #FFFFFF 55%, #D9B65C 66.7%, #C9A24D 83.3%, #EBD491 100%); background-size: 300% 100%;
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
     filter: drop-shadow(0 3px 12px rgba(0,0,0,.55));
-    animation: arabMasuk 1.2s cubic-bezier(.22,1,.36,1) .5s backwards, arabKilau 5.5s ease-in-out 1.7s infinite, arabApung 6.5s ease-in-out 1.7s infinite;
+    /* "menulis khat": topeng menyingkap tulisan dari KANAN ke KIRI (arah tulisan Arab); keadaan rehat = tersingkap penuh */
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #000 55%, #000 100%); mask-image: linear-gradient(100deg, transparent 0%, transparent 45%, #000 55%, #000 100%);
+    -webkit-mask-size: 300% 100%; mask-size: 300% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: 100% 0; mask-position: 100% 0;
+    animation: arabSiklus 20s ease-in-out .6s infinite backwards;
   }
-  @keyframes arabMasuk { from { opacity: 0; transform: translateY(12px) scale(.86); } to { opacity: 1; transform: none; } }
-  @keyframes arabKilau { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-  @keyframes arabApung { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  /* satu kitaran 20 saat: tulis (0-17%) -> kilat emas menyapu tiga kali (21-33%, 47-59%, 73-85%) -> pudar -> tulis semula */
+  @keyframes arabSiklus {
+    0%    { -webkit-mask-position: 0% 0;   mask-position: 0% 0;   background-position: 0% 50%;   opacity: 1; }
+    17%   { -webkit-mask-position: 100% 0; mask-position: 100% 0; background-position: 0% 50%; }
+    21%   { background-position: 0% 50%; }
+    33%   { background-position: 100% 50%; }
+    33.1% { background-position: 0% 50%; }
+    47%   { background-position: 0% 50%; }
+    59%   { background-position: 100% 50%; }
+    59.1% { background-position: 0% 50%; }
+    73%   { background-position: 0% 50%; }
+    85%   { background-position: 100% 50%; }
+    85.1% { background-position: 0% 50%; }
+    95%   { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 1; }
+    100%  { -webkit-mask-position: 100% 0; mask-position: 100% 0; background-position: 0% 50%; opacity: 0; }
+  }
+  /* bintang kecil berkelip di atas huruf, serentak dengan sapuan kilat */
+  .arab-kilat { position: absolute; width: 15px; height: 15px; background: #FFF8DE; clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); opacity: 0; pointer-events: none; animation: arabBintang 20s ease-in-out .6s infinite backwards; }
+  .arab-kilat.k1 { right: 17%; top: 13%; }
+  .arab-kilat.k2 { left: 47%; top: 4%; width: 11px; height: 11px; animation-delay: 1.1s; }
+  .arab-kilat.k3 { left: 15%; top: 24%; width: 13px; height: 13px; animation-delay: 2.1s; }
+  @keyframes arabBintang {
+    0%, 20.5%   { opacity: 0; transform: scale(0) rotate(0deg); }
+    22.5%       { opacity: 1; transform: scale(1.15) rotate(45deg); }
+    25%         { opacity: 0; transform: scale(0) rotate(90deg); }
+    25.1%, 46.5% { opacity: 0; transform: scale(0); }
+    48.5%       { opacity: 1; transform: scale(1.15) rotate(45deg); }
+    51%         { opacity: 0; transform: scale(0) rotate(90deg); }
+    51.1%, 72.5% { opacity: 0; transform: scale(0); }
+    74.5%       { opacity: 1; transform: scale(1.15) rotate(45deg); }
+    77%         { opacity: 0; transform: scale(0) rotate(90deg); }
+    100%        { opacity: 0; transform: scale(0); }
+  }
+
+  /* corak bintang di belakang hero bergerak PERLAHAN dari kanan ke kiri (satu jubin 64px = 30 saat; gelung tanpa lompatan) */
+  .menu-hero::before { inset: 0 -64px 0 0; will-change: transform; animation: corakGeser 30s linear infinite; }
+  @keyframes corakGeser { from { transform: translateX(0); } to { transform: translateX(-64px); } }
   .hero-welcome-sapa { flex-wrap: wrap; justify-content: center; text-align: center; font-size: 1rem; }
   .hero-welcome-sapa .nama-sekolah { color: #F6DE9A; }
 
@@ -4496,7 +4535,7 @@
     96%  { opacity: 0; transform: scaleX(-1) skewY(0deg); }
     100% { opacity: 0; transform: scaleX(1) skewY(0deg); }
   }
-  @media (prefers-reduced-motion: reduce) { .hero-welcome-arab { animation: none !important; } .lq-selak { animation: none !important; opacity: 0; } }</style>
+  @media (prefers-reduced-motion: reduce) { .hero-welcome-arab, .menu-hero::before { animation: none !important; } .arab-kilat { display: none; } .lq-selak { animation: none !important; opacity: 0; } }</style>
 </head>
 <body>
 
@@ -4741,6 +4780,7 @@
                    "أَهْلاً وَسَهْلاً" ialah sapaan Arab biasa, bukan ayat Al-Quran. -->
               <div class="hero-welcome" id="heroWelcomeSapa">
                 <div class="hero-welcome-arab" lang="ar" dir="rtl">أَهْلاً وَسَهْلاً</div>
+                <i class="arab-kilat k1" aria-hidden="true"></i><i class="arab-kilat k2" aria-hidden="true"></i><i class="arab-kilat k3" aria-hidden="true"></i>
                 <div class="hero-welcome-sapa">
                   <span class="hero-welcome-icon" aria-hidden="true"></span>
                   <span>Selamat Datang ke Sistem E-Tasmik <strong class="nama-sekolah"></strong></span>
