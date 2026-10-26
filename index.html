@@ -5057,6 +5057,50 @@
     #rosterMuridTasmik .roster-aksi, #rosterMuridLaporan .roster-aksi { padding: 10px 11px; }
     #rosterMuridTasmik .roster-aksi i, #rosterMuridLaporan .roster-aksi i { display: none; }
   }
+
+  /* =====================================================================
+     v25 - BAR ATAS PADA TELEFON & TABLET KECIL (<=860px): empat butang akaun yang berbaris-lipat (bar menjadi "kapsul" dua tingkat yang bersepah) disatukan dalam SATU butang akaun
+           yang membuka panel senarai berlabel (nama pengguna + Urus Pengguna / Tetapan Sekolah / Tukar Kata Laluan / Log Keluar). Satu baris kemas:
+           [Menu] [lambang + tajuk (dipotong ...)] [akaun]. Desktop tidak berubah.
+  ===================================================================== */
+  .btn-akaun-topbar { display: none; }
+  @media (max-width: 860px) {
+    #appShell .app-topbar { margin: 14px 10px 8px; padding: 5px 6px; border-radius: 30px; }
+    #appShell .app-topbar > .container-fluid { flex-wrap: nowrap; gap: 8px; padding-left: 2px; padding-right: 2px; }
+    #appShell .app-topbar > .container-fluid > div:first-child { flex: 1 1 auto; min-width: 0; }
+    #appShell .app-topbar .navbar-brand { min-width: 0; margin-right: 0; gap: 9px; font-size: 1rem; }
+    #appShell .app-topbar #topbarTajuk { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.02rem; }
+    .btn-akaun-topbar {
+      display: inline-grid; place-items: center; flex: none; width: 42px; height: 42px; padding: 0; border-radius: 50%; font-size: 1.25rem; color: #F6E2A3; cursor: pointer;
+      border: 1px solid rgba(230,204,133,.55); background: rgba(255,255,255,.12); transition: background .22s ease, color .22s ease, box-shadow .3s ease, transform .2s ease;
+    }
+    .btn-akaun-topbar:active { transform: scale(.92); }
+    .btn-akaun-topbar[aria-expanded="true"] { color: var(--green-1); background: linear-gradient(180deg, #FFF3C4, #E6CC85); box-shadow: 0 0 0 2px rgba(243,220,147,.5), 0 0 18px rgba(230,204,133,.7); }
+    .btn-akaun-topbar:focus-visible { outline: 3px solid rgba(243,220,147,.8); outline-offset: 2px; }
+
+    #appShell .topbar-aksi {
+      position: absolute; right: 0; top: calc(100% + 10px); z-index: 6; flex-direction: column; align-items: stretch !important; gap: 2px;
+      width: min(290px, calc(100vw - 28px)); padding: 8px; border-radius: 22px; background: #fff; color: var(--k-teks) !important;
+      border: 1px solid var(--k-garis); box-shadow: 0 30px 56px -22px rgba(8,35,26,.6), 0 0 0 1px rgba(201,162,77,.32); transform-origin: top right;
+      display: none !important;
+    }
+    #appShell .topbar-aksi.buka { display: flex !important; animation: panelAkaunBuka .24s cubic-bezier(.22,1,.36,1); }
+    @keyframes panelAkaunBuka { from { opacity: 0; transform: translateY(-8px) scale(.94); } to { opacity: 1; transform: none; } }
+    #appShell .topbar-aksi #navNamaGuru { display: block !important; margin: 0 0 6px !important; padding: 10px 12px 12px; border-bottom: 1px solid #EFE9D7; color: var(--green-1) !important; font-family: var(--font-body); font-size: .92rem; font-weight: 800; letter-spacing: .01em; word-break: break-word; }
+    #appShell .topbar-aksi #navNamaGuru::before { content: "Akaun anda"; display: block; margin-bottom: 2px; font-size: .62rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--k-emas, #B8892F); }
+    #appShell .topbar-aksi .btn {
+      display: flex; align-items: center; gap: 12px; width: 100%; height: auto; margin: 0 !important; padding: 10px 12px; border: 0; border-radius: 14px; text-align: left;
+      background: transparent; color: var(--k-teks); font-size: .98rem; font-weight: 700; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+    }
+    #appShell .topbar-aksi .btn::after { content: attr(title); }
+    #appShell .topbar-aksi .btn i { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: #F3EBD0; color: var(--green-1); font-size: .95rem; }
+    #appShell .topbar-aksi .btn:hover, #appShell .topbar-aksi .btn:focus-visible { background: #F6F3E8; color: var(--k-teks); }
+    #appShell .topbar-aksi .btn:active { background: #EDE6CC; }
+    #appShell .topbar-aksi #btnLogout { margin-top: 4px !important; color: #9A1F3C; border-top: 1px solid #EFE9D7; border-radius: 0 0 14px 14px; padding-top: 14px; }
+    #appShell .topbar-aksi #btnLogout i { background: #FBE4E8; color: #9A1F3C; }
+  }
+  @media (max-width: 420px) { #btnJanaSijilKelas { font-size: .88rem; padding-left: 8px; padding-right: 8px; } }
+  @media (prefers-reduced-motion: reduce) { #appShell .topbar-aksi.buka { animation: none; } .btn-akaun-topbar { transition: none; } }
 </style>
 </head>
 <body>
@@ -5212,7 +5256,9 @@
             <span id="topbarTajuk">E-Tasmik</span>
           </span>
         </div>
-        <div class="d-flex align-items-center text-white flex-shrink-0">
+        <!-- Telefon & tablet kecil (<=860px): empat butang akaun disatukan dalam SATU butang (#btnAkaunTopbar) yang membuka panel senarai berlabel; desktop: baris ikon seperti biasa -->
+        <button type="button" class="btn-akaun-topbar" id="btnAkaunTopbar" aria-label="Akaun dan tetapan" aria-expanded="false" aria-controls="topbarAksi"><i class="fa-solid fa-circle-user" aria-hidden="true"></i></button>
+        <div class="d-flex align-items-center text-white flex-shrink-0 topbar-aksi" id="topbarAksi">
           <span id="navNamaGuru" class="me-3 d-none d-sm-inline small"></span>
           <!-- "Urus Pengguna" (daftar/urus akaun guru lain) - Admin SAHAJA
                nampak (ditoggle drpd mulakanApp() dlm JS.html melalui kelas
@@ -5225,11 +5271,11 @@
                dipaparkan pada Sijil/Transkrip) - Admin SAHAJA, corak SAMA
                dgn .btn-urus-pengguna di atas (kebenaran sebenar disemak
                SEMULA di pelayan menerusi kemaskiniTetapan() dlm Code.gs). -->
-          <button class="btn btn-sm btn-outline-light me-2 btn-tetapan-sijil d-none" id="btnTetapanSijil" title="Tetapan Sijil">
+          <button class="btn btn-sm btn-outline-light me-2 btn-tetapan-sijil d-none" id="btnTetapanSijil" title="Tetapan Sekolah">
             <i class="fa-solid fa-gear"></i>
           </button>
           <button class="btn btn-sm btn-outline-light me-2" id="btnTukarKataLaluan" title="Tukar Kata Laluan"><i class="fa-solid fa-key"></i></button>
-          <button class="btn btn-sm btn-outline-light" id="btnLogout"><i class="fa-solid fa-power-off"></i></button>
+          <button class="btn btn-sm btn-outline-light" id="btnLogout" title="Log Keluar"><i class="fa-solid fa-power-off"></i></button>
         </div>
       </div>
     </nav>
@@ -7813,6 +7859,22 @@ const PETA_VIEW = {
   ppd:        { kontena: 'view-ppd' }
 };
 
+// Telefon: butang akaun membuka/menutup panel (nama + Urus Pengguna / Tetapan / Kata Laluan / Log Keluar). Tutup: klik di luar, Esc, pilih satu butang, atau tukar modul.
+(function () {
+  const btn = document.getElementById('btnAkaunTopbar'), panel = document.getElementById('topbarAksi');
+  if (!btn || !panel) return;
+  function tutup() { panel.classList.remove('buka'); btn.setAttribute('aria-expanded', 'false'); }
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const buka = panel.classList.toggle('buka');
+    btn.setAttribute('aria-expanded', buka ? 'true' : 'false');
+  });
+  panel.addEventListener('click', function (e) { if (e.target.closest('.btn')) setTimeout(tutup, 0); });
+  document.addEventListener('click', function (e) { if (!panel.contains(e.target) && !btn.contains(e.target)) tutup(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') tutup(); });
+  window.tutupPanelAkaun_ = tutup;
+})();
+
 /** Denyut cahaya emas + ikon bergerak pada tab jalan pintas modul (dimulakan semula setiap kali; kelas dibuang selepas selesai). */
 function denyutNav_(b) {
   b.classList.remove('denyut');
@@ -7832,6 +7894,7 @@ document.getElementById('modulNav').addEventListener('click', function (e) {
 function navigasi(view) {
   const info = PETA_VIEW[view];
   if (!info) return;
+  if (window.tutupPanelAkaun_) window.tutupPanelAkaun_();
 
   // Sorok semua kontena peringkat atas, papar hanya kontena berkaitan
   document.querySelectorAll('.top-view').forEach(el => el.classList.add('d-none'));
