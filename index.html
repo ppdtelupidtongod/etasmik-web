@@ -7687,16 +7687,20 @@ function urlApi_() {
 }
 
 /** POST JSON (Content-Type text/plain = permintaan "mudah", tiada preflight CORS). Pulang objek JSON jawapan. */
+const HAD_MASA_FETCH_MS = 60000;   // tanpa had masa, fetch ke Google yang tersangkut menahan skrin "Memuatkan..." selama-lamanya
 async function poskeApi_(badan) {
   let resp;
+  const kawal = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  const pemasa = kawal ? setTimeout(function () { kawal.abort(); }, HAD_MASA_FETCH_MS) : null;
   try {
-    resp = await fetch(urlApi_(), { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(badan) });
+    resp = await fetch(urlApi_(), { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(badan), signal: kawal ? kawal.signal : undefined });
   } catch (err) {
     if (err && /belum ditetapkan/.test(err.message)) throw err;
-    throw new Error('Ralat rangkaian: tidak dapat menghubungi pelayan.');
-  }
-  if (!resp.ok) throw new Error('Ralat pelayan (HTTP ' + resp.status + ').');
-  try { return await resp.json(); } catch (err) { throw new Error('Jawapan pelayan tidak sah.'); }
+    throw new Error(err && err.name === 'AbortError' ? 'Ralat rangkaian: pelayan tidak menjawab (tamat masa).' : 'Ralat rangkaian: tidak dapat menghubungi pelayan.');
+  } finally { if (pemasa) clearTimeout(pemasa); }
+  // 429/5xx = pelayan sibuk (had pelaksanaan serentak Google) - ditanda supaya klien tahu ia sementara & boleh dicuba semula
+  if (!resp.ok) { const e = new Error('Ralat pelayan (HTTP ' + resp.status + ').'); e.sementara = (resp.status === 429 || resp.status >= 500); throw e; }
+  try { return await resp.json(); } catch (err) { throw new Error('Jawapan pelayan tidak sah (pelayan mungkin sibuk).'); }
 }
 
 /**
@@ -7810,9 +7814,16 @@ function dengan_had_masa_(promise, hadMs, mesej) {
   });
 }
 
+/** Ralat KEKAL (mengulang tidak membantu): sesi tamat, tiada kebenaran, sekolah digantung, API tiada. */
+function ralatKekal_(err) { return /SESI_TAMAT|TIADA_KEBENARAN|SEKOLAH_DIGANTUNG|API_TIDAK_WUJUD/.test(String((err && err.message) || err || '')); }
+/**
+ * Cuba semula bacaan dengan BACKOFF EKSPONEN + JITTER PENUH. Apps Script menolak permintaan apabila melebihi ~30 pelaksanaan serentak; jika ratusan klien gagal
+ * serentak lalu mencuba semula selepas jeda TETAP yang sama, mereka menyerbu semula pada saat yang sama (kerumunan) dan keadaan tidak pulih. Jeda rawak dalam tetingkap
+ * yang membesar menyebarkan semula beban. Ralat kekal (sesi tamat dsb.) tidak diulang.
+ */
 async function cubaSemulaClient_(fn, cubaan, jedaMs, hadMasaMs) {
-  const maksCubaan = cubaan || 2;
-  const jeda = jedaMs || 700;
+  const maksCubaan = cubaan || 4;
+  const asas = jedaMs || 700;
   const hadMasa = hadMasaMs || 20000; // 20 saat setiap percubaan - lebih drpd cukup utk Sheets sebenar
   let ralatTerakhir = null;
   for (let i = 0; i < maksCubaan; i++) {
@@ -7824,7 +7835,8 @@ async function cubaSemulaClient_(fn, cubaan, jedaMs, hadMasaMs) {
       return hasil;
     } catch (err) {
       ralatTerakhir = err;
-      if (i < maksCubaan - 1) await new Promise(r => setTimeout(r, jeda * (i + 1)));
+      if (ralatKekal_(err)) throw err;
+      if (i < maksCubaan - 1) await new Promise(r => setTimeout(r, Math.random() * Math.min(10000, asas * Math.pow(2, i)) + 250));
     }
   }
   throw ralatTerakhir;
@@ -7986,14 +7998,22 @@ function simpanQueueOffline(queue) {
   try { localStorage.setItem(kunci, JSON.stringify(queue)); } catch (e) { /* abaikan */ }
 }
 
+/** ID unik sebelah klien untuk satu rekod (penanda idempotensi: pelayan tidak menulis baris kedua jika rekod yang sama dihantar semula). */
+function idKlienBaharu_() {
+  try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID().replace(/-/g, ''); } catch (e) { /* abaikan */ }
+  let s = ''; for (let i = 0; i < 4; i++) s += Math.random().toString(36).slice(2, 10);
+  return (Date.now().toString(36) + s).slice(0, 40);
+}
 function tambahKeQueueOffline(rekod) {
   const queue = ambilQueueOffline();
-  queue.push(rekod);
+  if (rekod && typeof rekod === 'object' && !rekod.ID_Klien) rekod.ID_Klien = idKlienBaharu_();
+  // elak rekod yang sama masuk queue dua kali (cth. hantar gagal dua kali berturut-turut)
+  if (!(rekod && rekod.ID_Klien && queue.some(function (r) { return r && r.ID_Klien === rekod.ID_Klien; }))) queue.push(rekod);
   simpanQueueOffline(queue);
   kemaskiniBadgeMenunggu();
 }
 function kemaskiniBadgeMenunggu() {
-  const queue = ambilQueueOffline();
+  const queue = ambilQueueOffline().filter(function (r) { return !(r && r.ditolak); });
   const badge = document.getElementById('badgeMenunggu');
   if (queue.length > 0) {
     badge.textContent = queue.length + ' menunggu sync';
@@ -8003,19 +8023,39 @@ function kemaskiniBadgeMenunggu() {
   }
 }
 let sedangSegerak_ = false;
+const SAIZ_KUMPULAN_SEGERAK_ = 100;   // mesti sepadan MAKS_REKOD_SEGERAK_ di pelayan (27_Offline.gs)
 async function segerakkanDataOffline() {
   if (!sesiToken || sedangSegerak_) return;      // perlu log masuk; elak dua penyegerakan serentak (rekod berganda)
-  const queue = ambilQueueOffline();
-  if (queue.length === 0) return;
+  if (ambilQueueOffline().filter(function (r) { return !(r && r.ditolak); }).length === 0) return;
   sedangSegerak_ = true;
+  let berjayaJumlah = 0, gagalJumlah = 0, tolakJumlah = 0;
   try {
-    const hasil = await apiBulkSyncOffline(queue);
-    // Simpan semula HANYA rekod yang gagal (indeksGagal daripada pelayan) - versi asal mengosongkan seluruh queue.
-    const sisa = (hasil.indeksGagal || []).map(function (i) { return queue[i]; }).filter(Boolean);
-    simpanQueueOffline(sisa);
-    kemaskiniBadgeMenunggu();
-    if (hasil.berjaya > 0) toastKejayaan(hasil.berjaya + ' rekod offline berjaya disegerakkan.');
-    if (hasil.gagal > 0) toastRalat(hasil.gagal + ' rekod gagal disegerakkan (disimpan untuk cubaan seterusnya).');
+    // Hantar dalam kumpulan (pelayan menghadkan satu panggilan). Selepas SETIAP kumpulan, buang daripada queue SEMASA hanya rekod yang berjaya (mengikut ID_Klien):
+    // queue boleh bertambah semasa panggilan sedang berjalan (guru terus merekod) - menulis semula "sisa" daripada salinan lama akan memadam rekod baharu itu.
+    for (let pusingan = 0; pusingan < 50; pusingan++) {
+      const queue = ambilQueueOffline();
+      queue.forEach(function (r) { if (r && typeof r === 'object' && !r.ID_Klien) r.ID_Klien = idKlienBaharu_(); });
+      simpanQueueOffline(queue);
+      const menunggu = queue.filter(function (r) { return !(r && r.ditolak); });   // rekod yang ditolak pelayan (data tidak sah) kekal disimpan tetapi tidak dihantar semula
+      if (menunggu.length === 0) break;
+      const kumpulan = menunggu.slice(0, SAIZ_KUMPULAN_SEGERAK_);
+      const hasil = await apiBulkSyncOffline(kumpulan);
+      const gagalIdx = {}; (hasil.indeksGagal || []).forEach(function (i) { gagalIdx[i] = true; });
+      const tolakIdx = {}; (hasil.indeksDitolak || []).forEach(function (i) { tolakIdx[i] = true; });
+      const berjayaId = {};
+      const tolakId = {};
+      kumpulan.forEach(function (r, i) { if (r && r.ID_Klien) { if (!gagalIdx[i]) berjayaId[r.ID_Klien] = true; else if (tolakIdx[i]) tolakId[r.ID_Klien] = true; } });
+      tolakJumlah += (hasil.indeksDitolak || []).length;
+      // buang yang berjaya; TANDA yang ditolak (jangan padam data pengguna senyap-senyap, tetapi jangan hantar berulang kali)
+      simpanQueueOffline(ambilQueueOffline().filter(function (r) { return !(r && r.ID_Klien && berjayaId[r.ID_Klien]); }).map(function (r) { if (r && r.ID_Klien && tolakId[r.ID_Klien]) r.ditolak = true; return r; }));
+      kemaskiniBadgeMenunggu();
+      berjayaJumlah += hasil.berjaya || 0; gagalJumlah += (hasil.gagal || 0) - (hasil.indeksDitolak || []).length;
+      if (((hasil.gagal || 0) - (hasil.indeksDitolak || []).length) > 0 || ((hasil.berjaya || 0) + (hasil.indeksDitolak || []).length) === 0) break;   // ada yang gagal: cuba lagi pada penyegerakan seterusnya (elak gelung)
+      if (ambilQueueOffline().filter(function (r) { return !(r && r.ditolak); }).length === 0) break;
+    }
+    if (berjayaJumlah > 0) toastKejayaan(berjayaJumlah + ' rekod offline berjaya disegerakkan.');
+    if (tolakJumlah > 0) toastRalat(tolakJumlah + ' rekod offline ditolak pelayan (data tidak sah) dan tidak akan dihantar semula.');
+    if (gagalJumlah > 0) toastRalat(gagalJumlah + ' rekod gagal disegerakkan (disimpan untuk cubaan seterusnya).');
   } catch (err) {
     console.error('Ralat sync offline:', err);      // queue kekal; dicuba semula kemudian
   } finally {
@@ -9774,7 +9814,8 @@ document.getElementById('formTasmik').addEventListener('submit', async function 
     Ralat_Tajwid: ralatDipilih.join(','),
     Kehadiran: document.getElementById('inputKehadiran').checked ? 'Hadir' : 'Tidak Hadir',
     ID_Guru: currentUser.ID_Guru,
-    Timestamp: timestampGabungan.toISOString()
+    Timestamp: timestampGabungan.toISOString(),
+    ID_Klien: idKlienBaharu_()   // idempotensi: hantar semula (tamat masa / queue offline) tidak menghasilkan rekod berganda
   };
 
   const namaMurid = ((rosterMuridTasmikCache || []).find(function (m) { return m.ID_Murid === idMurid; }) || {}).Nama || '';
@@ -9809,15 +9850,20 @@ document.getElementById('formTasmik').addEventListener('submit', async function 
 
 /** Fungsi generik: hantar rekod terus jika online, atau simpan dalam queue jika offline */
 async function hantarRekod(data, fungsiApi, mesejKejayaan) {
+  if (!data.ID_Klien) data.ID_Klien = idKlienBaharu_();
   if (navigator.onLine) {
     tunjukLoading('Menyimpan...');
     try {
-      const hasil = await fungsiApi(data);
+      // Had masa: tanpa ini, panggilan yang tersangkut menahan guru pada "Menyimpan..." selama-lamanya. Jika tamat masa pelayan mungkin SUDAH menyimpan - ID_Klien
+      // memastikan penyegerakan kemudian tidak menulis baris kedua.
+      const hasil = await dengan_had_masa_(fungsiApi(data), 45000, 'Pelayan lambat menjawab (sibuk).');
       tutupLoading();
-      if (hasil.success) toastKejayaan(mesejKejayaan);
-      else { toastRalat(hasil.message || 'Gagal menyimpan.'); tambahKeQueueOffline(data); }
+      if (hasil && hasil.success) toastKejayaan(mesejKejayaan);
+      else if (hasil && hasil.sementara) { toastRalat((hasil.message || 'Gagal menyimpan.') + ' Disimpan di peranti dan akan dicuba semula.'); tambahKeQueueOffline(data); }
+      else toastRalat((hasil && hasil.message) || 'Gagal menyimpan.');   // ditolak kerana data tidak sah: mengulang tidak membantu, jangan masuk queue
     } catch (err) {
       tutupLoading();
+      if (ralatKekal_(err)) return;                 // sesi tamat: skrin log masuk sudah dipaparkan oleh gs()
       tambahKeQueueOffline(data);
       toastKejayaan(mesejKejayaan + ' (disimpan offline - sambungan tidak stabil)');
     }
