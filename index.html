@@ -5426,7 +5426,7 @@
   }
 
   /* =====================================================================
-     v31 - TEMA WARNA: butang palet (log masuk & bar atas) + dialog pilihan 10 tema. Tema = anjakan hue keluarga zamrud oleh enjin dalam <head> (lihat EnjinTema).
+     v31 - TEMA WARNA: butang palet (log masuk & bar atas) + dialog pilihan warna (bulatan sahaja, tanpa nama). Tema = anjakan hue keluarga zamrud oleh enjin dalam <head> (lihat EnjinTema).
   ===================================================================== */
   .lg-tema {
     position: absolute; top: 16px; right: 16px; z-index: 6; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; cursor: pointer;
@@ -5434,41 +5434,35 @@
   }
   .lg-tema:hover { background: rgba(255,255,255,.22); box-shadow: 0 0 18px rgba(230,204,133,.5); transform: rotate(-14deg); }
   .lg-tema:focus-visible { outline: 3px solid rgba(243,220,147,.85); outline-offset: 2px; }
-  .tema-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 12px; text-align: center; }
-  .tema-kad {
-    position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 12px 4px 10px; border-radius: 16px; cursor: pointer; background: #fff;
-    border: 1.5px solid #E4DDC7; transition: border-color .2s ease, box-shadow .25s ease, background .2s ease;
+  .tema-seksyen { margin: 16px 0 10px; font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #8A6A1F; text-align: center; }
+  .tema-seksyen:first-child { margin-top: 4px; }
+  .warna-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 300px; margin: 0 auto; }
+  #aksenGrid, #latarGrid { max-width: 244px; }
+  .tema-kad, .aksen-bulat, .latar-bulat {
+    position: relative; padding: 0; border-radius: 50%; cursor: pointer; border: 2px solid #fff;
+    box-shadow: 0 0 0 1.5px #D3CAAB, 0 8px 12px -8px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4); transition: transform .2s ease, box-shadow .2s ease;
   }
-  .tema-kad:hover { border-color: #D3CAAB; background: #FBF8EE; }
-  .tema-kad:focus-visible { outline: 3px solid rgba(201,162,77,.7); outline-offset: 2px; }
-  .tema-kad.dipilih { border-color: #C9A24D; background: #FFFCF0; box-shadow: 0 0 0 3px rgba(201,162,77,.3); }
-  .tema-contoh { position: relative; width: 54px; height: 54px; border-radius: 50%; box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 10px 16px -8px rgba(0,0,0,.5); }
-  .tema-contoh::after { content: ''; position: absolute; right: 2px; bottom: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--aksen-contoh, linear-gradient(135deg, #F3DC93, #C9A24D)); box-shadow: 0 0 0 2px #fff; }
-  .tema-kad.dipilih .tema-contoh::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 1.1rem; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
-  .tema-nama { font-size: .76rem; font-weight: 800; line-height: 1.2; color: #14261F; }
-    .tema-seksyen { margin: 18px 0 8px; font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #8A6A1F; text-align: center; }
-  .tema-seksyen span { display: block; margin-top: 2px; font-size: .66rem; font-weight: 600; letter-spacing: .02em; text-transform: none; color: #5B6B63; }
-  .aksen-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-  .aksen-bulat { position: relative; width: 40px; height: 40px; padding: 0; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #D3CAAB, 0 8px 12px -8px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4); transition: transform .2s ease, box-shadow .2s ease; }
-  .aksen-bulat:hover { transform: scale(1.1); }
-  .aksen-bulat:focus-visible { outline: 3px solid rgba(20,38,31,.55); outline-offset: 3px; }
-  .aksen-bulat.dipilih { box-shadow: 0 0 0 3px #14261F, 0 8px 12px -8px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4); }
-  .aksen-bulat.dipilih::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: .9rem; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
-  .aksen-nama { margin-top: 8px; text-align: center; font-size: .84rem; font-weight: 800; color: #14261F; }
-  @media (prefers-reduced-motion: reduce) { .aksen-bulat { transition: none; } .aksen-bulat:hover { transform: none; } }
-  .swal2-styled.swal2-deny.btn-tema-lalai { background: #fff !important; color: #14261F !important; border: 1.5px solid #D3CAAB !important; box-shadow: none !important; }
+  .tema-kad { width: 48px; height: 48px; }
+  .aksen-bulat, .latar-bulat { width: 38px; height: 38px; }
+  .tema-kad:hover, .aksen-bulat:hover, .latar-bulat:hover { transform: scale(1.1); }
+  .tema-kad:focus-visible, .aksen-bulat:focus-visible, .latar-bulat:focus-visible { outline: 3px solid rgba(20,38,31,.55); outline-offset: 3px; }
+  .tema-kad.dipilih, .aksen-bulat.dipilih, .latar-bulat.dipilih { box-shadow: 0 0 0 3px #14261F, 0 8px 12px -8px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4); }
+  .tema-kad::after { content: ''; position: absolute; right: -3px; bottom: -3px; width: 15px; height: 15px; border-radius: 50%; background: var(--aksen-contoh, linear-gradient(135deg, #F3DC93, #C9A24D)); box-shadow: 0 0 0 2px #fff; }
+  .tema-kad.dipilih::before, .aksen-bulat.dipilih::before, .latar-bulat.dipilih::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 1rem; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+  .aksen-bulat.dipilih::before { font-size: .85rem; }
+  .latar-bulat.dipilih::before { color: #14261F; font-size: .85rem; text-shadow: none; }
+  @media (prefers-reduced-motion: reduce) { .tema-kad, .aksen-bulat, .latar-bulat { transition: none; } .tema-kad:hover, .aksen-bulat:hover, .latar-bulat:hover { transform: none; } }  .swal2-styled.swal2-deny.btn-tema-lalai { background: #fff !important; color: #14261F !important; border: 1.5px solid #D3CAAB !important; box-shadow: none !important; }
   .swal2-styled.swal2-deny.btn-tema-lalai:hover { background: #FBF8EE !important; }
-  @media (max-width: 560px) { .tema-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tema-kad { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 10px 12px; text-align: left; } .tema-contoh { width: 44px; height: 44px; flex: none; } }
   @media (prefers-reduced-motion: reduce) { .lg-tema { transition: none; } .lg-tema:hover { transform: none; } }</style>
   <!-- ============================================================ -->
-  <!-- ENJIN TEMA WARNA: 10 warna utama + 10 warna aksen (hiasan emas). Pilihan asal (Hijau Zamrud + Emas) = CSS asal TIDAK diubah. Dijalankan   -->
+  <!-- ENJIN TEMA WARNA: 10 warna utama + 10 warna aksen (hiasan emas) + 10 warna latar pastel (kanvas belakang halaman). Pilihan asal (Hijau Zamrud + Emas) = CSS asal TIDAK diubah. Dijalankan   -->
   <!-- di <head> supaya pilihan tersimpan dipasang sebelum halaman dilukis (tiada kelipan). Warna utama menganjakkan keluarga hijau-zamrud;     -->
   <!-- aksen menganjakkan keluarga emas. Warna semantik (tahap bacaan, mutu, status, Tahun, jubin menu, amaran), sijil & cetakan TIDAK disentuh. -->
   <!-- Pilihan disimpan dalam localStorage peranti.                                                                                              -->
   <!-- ============================================================ -->
   <script>
   (function () {
-    var KUNCI = 'hubTasmik_tema', KUNCI_AKSEN = 'hubTasmik_aksen';
+    var KUNCI = 'hubTasmik_tema', KUNCI_AKSEN = 'hubTasmik_aksen', KUNCI_LATAR = 'hubTasmik_latar';
     // dh = anjakan hue (darjah) daripada asal (hijau ~158 / emas ~42); ds = pengganda ketepuan. Hue sasaran dalam komen.
     var SENARAI = [
       { id: 'zamrud', nama: 'Hijau Zamrud', dh: 0, ds: 1 },          // 158
@@ -5494,10 +5488,23 @@
       { id: 'lavender', nama: 'Lavender', dh: 223, ds: 0.55 },       // 265
       { id: 'perak', nama: 'Perak', dh: 170, ds: 0.1 }               // neutral sejuk
     ];
+    // Warna LATAR (kanvas belakang halaman, di luar kad): pastel lembut. h = hue, s = ketepuan; nilai dijana semasa larian (bukan #hex tetap). 'asal' = latar asal (tiada penimpaan).
+    var LATAR = [
+      { id: 'asal', nama: 'Asal', h: 100, s: 0.22 },
+      { id: 'pudina', nama: 'Pudina', h: 150, s: 0.45 },
+      { id: 'sage', nama: 'Sage', h: 100, s: 0.3 },
+      { id: 'aqua', nama: 'Aqua', h: 180, s: 0.5 },
+      { id: 'langit', nama: 'Langit', h: 205, s: 0.65 },
+      { id: 'lavender', nama: 'Lavender', h: 265, s: 0.5 },
+      { id: 'mawar', nama: 'Mawar', h: 340, s: 0.55 },
+      { id: 'pic', nama: 'Pic', h: 22, s: 0.75 },
+      { id: 'lemon', nama: 'Lemon', h: 48, s: 0.7 },
+      { id: 'kelabu', nama: 'Kelabu Lembut', h: 40, s: 0.07 }
+    ];
     // Aturan yang BUKAN warna tema (kategori/semantik/dokumen rasmi): dibiarkan seperti asal.
     var KECUALI = /\.menu-card|\.tb-\d|\[data-w|\.tahun-kad|\.enrol-kelas-kepala|\.rumusan-kelas-pill|\.badge-kategori|\.analisis-dot|\.bk-|\.kc-|\.kat-chip|\.st-chip|\.btn-traffic|\.status-(?:online|offline)|\.badge-lulus|\.sasaran-|\.ppd-status|\.ppd-kpi\[|\.ppd-trek-isi|\.ppd-mini-trek|\.rs-|\.rp-|\.cincin-tahap|\.tangga-mini|\.tp-langkah|\.hari-ini|\.perkasa-mini-badge|\.ppd-mutu|\.ppd-tanda|\.ct-teras|\.rr-bar|\.cp-|#areaCetakPpd|\.sijil|#areaTranskripCetak|\.bg-success|\.text-success|\.alert-success|\.text-bg-success|\.bg-warning|\.text-warning|\.lencana-/;
     var PROTEK = /(--(?:ok|kat|teal|amaran|bahaya|red|merah)[a-z0-9-]*\s*:[^;{}]*;?)/g;
-    var gaya = null, asal = '', semasa = 'zamrud', aksen = 'emas';
+    var gaya = null, asal = '', semasa = 'zamrud', aksen = 'emas', latar = 'asal', gayaLatar = null;
 
     function cari(senarai, id) { for (var i = 0; i < senarai.length; i++) if (senarai[i].id === id) return senarai[i]; return null; }
     function lalai(x) { return x.dh === 0 && x.ds === 1; }
@@ -5594,21 +5601,50 @@
     }
     function terap(id, senyap) { semasa = (cari(SENARAI, id) || SENARAI[0]).id; return pasang(senyap); }
     function terapAksen(id, senyap) { aksen = (cari(AKSEN, id) || AKSEN[0]).id; return pasang(senyap); }
-    function tetapSemula() { semasa = 'zamrud'; aksen = 'emas'; return pasang(false); }
+    function latarWarna(L) {
+      function c(h, s, l) { return hslRgb(((h % 360) + 360) % 360, Math.min(1, s), l); }
+      return { c1: c(L.h, L.s, 0.955), c2: c(L.h, L.s, 0.905), t1: c(L.h, L.s * 1.5, 0.78), t2: c(L.h + 28, L.s * 1.3, 0.82) };
+    }
+    function cssLatar(L) {
+      var w = latarWarna(L), r = function (x) { return 'rgb(' + x.join(',') + ')'; }, a = function (x, al) { return 'rgba(' + x.join(',') + ',' + al + ')'; };
+      return 'html:root{background:' + r(w.c1) + ' !important}' +
+        'body{background-color:' + r(w.c1) + ' !important;background-image:radial-gradient(900px 620px at 6% -8%,' + a(w.t1, 0.55) + ',transparent 62%),radial-gradient(860px 600px at 104% 2%,' + a(w.t2, 0.5) +
+        ',transparent 60%),radial-gradient(900px 700px at 72% 108%,' + a(w.t1, 0.38) + ',transparent 62%),radial-gradient(760px 560px at -4% 96%,' + a(w.t2, 0.34) +
+        ',transparent 62%),linear-gradient(180deg,' + r(w.c1) + ' 0%,' + r(w.c2) + ' 100%) !important;background-attachment:fixed !important}' +
+        '.bg-orbs .orb-1,.bg-orbs .orb-3{background:radial-gradient(circle,' + r(w.t1) + ',' + r(w.t2) + ') !important;opacity:.34 !important}' +
+        '.bg-orbs .orb-2,.bg-orbs .orb-4{background:radial-gradient(circle,' + r(w.t2) + ',' + r(w.t1) + ') !important;opacity:.3 !important}';
+    }
+    function pasangLatar(senyap) {
+      var L = cari(LATAR, latar) || LATAR[0];
+      if (L.id === 'asal') { if (gayaLatar && gayaLatar.parentNode) gayaLatar.parentNode.removeChild(gayaLatar); gayaLatar = null; }
+      else {
+        if (!gayaLatar) { gayaLatar = document.createElement('style'); gayaLatar.id = 'gaya-latar'; document.head.appendChild(gayaLatar); }
+        gayaLatar.textContent = cssLatar(L);
+      }
+      document.documentElement.setAttribute('data-latar', L.id);
+      if (!senyap) { try { localStorage.setItem(KUNCI_LATAR, L.id); } catch (e) { /* abaikan */ } }
+      return true;
+    }
+    function terapLatar(id, senyap) { latar = (cari(LATAR, id) || LATAR[0]).id; return pasangLatar(senyap); }
+    function contohLatar(id) { var w = latarWarna(cari(LATAR, id) || LATAR[0]); return 'linear-gradient(145deg, rgb(' + w.t1.join(',') + '), rgb(' + w.c1.join(',') + '))'; }
+    function tetapSemula() { semasa = 'zamrud'; aksen = 'emas'; latar = 'asal'; pasangLatar(false); return pasang(false); }
     function contoh(id) { var t = cari(SENARAI, id) || SENARAI[0], e = AKSEN[0]; return 'linear-gradient(145deg, #' + hexBaru('1F7C5B', t, e) + ', #' + hexBaru('0E402E', t, e) + ')'; }
     function contohAksen(id) { var t = SENARAI[0], a = cari(AKSEN, id) || AKSEN[0]; return 'linear-gradient(135deg, #' + hexBaru('F3DC93', t, a) + ', #' + hexBaru('C9A24D', t, a) + ')'; }
     function simpanan(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
     window.EnjinTema = {
-      senarai: SENARAI, aksenSenarai: AKSEN, kunci: KUNCI, kunciAksen: KUNCI_AKSEN,
-      semasa: function () { return semasa; }, aksenSemasa: function () { return aksen; },
-      terap: terap, terapAksen: terapAksen, tetapSemula: tetapSemula, dom: dom, contoh: contoh, contohAksen: contohAksen,
+      senarai: SENARAI, aksenSenarai: AKSEN, latarSenarai: LATAR, kunci: KUNCI, kunciAksen: KUNCI_AKSEN, kunciLatar: KUNCI_LATAR,
+      semasa: function () { return semasa; }, aksenSemasa: function () { return aksen; }, latarSemasa: function () { return latar; },
+      terap: terap, terapAksen: terapAksen, terapLatar: terapLatar, contohLatar: contohLatar, tetapSemula: tetapSemula, dom: dom, contoh: contoh, contohAksen: contohAksen,
       asalSama: function () { return !gaya || gaya.textContent === asal; },
-      tersimpan: function () { return simpanan(KUNCI); }, aksenTersimpan: function () { return simpanan(KUNCI_AKSEN); }
+      tersimpan: function () { return simpanan(KUNCI); }, aksenTersimpan: function () { return simpanan(KUNCI_AKSEN); }, latarTersimpan: function () { return simpanan(KUNCI_LATAR); }
     };
     var idT = simpanan(KUNCI), idA = simpanan(KUNCI_AKSEN);
     if (idT && cari(SENARAI, idT)) semasa = idT;
     if (idA && cari(AKSEN, idA)) aksen = idA;
+    var idL = simpanan(KUNCI_LATAR);
+    if (idL && cari(LATAR, idL)) latar = idL;
     if (semasa !== 'zamrud' || aksen !== 'emas') pasang(true);
+    if (latar !== 'asal') pasangLatar(true);
   })();
   </script>
 </head>
@@ -13210,50 +13246,62 @@ function bersihkanPaparanPpd_() {
 async function bukaPilihTema_() {
   const E = window.EnjinTema;
   if (!E) return;
-  const kadHtml = function () {
+  // Hanya bulatan warna (tanpa nama kelihatan); aria-label untuk pembaca skrin.
+  const utamaHtml = function () {
     return E.senarai.map(function (t) {
       const pilih = t.id === E.semasa();
-      return '<button type="button" class="tema-kad' + (pilih ? ' dipilih' : '') + '" data-tema="' + t.id + '" aria-pressed="' + pilih + '" aria-label="' + escapeHtml(t.nama) + '">' +
-        '<span class="tema-contoh" style="background:' + E.contoh(t.id) + '"></span><span class="tema-nama">' + escapeHtml(t.nama) + '</span></button>';
+      return '<button type="button" class="tema-kad' + (pilih ? ' dipilih' : '') + '" data-tema="' + t.id + '" aria-pressed="' + pilih + '" aria-label="Warna utama ' + escapeHtml(t.nama) + '" style="background:' + E.contoh(t.id) + '"></button>';
     }).join('');
   };
   const aksenHtml = function () {
     return E.aksenSenarai.map(function (a) {
       const pilih = a.id === E.aksenSemasa();
-      return '<button type="button" class="aksen-bulat' + (pilih ? ' dipilih' : '') + '" data-aksen="' + a.id + '" title="' + escapeHtml(a.nama) + '" aria-label="Aksen ' + escapeHtml(a.nama) + '" aria-pressed="' + pilih + '" style="background:' + E.contohAksen(a.id) + '"></button>';
+      return '<button type="button" class="aksen-bulat' + (pilih ? ' dipilih' : '') + '" data-aksen="' + a.id + '" aria-label="Aksen ' + escapeHtml(a.nama) + '" aria-pressed="' + pilih + '" style="background:' + E.contohAksen(a.id) + '"></button>';
     }).join('');
   };
-  const namaAksen = function () { return E.aksenSenarai.filter(function (a) { return a.id === E.aksenSemasa(); })[0].nama; };
+  const latarHtml = function () {
+    return E.latarSenarai.map(function (l) {
+      const pilih = l.id === E.latarSemasa();
+      return '<button type="button" class="latar-bulat' + (pilih ? ' dipilih' : '') + '" data-latar="' + l.id + '" aria-label="Latar ' + escapeHtml(l.nama) + '" aria-pressed="' + pilih + '" style="background:' + E.contohLatar(l.id) + '"></button>';
+    }).join('');
+  };
   const segar = function () {
     const rangka = document.getElementById('temaDialog');
     if (!rangka) return;
-    rangka.style.setProperty('--aksen-contoh', E.contohAksen(E.aksenSemasa()));   // titik emas pada kad warna utama mengikut aksen terpilih
-    document.getElementById('temaGrid').innerHTML = kadHtml();
+    rangka.style.setProperty('--aksen-contoh', E.contohAksen(E.aksenSemasa()));   // titik emas pada bulatan warna utama mengikut aksen terpilih
+    document.getElementById('temaGrid').innerHTML = utamaHtml();
     document.getElementById('aksenGrid').innerHTML = aksenHtml();
-    document.getElementById('aksenNama').textContent = namaAksen();
+    document.getElementById('latarGrid').innerHTML = latarHtml();
+  };
+  const tandaPilih = function (selektor, butang) {
+    document.querySelectorAll(selektor).forEach(function (k) { k.classList.toggle('dipilih', k === butang); k.setAttribute('aria-pressed', k === butang ? 'true' : 'false'); });
   };
   await Swal.fire({
-    title: 'Tema Warna', width: 640, confirmButtonText: 'Selesai', confirmButtonColor: '#1F7C5B', showDenyButton: true, denyButtonText: 'Tetapkan semula', customClass: { denyButton: 'btn-tema-lalai' },
+    title: 'Tema Warna', width: 560, confirmButtonText: 'Selesai', confirmButtonColor: '#1F7C5B', showDenyButton: true, denyButtonText: 'Tetapkan semula', customClass: { denyButton: 'btn-tema-lalai' },
     html: '<div id="temaDialog" style="--aksen-contoh:' + E.contohAksen(E.aksenSemasa()) + '">' +
-      '<p class="small text-muted mb-1">Pilih warna sistem. Warna bertukar serta-merta dan disimpan pada peranti ini sahaja.</p>' +
-      '<div class="tema-seksyen">Warna Utama</div><div class="tema-grid" id="temaGrid">' + kadHtml() + '</div>' +
-      '<div class="tema-seksyen">Warna Aksen <span>hiasan emas pada butang, jalur &amp; lambang</span></div>' +
-      '<div class="aksen-grid" id="aksenGrid">' + aksenHtml() + '</div><div class="aksen-nama" id="aksenNama">' + escapeHtml(namaAksen()) + '</div></div>',
-    willOpen: function () {   // sebelum dipaparkan: pendengar sudah ada sebaik kad kelihatan
+      '<div class="tema-seksyen">Warna Utama</div><div class="warna-grid" id="temaGrid">' + utamaHtml() + '</div>' +
+      '<div class="tema-seksyen">Warna Aksen</div><div class="warna-grid" id="aksenGrid">' + aksenHtml() + '</div>' +
+      '<div class="tema-seksyen">Warna Latar</div><div class="warna-grid" id="latarGrid">' + latarHtml() + '</div></div>',
+    willOpen: function () {   // sebelum dipaparkan: pendengar sudah ada sebaik bulatan kelihatan
       document.getElementById('temaDialog').addEventListener('click', function (e) {
-        const kad = e.target.closest('.tema-kad'), bulat = e.target.closest('.aksen-bulat');
+        const kad = e.target.closest('.tema-kad'), bulat = e.target.closest('.aksen-bulat'), latar = e.target.closest('.latar-bulat');
         if (kad && kad.dataset.tema !== E.semasa()) {
-          document.querySelectorAll('#temaGrid .tema-kad').forEach(function (k) { k.classList.toggle('dipilih', k === kad); k.setAttribute('aria-pressed', k === kad ? 'true' : 'false'); });
+          tandaPilih('#temaGrid .tema-kad', kad);
           setTimeout(function () { E.terap(kad.dataset.tema); segar(); }, 30);   // beri peluang tanda pilihan dilukis dahulu
         } else if (bulat && bulat.dataset.aksen !== E.aksenSemasa()) {
-          document.querySelectorAll('#aksenGrid .aksen-bulat').forEach(function (k) { k.classList.toggle('dipilih', k === bulat); k.setAttribute('aria-pressed', k === bulat ? 'true' : 'false'); });
+          tandaPilih('#aksenGrid .aksen-bulat', bulat);
           setTimeout(function () { E.terapAksen(bulat.dataset.aksen); segar(); }, 30);
+        } else if (latar && latar.dataset.latar !== E.latarSemasa()) {
+          tandaPilih('#latarGrid .latar-bulat', latar);
+          setTimeout(function () { E.terapLatar(latar.dataset.latar); segar(); }, 30);
         }
       });
     },
     preDeny: function () { E.tetapSemula(); segar(); return false; }   // kekal terbuka supaya pengguna nampak hasilnya
   });
-}document.getElementById('btnTema').addEventListener('click', bukaPilihTema_);
+}
+
+document.getElementById('btnTema').addEventListener('click', bukaPilihTema_);
 document.getElementById('btnTemaLogin').addEventListener('click', bukaPilihTema_);
 // ---------------------------------------------------------------
 // MULA
