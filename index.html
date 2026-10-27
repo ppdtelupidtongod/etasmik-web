@@ -5423,7 +5423,150 @@
     .notif-tengah.keluar { opacity: 0; }
     .nt-bulatan, .nt-tanda { animation: none; stroke-dashoffset: 0; }
     .nt-riak, .nt-kilau { display: none; }
-  }</style>
+  }
+
+  /* =====================================================================
+     v31 - TEMA WARNA: butang palet (log masuk & bar atas) + dialog pilihan 10 tema. Tema = anjakan hue keluarga zamrud oleh enjin dalam <head> (lihat EnjinTema).
+  ===================================================================== */
+  .lg-tema {
+    position: absolute; top: 16px; right: 16px; z-index: 6; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; cursor: pointer;
+    font-size: 1.05rem; color: #F3DC93; border: 1px solid rgba(230,204,133,.6); background: rgba(255,255,255,.12); transition: background .2s ease, transform .2s ease, box-shadow .25s ease;
+  }
+  .lg-tema:hover { background: rgba(255,255,255,.22); box-shadow: 0 0 18px rgba(230,204,133,.5); transform: rotate(-14deg); }
+  .lg-tema:focus-visible { outline: 3px solid rgba(243,220,147,.85); outline-offset: 2px; }
+  .tema-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 12px; text-align: center; }
+  .tema-kad {
+    position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 12px 4px 10px; border-radius: 16px; cursor: pointer; background: #fff;
+    border: 1.5px solid #E4DDC7; transition: border-color .2s ease, box-shadow .25s ease, background .2s ease;
+  }
+  .tema-kad:hover { border-color: #D3CAAB; background: #FBF8EE; }
+  .tema-kad:focus-visible { outline: 3px solid rgba(201,162,77,.7); outline-offset: 2px; }
+  .tema-kad.dipilih { border-color: #C9A24D; background: #FFFCF0; box-shadow: 0 0 0 3px rgba(201,162,77,.3); }
+  .tema-contoh { position: relative; width: 54px; height: 54px; border-radius: 50%; box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 10px 16px -8px rgba(0,0,0,.5); }
+  .tema-contoh::after { content: ''; position: absolute; right: 2px; bottom: 2px; width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, #F3DC93, #C9A24D); box-shadow: 0 0 0 2px #fff; }
+  .tema-kad.dipilih .tema-contoh::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 1.1rem; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+  .tema-nama { font-size: .76rem; font-weight: 800; line-height: 1.2; color: #14261F; }
+  .tema-kad small { margin-top: -4px; font-size: .62rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #8A6A1F; }
+  .swal2-styled.swal2-deny.btn-tema-lalai { background: #fff !important; color: #14261F !important; border: 1.5px solid #D3CAAB !important; box-shadow: none !important; }
+  .swal2-styled.swal2-deny.btn-tema-lalai:hover { background: #FBF8EE !important; }
+  @media (max-width: 560px) { .tema-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tema-kad { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 10px 12px; text-align: left; } .tema-contoh { width: 44px; height: 44px; flex: none; } .tema-kad small { margin: 0 0 0 auto; } }
+  @media (prefers-reduced-motion: reduce) { .lg-tema { transition: none; } .lg-tema:hover { transform: none; } }</style>
+  <!-- ============================================================ -->
+  <!-- ENJIN TEMA WARNA (10 pilihan; lalai Hijau Zamrud = CSS asal TIDAK diubah). Dijalankan di <head> supaya tema tersimpan dipasang sebelum    -->
+  <!-- halaman dilukis (tiada kelipan hijau). Pilihan menukar hue/ketepuan keluarga hijau-zamrud dalam CSS & SVG hiasan; emas, warna semantik  -->
+  <!-- (tahap bacaan, mutu, status, tahun, jubin menu, sijil/cetakan) TIDAK disentuh. Disimpan dalam localStorage peranti.                     -->
+  <!-- ============================================================ -->
+  <script>
+  (function () {
+    var KUNCI = 'hubTasmik_tema';
+    // dh = anjakan hue (darjah) daripada hijau zamrud (~158); ds = pengganda ketepuan. Hue sasaran dalam komen.
+    var SENARAI = [
+      { id: 'zamrud', nama: 'Hijau Zamrud', dh: 0, ds: 1 },          // 158 (lalai)
+      { id: 'zaitun', nama: 'Hijau Zaitun', dh: -60, ds: 0.8 },      // 98
+      { id: 'laut', nama: 'Hijau Laut', dh: 24, ds: 1 },             // 182
+      { id: 'biru', nama: 'Biru Laut', dh: 50, ds: 1 },              // 208
+      { id: 'malam', nama: 'Biru Malam', dh: 68, ds: 0.95 },         // 226
+      { id: 'anggur', nama: 'Ungu Anggur', dh: 114, ds: 0.75 },      // 272
+      { id: 'delima', nama: 'Merah Delima', dh: 192, ds: 0.9 },      // 350
+      { id: 'mawar', nama: 'Mawar Pudar', dh: 174, ds: 0.45 },       // 332
+      { id: 'kopi', nama: 'Coklat Kopi', dh: -130, ds: 0.6 },        // 28
+      { id: 'arang', nama: 'Kelabu Arang', dh: 0, ds: 0.07 }         // neutral
+    ];
+    // Aturan yang BUKAN warna tema (kategori/semantik/dokumen rasmi): dibiarkan seperti asal.
+    var KECUALI = /\.menu-card|\.tb-\d|\[data-w|\.tahun-kad|\.enrol-kelas-kepala|\.rumusan-kelas-pill|\.badge-kategori|\.analisis-dot|\.bk-|\.kc-|\.kat-chip|\.st-chip|\.btn-traffic|\.status-(?:online|offline)|\.badge-lulus|\.sasaran-|\.ppd-status|\.ppd-kpi\[|\.ppd-trek-isi|\.ppd-mini-trek|\.rs-|\.rp-|\.cincin-tahap|\.tangga-mini|\.tp-langkah|\.hari-ini|\.perkasa-mini-badge|\.ppd-mutu|\.ppd-tanda|\.ct-teras|\.rr-bar|\.cp-|#areaCetakPpd|\.sijil|#areaTranskripCetak|\.bg-success|\.text-success|\.alert-success|\.text-bg-success|\.lencana-/;
+    var PROTEK = /(--(?:ok|kat|teal|amaran|bahaya|red|merah)[a-z0-9-]*\s*:[^;{}]*;?)/g;
+    var gaya = null, asal = '', semasa = 'zamrud';
+
+    function cari(id) { for (var i = 0; i < SENARAI.length; i++) if (SENARAI[i].id === id) return SENARAI[i]; return null; }
+    function rgbHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+      if (d) {
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        if (mx === r) h = (g - b) / d + (g < b ? 6 : 0); else if (mx === g) h = (b - r) / d + 2; else h = (r - g) / d + 4;
+        h *= 60;
+      }
+      return [h, s, l];
+    }
+    function hslRgb(h, s, l) {
+      h /= 360;
+      function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1 / 6) return p + (q - p) * 6 * t; if (t < 1 / 2) return q; if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6; return p; }
+      if (s === 0) { var v = Math.round(l * 255); return [v, v, v]; }
+      var q = l < 0.5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+      return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+    }
+    // keluarga tema = hue 95..195 dengan ketepuan >= 0.06; selain itu (emas, merah, kelabu) dibiarkan
+    function ubah(r, g, b, t) {
+      var x = rgbHsl(r, g, b);
+      if (x[1] < 0.06 || x[0] < 95 || x[0] >= 195) return null;
+      return hslRgb((x[0] + t.dh + 360) % 360, Math.min(1, x[1] * t.ds), x[2]);
+    }
+    function h2(n) { var s = n.toString(16); return s.length < 2 ? '0' + s : s; }
+    function hexBaru(hex, t) {
+      var c = ubah(parseInt(hex.substr(0, 2), 16), parseInt(hex.substr(2, 2), 16), parseInt(hex.substr(4, 2), 16), t);
+      return c ? h2(c[0]) + h2(c[1]) + h2(c[2]) : hex;
+    }
+    function ubahBadan(badan, t) {
+      var simpan = [];
+      badan = badan.replace(PROTEK, function (m) { simpan.push(m); return '\u0001' + (simpan.length - 1) + '\u0002'; });
+      badan = badan.replace(/#([0-9a-fA-F]{6})\b/g, function (m, x) { return '#' + hexBaru(x, t); });
+      badan = badan.replace(/%23([0-9a-fA-F]{6})/g, function (m, x) { return '%23' + hexBaru(x, t); });
+      badan = badan.replace(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)/g, function (m, r, g, b, a) {
+        var c = ubah(+r, +g, +b, t);
+        if (!c) return m;
+        return a === undefined ? 'rgb(' + c.join(',') + ')' : 'rgba(' + c.join(',') + ',' + a + ')';
+      });
+      return badan.replace(/\u0001(\d+)\u0002/g, function (m, i) { return simpan[+i]; });
+    }
+    // Setiap peraturan paling dalam "selektor { badan }" (termasuk di dalam @media/@keyframes) diproses kecuali selektornya dalam KECUALI.
+    function ubahTeks(css, t) {
+      css = css.replace(/\/\*[\s\S]*?\*\//g, '');
+      return css.replace(/([^{}]+)\{([^{}]*)\}/g, function (m, sel, badan) { return KECUALI.test(sel) ? m : sel + '{' + ubahBadan(badan, t) + '}'; });
+    }
+    function cariGaya() {
+      var s = document.querySelectorAll('style'), maks = null;
+      for (var i = 0; i < s.length; i++) if (!maks || s[i].textContent.length > maks.textContent.length) maks = s[i];
+      return maks;
+    }
+    // SVG hiasan (pemandangan masjid, pemuat buku): atribut fill/stroke/stop-color berwarna hijau ditukar; nilai asal disimpan dalam data-tema-*
+    function dom() {
+      if (!document.body) return;
+      var t = cari(semasa) || SENARAI[0], els = document.querySelectorAll('svg *'), atr = ['fill', 'stroke', 'stop-color'];
+      for (var i = 0; i < els.length; i++) {
+        for (var j = 0; j < atr.length; j++) {
+          var a = atr[j], el = els[i], simpan = el.getAttribute('data-tema-' + a), v = simpan === null ? el.getAttribute(a) : simpan;
+          if (v === null || !/^#[0-9a-fA-F]{6}$/.test(v)) continue;
+          var baharu = (t.dh === 0 && t.ds === 1) ? v : '#' + hexBaru(v.substr(1), t);   // lalai: pulihkan nilai asal tepat
+          if (simpan === null && baharu.toLowerCase() === v.toLowerCase()) continue;   // bukan keluarga tema: tidak disentuh
+          if (simpan === null) el.setAttribute('data-tema-' + a, v);
+          el.setAttribute(a, baharu);
+        }
+      }
+    }
+    function terap(id, senyap) {
+      var t = cari(id) || SENARAI[0];
+      if (!gaya) { gaya = cariGaya(); if (!gaya) return false; asal = gaya.textContent; }
+      gaya.textContent = (t.dh === 0 && t.ds === 1) ? asal : ubahTeks(asal, t);
+      semasa = t.id;
+      document.documentElement.setAttribute('data-tema', t.id);
+      dom();
+      if (!senyap) { try { localStorage.setItem(KUNCI, t.id); } catch (e) { /* abaikan */ } }
+      return true;
+    }
+    function contoh(id) {
+      var t = cari(id) || SENARAI[0];
+      return 'linear-gradient(145deg, #' + hexBaru('1F7C5B', t) + ', #' + hexBaru('0E402E', t) + ')';
+    }
+    window.EnjinTema = {
+      senarai: SENARAI, kunci: KUNCI,
+      semasa: function () { return semasa; },
+      terap: terap, dom: dom, contoh: contoh,
+      asalSama: function () { return !gaya || gaya.textContent === asal; },
+      tersimpan: function () { try { return localStorage.getItem(KUNCI); } catch (e) { return null; } }
+    };
+    try { var id = localStorage.getItem(KUNCI); if (id && id !== 'zamrud' && cari(id)) terap(id, true); } catch (e) { /* abaikan */ }
+  })();
+  </script>
 </head>
 <body>
 
@@ -5519,6 +5662,7 @@
       <span class="i-star" style="top:6%;left:55%;animation-delay:1s;"></span>
       <span class="i-star" style="top:90%;left:44%;animation-delay:2.8s;"></span>
     </div>
+    <button type="button" class="lg-tema" id="btnTemaLogin" aria-label="Tema warna" title="Tema warna"><i class="fa-solid fa-palette" aria-hidden="true"></i></button>
     <div class="lg-shell">
       <!-- PANEL KIRI/ATAS: jenama (zamrud + emas, pemandangan masjid). Telefon: jalur ringkas di atas borang. -->
       <aside class="lg-hero" aria-label="Sistem e-Tasmik">
@@ -5655,6 +5799,7 @@
           <button class="btn btn-sm btn-outline-light me-2 btn-tetapan-sijil d-none" id="btnTetapanSijil" title="Tetapan Sekolah">
             <i class="fa-solid fa-gear"></i>
           </button>
+          <button class="btn btn-sm btn-outline-light me-2" id="btnTema" title="Tema Warna"><i class="fa-solid fa-palette"></i></button>
           <button class="btn btn-sm btn-outline-light me-2" id="btnTukarKataLaluan" title="Tukar Kata Laluan"><i class="fa-solid fa-key"></i></button>
           <button class="btn btn-sm btn-outline-light" id="btnLogout" title="Log Keluar"><i class="fa-solid fa-power-off"></i></button>
         </div>
@@ -5825,6 +5970,7 @@
               <span id="navNamaGuruMenu"></span>
               <button type="button" class="btn-urus-pengguna d-none" onclick="document.getElementById('btnUrusPengguna').click()" title="Urus Pengguna"><i class="fa-solid fa-users-gear"></i></button>
               <button type="button" class="btn-tetapan-sijil d-none" onclick="document.getElementById('btnTetapanSijil').click()" title="Tetapan Sijil"><i class="fa-solid fa-gear"></i></button>
+              <button type="button" onclick="document.getElementById('btnTema').click()" title="Tema Warna"><i class="fa-solid fa-palette"></i></button>
               <button type="button" onclick="document.getElementById('btnTukarKataLaluan').click()" title="Tukar Kata Laluan"><i class="fa-solid fa-key"></i></button>
               <button type="button" onclick="document.getElementById('btnLogout').click()" title="Log Keluar"><i class="fa-solid fa-power-off"></i></button>
             </div>
@@ -13015,9 +13161,40 @@ function bersihkanPaparanPpd_() {
 }
 
 // ---------------------------------------------------------------
+// TEMA WARNA (10 pilihan). Enjin (window.EnjinTema) berada dalam <head> Index.html supaya tema tersimpan dipasang sebelum halaman dilukis.
+// ---------------------------------------------------------------
+async function bukaPilihTema_() {
+  const E = window.EnjinTema;
+  if (!E) return;
+  const kadHtml = function () {
+    return E.senarai.map(function (t) {
+      const pilih = t.id === E.semasa();
+      return '<button type="button" class="tema-kad' + (pilih ? ' dipilih' : '') + '" data-tema="' + t.id + '" aria-pressed="' + pilih + '" aria-label="' + escapeHtml(t.nama) + '">' +
+        '<span class="tema-contoh" style="background:' + E.contoh(t.id) + '"></span><span class="tema-nama">' + escapeHtml(t.nama) + '</span>' + (t.id === 'zamrud' ? '<small>Lalai</small>' : '') + '</button>';
+    }).join('');
+  };
+  const segar = function () { const g = document.getElementById('temaGrid'); if (g) g.innerHTML = kadHtml(); };
+  await Swal.fire({
+    title: 'Tema Warna', width: 640, confirmButtonText: 'Selesai', confirmButtonColor: '#1F7C5B', showDenyButton: true, denyButtonText: 'Kembali ke Hijau Zamrud', customClass: { denyButton: 'btn-tema-lalai' },
+    html: '<p class="small text-muted mb-1">Pilih warna utama sistem. Warna bertukar serta-merta dan disimpan pada peranti ini sahaja.</p><div class="tema-grid" id="temaGrid">' + kadHtml() + '</div>',
+    willOpen: function () {   // sebelum dipaparkan: pendengar sudah ada sebaik kad kelihatan
+      document.getElementById('temaGrid').addEventListener('click', function (e) {
+        const kad = e.target.closest('.tema-kad');
+        if (!kad || kad.dataset.tema === E.semasa()) return;
+        document.querySelectorAll('#temaGrid .tema-kad').forEach(function (k) { k.classList.toggle('dipilih', k === kad); k.setAttribute('aria-pressed', k === kad ? 'true' : 'false'); });
+        setTimeout(function () { E.terap(kad.dataset.tema); segar(); }, 30);   // beri peluang tanda pilihan dilukis dahulu
+      });
+    },
+    preDeny: function () { E.terap('zamrud'); segar(); return false; }   // kekal terbuka supaya pengguna nampak hasilnya
+  });
+}
+document.getElementById('btnTema').addEventListener('click', bukaPilihTema_);
+document.getElementById('btnTemaLogin').addEventListener('click', bukaPilihTema_);
+// ---------------------------------------------------------------
 // MULA
 // ---------------------------------------------------------------
-document.querySelectorAll('img[data-logo-ppd]').forEach(function (img) { img.setAttribute('src', LOGO_PPD); });   // LOGO_PPD ditakrif selepas kod log masuk, jadi dipasang di sini
+document.querySelectorAll('img[data-logo-ppd]').forEach(function (img) { img.setAttribute('src', LOGO_PPD); });
+if (window.EnjinTema) window.EnjinTema.dom();   // SVG hiasan mengikut tema tersimpan   // LOGO_PPD ditakrif selepas kod log masuk, jadi dipasang di sini
 terapkanPenjenamaan_();
 muatInfoAwam_();
 kemaskiniStatusSambungan();
