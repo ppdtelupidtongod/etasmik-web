@@ -5150,18 +5150,6 @@
   .ppd-kelayakan { padding: 10px 12px; margin-bottom: 8px; border-radius: 14px; background: #FBF7EA; border: 1px solid #E4DDC7; text-align: left; }
   .ppd-kelayakan code { font-weight: 800; }
 
-  .sepandu-kl {
-    display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; width: min(1180px, calc(100% - 24px)); margin: 10px auto 0; padding: 10px 14px 10px 16px;
-    border-radius: 16px; background: linear-gradient(180deg, #FFF9E4, #FFF1C4); border: 1px solid #E4C877; color: #5A4210; font-size: .9rem;
-    box-shadow: 0 12px 24px -18px rgba(138,106,31,.7), inset 0 1px 0 #fff; animation: panelAkaunBuka .4s cubic-bezier(.22,1,.36,1);
-  }
-  .sepandu-kl.d-none { display: none !important; }
-  .sepandu-kl-ikon { font-size: 1.15rem; color: #B8892F; }
-  .sepandu-kl-teks { flex: 1 1 260px; min-width: 0; line-height: 1.35; }
-  .sepandu-kl-btn { padding: 6px 14px; border: 0; border-radius: 999px; font-weight: 800; color: #fff; background: linear-gradient(180deg, #18694F, #0E4A36); box-shadow: 0 8px 16px -10px rgba(10,60,43,.95); }
-  .sepandu-kl-btn:hover { color: #fff; background: linear-gradient(180deg, #1D7658, #115240); }
-  .sepandu-kl-tutup { flex: none; width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(90,66,16,.08); color: #5A4210; cursor: pointer; }
-  .sepandu-kl-tutup:hover { background: rgba(90,66,16,.16); }
 
   /* ---------- cetakan Konsol PPD ---------- */
   .cetak-ppd { display: none; }
@@ -5210,7 +5198,7 @@
     .cp-tanda { display: inline-block; min-width: 12px; padding: 0 3px; border-radius: 6px; font-size: 6.5pt; text-align: center; color: #fff; background: #95233A; }
     .cp-kaki { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; padding-top: 5px; border-top: 1px solid #D3CAAB; font-size: 7.3pt; color: #5B6B63; }
   }
-  @media (prefers-reduced-motion: reduce) { .ppd-konsol > .ppd-muat-bar::before { animation-duration: 3s; } .sepandu-kl { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .ppd-konsol > .ppd-muat-bar::before { animation-duration: 3s; } }
 
   /* =====================================================================
      v27 - SKRIN LOG MASUK PREMIUM
@@ -5372,7 +5360,7 @@
   }
 
   /* =====================================================================
-     v29 - SEMAKAN SKRIN SEKOLAH (PC & telefon): ikon carian kelihatan, jalur penapis Tasmik tidak berlipat, bar alat Enrolmen kemas, sepanduk kata laluan padat.
+     v29 - SEMAKAN SKRIN SEKOLAH (PC & telefon): ikon carian kelihatan, jalur penapis Tasmik tidak berlipat, bar alat Enrolmen kemas.
   ===================================================================== */
   .enrol-carian i, .roster-cari i { z-index: 3; }
   @media (max-width: 899px) {
@@ -5388,11 +5376,53 @@
   }
   .rumusan-mode-tabs { display: inline-flex; width: max-content; max-width: 100%; padding: 4px; border-radius: 999px; background: #EEE8D2; border: 1px solid #E0D7B8; box-shadow: inset 0 1px 2px rgba(14,64,46,.1); }
   .rumusan-mode-tabs .subtab-btn { border-radius: 999px; padding: 8px 20px; font-weight: 800; color: var(--green-1); }
-  .rumusan-mode-tabs .subtab-btn.active { color: #fff; background: linear-gradient(180deg, #1D7A58, #0E4A36); box-shadow: 0 8px 14px -8px rgba(10,60,43,.9), inset 0 1px 0 rgba(255,255,255,.25); }  @media (max-width: 599px) {
-    .sepandu-kl { flex-wrap: nowrap; gap: 8px; width: calc(100% - 20px); margin-top: 8px; padding: 8px 8px 8px 12px; }
-    .sepandu-kl-sub { display: none; }
-    .sepandu-kl-teks { flex: 1 1 auto; font-size: .82rem; line-height: 1.25; }
-    .sepandu-kl-btn { padding: 6px 12px; font-size: .8rem; white-space: nowrap; }
+  .rumusan-mode-tabs .subtab-btn.active { color: #fff; background: linear-gradient(180deg, #1D7A58, #0E4A36); box-shadow: 0 8px 14px -8px rgba(10,60,43,.9), inset 0 1px 0 rgba(255,255,255,.25); }
+
+  /* =====================================================================
+     v30 - NOTIFIKASI TENGAH SKRIN (menggantikan toast di tepi): kad gading bertepi emas muncul di tengah dengan bulatan + tanda dilukis berperingkat,
+           riak lembut & kilau, kemudian hilang sendiri. Tidak menyekat klik. Dipakai oleh toastKejayaan/toastRalat (termasuk "Selamat Datang").
+  ===================================================================== */
+  .notif-tengah {
+    position: fixed; left: 50%; top: 42%; z-index: 2100; display: flex; align-items: center; gap: 16px; width: max-content; max-width: min(400px, calc(100vw - 32px));
+    padding: 16px 26px 16px 18px; border-radius: 24px; pointer-events: none; transform: translate(-50%, -50%);
+    background: linear-gradient(180deg, #FFFEF9, #FBF8EE); border: 1px solid rgba(201,162,77,.7);
+    box-shadow: 0 34px 64px -24px rgba(8,35,26,.65), 0 0 0 6px rgba(255,255,255,.4), inset 0 1px 0 #fff;
+    animation: ntMasuk .55s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .notif-tengah::before { content: ''; position: absolute; left: 26px; right: 26px; top: 0; height: 3px; border-radius: 0 0 3px 3px; background: linear-gradient(90deg, transparent, #D8B765, transparent); }
+  .notif-tengah.keluar { animation: ntKeluar .42s ease forwards; }
+  .notif-ralat { border-color: rgba(179,38,30,.4); }
+  .notif-ralat::before { background: linear-gradient(90deg, transparent, #D6736B, transparent); }
+  @keyframes ntMasuk { from { opacity: 0; transform: translate(-50%, -44%) scale(.84); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+  @keyframes ntKeluar { to { opacity: 0; transform: translate(-50%, -56%) scale(.95); } }
+  .nt-ikon { position: relative; flex: none; width: 54px; height: 54px; }
+  .nt-ikon svg { position: relative; width: 100%; height: 100%; overflow: visible; }
+  .nt-bulatan { fill: rgba(31,150,104,.1); stroke: #1F7C5B; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 145; stroke-dashoffset: 145; transform-origin: 26px 26px; transform: rotate(-90deg); animation: ntLukis .55s ease-out .12s forwards; }
+  .nt-tanda { fill: none; stroke: #1F7C5B; stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 42; stroke-dashoffset: 42; animation: ntLukis .36s ease-out .55s forwards; }
+  .nt-silang { stroke-dasharray: 50; stroke-dashoffset: 50; }
+  .notif-ralat .nt-bulatan { fill: rgba(179,38,30,.08); stroke: #B3261E; }
+  .notif-ralat .nt-tanda { stroke: #B3261E; }
+  .nt-riak { position: absolute; inset: 2px; border-radius: 50%; border: 2px solid rgba(31,124,91,.55); opacity: 0; animation: ntRiak .95s ease-out .55s; }
+  .notif-ralat .nt-riak { border-color: rgba(179,38,30,.5); }
+  .nt-kilau { position: absolute; width: 9px; height: 9px; background: #D8B765; opacity: 0; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); animation: ntKilau .8s ease-out .75s; }
+  .nt-kilau.k1 { top: -6px; right: -4px; } .nt-kilau.k2 { bottom: -2px; left: -8px; width: 7px; height: 7px; animation-delay: .9s; } .nt-kilau.k3 { top: 4px; left: -10px; width: 6px; height: 6px; animation-delay: 1s; }
+  .notif-ralat .nt-kilau { display: none; }
+  @keyframes ntLukis { to { stroke-dashoffset: 0; } }
+  @keyframes ntRiak { 0% { transform: scale(.9); opacity: .75; } 100% { transform: scale(1.75); opacity: 0; } }
+  @keyframes ntKilau { 0% { opacity: 0; transform: scale(.2) rotate(0); } 45% { opacity: 1; transform: scale(1.25) rotate(40deg); } 100% { opacity: 0; transform: scale(.6) rotate(80deg); } }
+  .nt-tajuk { font-family: var(--font-display); font-weight: 800; font-size: 1.12rem; line-height: 1.25; color: #0E402E; }
+  .notif-ralat .nt-tajuk { color: #7A1A14; font-family: var(--font-body); font-size: 1rem; font-weight: 800; }
+  .nt-sub { margin-top: 2px; font-size: .9rem; font-weight: 600; color: #5B6B63; }
+  .notif-sambutan { gap: 20px; padding: 22px 34px 22px 24px; border-radius: 28px; }
+  .notif-sambutan .nt-ikon { width: 68px; height: 68px; }
+  .notif-sambutan .nt-tajuk { font-size: 1.6rem; }
+  .notif-sambutan .nt-sub { font-size: .98rem; }
+  @media (max-width: 480px) { .notif-tengah { padding: 14px 20px 14px 14px; gap: 12px; } .notif-sambutan { padding: 18px 24px 18px 18px; } .notif-sambutan .nt-tajuk { font-size: 1.35rem; } }
+  @media (prefers-reduced-motion: reduce) {
+    .notif-tengah, .notif-tengah.keluar { animation: none; }
+    .notif-tengah.keluar { opacity: 0; }
+    .nt-bulatan, .nt-tanda { animation: none; stroke-dashoffset: 0; }
+    .nt-riak, .nt-kilau { display: none; }
   }</style>
 </head>
 <body>
@@ -5640,14 +5670,6 @@
       <button type="button" data-nav="perkasa"><i class="fa-solid fa-bullseye"></i> PERKASA</button>
       <button type="button" data-nav="transkrip"><i class="fa-solid fa-file-lines"></i> Sijil</button>
     </nav>
-
-    <!-- AMARAN KATA LALUAN LALAI: muncul selepas log masuk jika kata laluan masih abcd1234 (tidak menyekat kerja; hilang apabila kata laluan ditukar) -->
-    <div id="sepanduKataLaluan" class="sepandu-kl d-none" role="status">
-      <i class="fa-solid fa-shield-halved sepandu-kl-ikon" aria-hidden="true"></i>
-      <span class="sepandu-kl-teks"><b>Kata laluan anda masih kata laluan lalai.</b> <span class="sepandu-kl-sub">Tukar sekarang supaya data sekolah selamat.</span></span>
-      <button type="button" class="btn btn-sm sepandu-kl-btn" id="btnSepanduTukar"><i class="fa-solid fa-key"></i> Tukar sekarang</button>
-      <button type="button" class="sepandu-kl-tutup" id="btnSepanduTutup" aria-label="Tutup amaran"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-    </div>
 
     <!-- KANDUNGAN UTAMA -->
     <main class="main-content">
@@ -7683,13 +7705,35 @@ function tutupLoading() {
   const overlay = document.getElementById('loadingOverlay');
   if (overlay) overlay.classList.add('d-none');
 }
-function toastKejayaan(mesej) {
-  Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: mesej, showConfirmButton: false, timer: 1800 });
+/**
+ * Notifikasi sekejap di TENGAH skrin dengan animasi tanda (menggantikan toast di tepi atas-kanan): kad gading bertepi emas, bulatan & tanda
+ * dilukis berperingkat, riak lembut, kilau; hilang sendiri (tidak menyekat klik). Satu pada satu masa - yang baharu menggantikan yang lama.
+ * jenis: 'ok' (tanda zamrud) | 'ralat' (silang merah). `sub` = baris kecil pilihan; `sambutan` = versi besar untuk "Selamat Datang".
+ */
+let notifTengahPemasa_ = null;
+function notifTengah_(jenis, tajuk, sub, ms, sambutan) {
+  clearTimeout(notifTengahPemasa_);
+  const lama = document.getElementById('notifTengah');
+  if (lama) lama.remove();
+  const el = document.createElement('div');
+  el.id = 'notifTengah';
+  el.className = 'notif-tengah notif-' + jenis + (sambutan ? ' notif-sambutan' : '');
+  el.setAttribute('role', jenis === 'ralat' ? 'alert' : 'status');
+  const tanda = jenis === 'ralat'
+    ? '<path class="nt-tanda nt-silang" d="M18 18L34 34M34 18L18 34"/>'
+    : '<path class="nt-tanda" d="M15 27l8 8 15-17"/>';
+  el.innerHTML =
+    '<div class="nt-ikon" aria-hidden="true"><svg viewBox="0 0 52 52"><circle class="nt-bulatan" cx="26" cy="26" r="23"/>' + tanda + '</svg><span class="nt-riak"></span>' +
+      '<i class="nt-kilau k1"></i><i class="nt-kilau k2"></i><i class="nt-kilau k3"></i></div>' +
+    '<div class="nt-teks"><div class="nt-tajuk">' + escapeHtml(tajuk) + '</div>' + (sub ? '<div class="nt-sub">' + escapeHtml(sub) + '</div>' : '') + '</div>';
+  document.body.appendChild(el);
+  notifTengahPemasa_ = setTimeout(function () {
+    el.classList.add('keluar');
+    setTimeout(function () { if (el.parentNode) el.remove(); }, 450);
+  }, ms || (jenis === 'ralat' ? 2800 : 1900));
 }
-function toastRalat(mesej) {
-  Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: mesej, showConfirmButton: false, timer: 2500 });
-}
-
+function toastKejayaan(mesej, sub, sambutan) { notifTengah_('ok', mesej, sub, sambutan ? 2600 : 1900, sambutan); }
+function toastRalat(mesej) { notifTengah_('ralat', mesej, '', 3000); }
 // ---------------------------------------------------------------
 // STATUS SAMBUNGAN (ONLINE/OFFLINE)
 // ---------------------------------------------------------------
@@ -7764,15 +7808,9 @@ window.addEventListener('offline', kemaskiniStatusSambungan);
 const KUNCI_SESI_TEMPATAN = 'hubTasmik_sesi';        // sessionStorage: { token, user, sekolah }
 const KUNCI_KOD_TERAKHIR = 'hubTasmik_kodSekolah';   // localStorage: kod sekolah terakhir (pra-isi borang sahaja)
 let sedangTamatSesi_ = false;
-let kataLaluanLalai_ = false;   // pelayan memberitahu semasa log masuk bahawa kata laluan masih kata laluan lalai (abcd1234)
 
 function simpanSesiTempatan_() {
-  try { sessionStorage.setItem(KUNCI_SESI_TEMPATAN, JSON.stringify({ token: sesiToken, user: currentUser, sekolah: infoSekolah, kl: kataLaluanLalai_ })); } catch (e) { /* abaikan */ }
-}
-/** Sepanduk amaran (tidak menyekat kerja) - hanya untuk akaun sekolah; PPD tidak pernah menerimanya. */
-function paparSepanduKl_(tunjuk) {
-  const el = document.getElementById('sepanduKataLaluan');
-  if (el) el.classList.toggle('d-none', !(tunjuk && kataLaluanLalai_ && currentUser && currentUser.Peranan !== 'PPD'));
+  try { sessionStorage.setItem(KUNCI_SESI_TEMPATAN, JSON.stringify({ token: sesiToken, user: currentUser, sekolah: infoSekolah })); } catch (e) { /* abaikan */ }
 }
 function padamSesiTempatan_() {
   try { sessionStorage.removeItem(KUNCI_SESI_TEMPATAN); } catch (e) { /* abaikan */ }
@@ -7808,9 +7846,8 @@ function bersihkanPaparanData_() {
 
 /** Kembali ke skrin log masuk dan buang semua keadaan sesi/data. */
 function keluarKeLogin_(mesej) {
-  sesiToken = null; currentUser = null; infoSekolah = null; kataLaluanLalai_ = false;
+  sesiToken = null; currentUser = null; infoSekolah = null;
   document.body.classList.remove('mod-ppd');
-  paparSepanduKl_(false);
   padamSesiTempatan_();
   bersihkanPaparanData_();
   tutupLoading();
@@ -7878,7 +7915,6 @@ document.getElementById('formLogin').addEventListener('submit', async function (
     sesiToken = hasil.token;
     currentUser = hasil.guru;
     infoSekolah = hasil.sekolah || null;
-    kataLaluanLalai_ = !!hasil.kataLaluanLalai;
     try { localStorage.setItem(KUNCI_KOD_TERAKHIR, kod); } catch (err) { /* abaikan */ }
     simpanSesiTempatan_();
     document.getElementById('inputKataLaluan').value = '';
@@ -7908,7 +7944,6 @@ function semakSesiSediaAda() {
     const simpan = JSON.parse(sessionStorage.getItem(KUNCI_SESI_TEMPATAN) || 'null');
     if (simpan && simpan.token && simpan.user) {
       sesiToken = simpan.token; currentUser = simpan.user; infoSekolah = simpan.sekolah || null;
-      kataLaluanLalai_ = !!simpan.kl;
       if (currentUser.Peranan === 'PPD') mulakanAppPPD(); else mulakanApp();
     }
   } catch (e) { /* abaikan */ }
@@ -7923,7 +7958,6 @@ async function mulakanApp(papatSelamatDatang) {
   document.getElementById('appShell').classList.remove('d-none');
   document.getElementById('navNamaGuru').textContent = currentUser.Nama + ' (' + currentUser.Peranan + ')';
   document.getElementById('navNamaGuruMenu').textContent = currentUser.Nama;
-  paparSepanduKl_(true);
   kemaskiniBadgeMenunggu();   // segera: lencana "menunggu sync" mesti mengikut queue pengguna INI (bukan sisa sesi sebelumnya) sebelum data dimuat
   // Ucapan hero kini TETAP ("Selamat Datang ke Sistem E-Tasmik <nama sekolah>") - tiada nama guru.
   isiTarikhHero_();
@@ -7951,7 +7985,7 @@ async function mulakanApp(papatSelamatDatang) {
     navigasi('menu');
     kemaskiniBadgeMenunggu();
     segerakkanDataOffline();
-    if (papatSelamatDatang) toastKejayaan('Selamat Datang, ' + currentUser.Nama + '!');
+    if (papatSelamatDatang) toastKejayaan('Selamat Datang', currentUser.Nama + ((infoSekolah && infoSekolah.nama) ? ' \u00b7 ' + infoSekolah.nama : ''), true);
   } catch (err) {
     toastRalat('Gagal memuatkan data sistem.');
   } finally {
@@ -11567,8 +11601,6 @@ function salinTeks_(teks) {
 // ---------------------------------------------------------------
 // TUKAR KATA LALUAN SENDIRI (semua peranan)
 // ---------------------------------------------------------------
-document.getElementById('btnSepanduTukar').addEventListener('click', function () { document.getElementById('btnTukarKataLaluan').click(); });
-document.getElementById('btnSepanduTutup').addEventListener('click', function () { document.getElementById('sepanduKataLaluan').classList.add('d-none'); });
 document.getElementById('btnTukarKataLaluan').addEventListener('click', async function () {
   const { value: nilai, isConfirmed } = await Swal.fire({
     title: 'Tukar Kata Laluan',
@@ -11594,7 +11626,6 @@ document.getElementById('btnTukarKataLaluan').addEventListener('click', async fu
     tutupLoading();
     if (!hasil.success) { toastRalat(hasil.message || 'Gagal menukar kata laluan.'); return; }
     toastKejayaan(hasil.message || 'Kata laluan ditukar!');
-    kataLaluanLalai_ = false; paparSepanduKl_(false); simpanSesiTempatan_();
   } catch (err) {
     tutupLoading();
     toastRalat('Gagal menukar kata laluan (' + ((err && err.message) || 'ralat tidak diketahui') + ').');
