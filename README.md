@@ -6,6 +6,7 @@ kod enjin dalam repo ini.
 
 - `index.html` - dijana daripada repo utama (jangan sunting di sini).
 - `config.js` - satu baris: alamat web app Google (`.../exec`).
+- `ikon-*.png`, `favicon.ico`, `manifest.webmanifest` - ikon aplikasi (Tambah ke Skrin Utama / ikon tab).
 
 Pautan sekolah: `https://<akaun>.github.io/<repo>/?kod=KODSEKOLAH` (mengisi Kod Sekolah pada borang log masuk).
 
