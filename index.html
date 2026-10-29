@@ -5463,7 +5463,28 @@
   .latar-bulat.dipilih::before { color: #14261F; font-size: .85rem; text-shadow: none; }
   @media (prefers-reduced-motion: reduce) { .tema-kad, .aksen-bulat, .latar-bulat { transition: none; } .tema-kad:hover, .aksen-bulat:hover, .latar-bulat:hover { transform: none; } }  .swal2-styled.swal2-deny.btn-tema-lalai { background: #fff !important; color: #14261F !important; border: 1.5px solid #D3CAAB !important; box-shadow: none !important; }
   .swal2-styled.swal2-deny.btn-tema-lalai:hover { background: #FBF8EE !important; }
-  @media (prefers-reduced-motion: reduce) { .lg-tema { transition: none; } .lg-tema:hover { transform: none; } }</style>
+  @media (prefers-reduced-motion: reduce) { .lg-tema { transition: none; } .lg-tema:hover { transform: none; } }
+  /* =====================================================================
+     v32 - butang PASANG APLIKASI di luar kad log masuk (sebelah butang palet). Telefon: bulatan ikon sahaja. Dialog panduan: .pasang-langkah / .pasang-pautan.
+  ===================================================================== */
+  .lg-pasang {
+    position: absolute; top: 16px; right: 70px; z-index: 6; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px 0 15px; border-radius: 999px; cursor: pointer;
+    font-family: inherit; font-size: .84rem; font-weight: 700; line-height: 1; letter-spacing: .01em; white-space: nowrap; color: #F3DC93; border: 1px solid rgba(230,204,133,.6); background: rgba(255,255,255,.12);
+    transition: background .2s ease, transform .2s ease, box-shadow .25s ease;
+  }
+  .lg-pasang[hidden] { display: none; }
+  .lg-tema, .lg-pasang { background: rgba(7,40,30,.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 6px 16px -8px rgba(0,0,0,.55); }
+  .lg-tema:hover, .lg-pasang:hover { background: rgba(7,40,30,.78); box-shadow: 0 0 18px rgba(230,204,133,.5); }
+  .lg-pasang i { font-size: .95rem; }
+  .lg-pasang:hover { transform: translateY(-1px); }
+  .lg-pasang:focus-visible { outline: 3px solid rgba(243,220,147,.85); outline-offset: 2px; }
+  @media (max-width: 1520px) { .lg-pasang { width: 44px; padding: 0; justify-content: center; } .lg-pasang span { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .lg-pasang { transition: none; } .lg-pasang:hover { transform: none; } }
+  .pasang-langkah { text-align: left; margin: 10px auto 0; padding-left: 1.3rem; max-width: 340px; line-height: 1.6; font-size: .95rem; }
+  .pasang-langkah li { margin-bottom: 4px; }
+  .pasang-nota { margin: 12px auto 0; max-width: 340px; font-size: .84rem; line-height: 1.5; color: #615F52; text-align: left; }
+  .pasang-pautan { margin: 10px auto 0; max-width: 340px; padding: 8px 10px; border-radius: 8px; background: #F3F1E8; border: 1px solid #D3CAAB; font-size: .82rem; word-break: break-all; color: #14261F; }
+</style>
   <!-- ============================================================ -->
   <!-- ENJIN TEMA WARNA: 10 warna utama + 10 warna aksen (hiasan emas) + 10 warna latar pastel (kanvas belakang halaman). Pilihan asal (Hijau Zamrud + Emas) = CSS asal TIDAK diubah. Dijalankan   -->
   <!-- di <head> supaya pilihan tersimpan dipasang sebelum halaman dilukis (tiada kelipan). Warna utama menganjakkan keluarga hijau-zamrud;     -->
@@ -5753,6 +5774,7 @@
       <span class="i-star" style="top:90%;left:44%;animation-delay:2.8s;"></span>
     </div>
     <button type="button" class="lg-tema" id="btnTemaLogin" aria-label="Tema warna" title="Tema warna"><i class="fa-solid fa-palette" aria-hidden="true"></i></button>
+    <button type="button" class="lg-pasang" id="btnPasangLogin" aria-label="Pasang aplikasi" title="Pasang E-Tasmik sebagai aplikasi" hidden><i class="fa-solid fa-download" aria-hidden="true"></i><span>Pasang aplikasi</span></button>
     <div class="lg-shell">
       <!-- PANEL KIRI/ATAS: jenama (zamrud + emas, pemandangan masjid). Telefon: jalur ringkas di atas borang. -->
       <aside class="lg-hero" aria-label="Sistem e-Tasmik">
@@ -13359,6 +13381,66 @@ async function bukaPilihTema_() {
 
 document.getElementById('btnTema').addEventListener('click', bukaPilihTema_);
 document.getElementById('btnTemaLogin').addEventListener('click', bukaPilihTema_);
+// ---------------------------------------------------------------
+// PASANG APLIKASI (PWA): butang di luar kad log masuk. Chrome/Edge/Android menghantar 'beforeinstallprompt': butang memanggil prompt() acara itu terus (acara sekali pakai).
+// Pelayar lain (Safari iOS, Firefox) atau pelayar yang belum menghantar acara: dialog langkah ringkas. Halaman yang dihidang Google (dalam bingkai) tidak boleh dipasang:
+// butang membawa pengguna ke pautan rasmi. Disembunyikan apabila sudah berjalan sebagai aplikasi (standalone) atau selepas 'appinstalled'.
+// ---------------------------------------------------------------
+const URL_PASANG_ = 'https://ppdtelupidtongod.github.io/etasmik-web/';   // pautan rasmi yang boleh dipasang (kemas kini jika alamat tapak awam bertukar)
+const pasangApp_ = (function () {
+  const btn = document.getElementById('btnPasangLogin');
+  let tawaran = null;
+  function berjalanSebagaiApp() {
+    try { return window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: window-controls-overlay)').matches || window.navigator.standalone === true; } catch (e) { return false; }
+  }
+  function jenisPeranti() {
+    const ua = navigator.userAgent || '';
+    if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'ios';
+    if (/Android/i.test(ua)) return 'android';
+    if (ua.indexOf('Firefox/') !== -1) return 'firefox';
+    if (ua.indexOf('Safari/') !== -1 && ua.indexOf('Chrome') === -1 && ua.indexOf('Chromium') === -1 && ua.indexOf('Edg/') === -1) return 'safari-mac';
+    return 'desktop';
+  }
+  const LANGKAH = {
+    ios: ['Ketik ikon <b>Kongsi</b> (kotak dengan anak panah ke atas) pada pelayar.', 'Pilih <b>Tambah ke Skrin Utama</b>.', 'Ketik <b>Tambah</b>. Ikon E-Tasmik akan muncul pada skrin utama.'],
+    android: ['Ketik menu pelayar (<b>tiga titik</b> di penjuru).', 'Pilih <b>Pasang aplikasi</b> (atau <b>Tambah ke skrin utama</b>).', 'Sahkan dengan <b>Pasang</b>.'],
+    firefox: ['Firefox pada komputer tidak menyokong pemasangan aplikasi.', 'Buka pautan ini dalam <b>Chrome</b> atau <b>Edge</b>, atau tekan <b>Ctrl+D</b> untuk menanda halaman ini.'],
+    'safari-mac': ['Pada bar menu pilih <b>Fail</b> &gt; <b>Tambah ke Dock</b>.', 'Sahkan dengan <b>Tambah</b>.'],
+    desktop: ['Klik ikon <b>pasang</b> di hujung bar alamat (atau menu <b>tiga titik</b> &gt; <b>Hantar, simpan dan kongsi</b> &gt; <b>Pasang halaman sebagai aplikasi</b>).', 'Sahkan dengan <b>Pasang</b>.']
+  };
+  function panduan() {
+    const jenis = jenisPeranti();
+    const nota = (jenis === 'desktop' || jenis === 'android') ? '<p class="pasang-nota">Sudah pernah dipasang? Cari ikon <b>E-Tasmik</b> pada menu aplikasi / skrin utama, atau klik <b>Buka dalam aplikasi</b> pada bar alamat.</p>' : '';
+    Swal.fire({
+      title: 'Pasang E-Tasmik',
+      html: '<div>Pasang sebagai aplikasi supaya mudah dibuka dari skrin utama.</div><ol class="pasang-langkah">' + LANGKAH[jenis].map(function (l) { return '<li>' + l + '</li>'; }).join('') + '</ol>' + nota,
+      confirmButtonText: 'Faham'
+    });
+  }
+  function panduanGoogle() {
+    Swal.fire({
+      title: 'Pasang daripada pautan rasmi',
+      html: '<div>Halaman ini dibuka melalui Google, jadi tidak boleh dipasang terus. Buka pautan rasmi di bawah, kemudian tekan butang <b>Pasang aplikasi</b> di sana.</div><div class="pasang-pautan">' + URL_PASANG_ + '</div>',
+      showCancelButton: true, confirmButtonText: 'Buka pautan', cancelButtonText: 'Tutup'
+    }).then(function (h) { if (h.isConfirmed) window.open(URL_PASANG_, '_blank', 'noopener'); });
+  }
+  async function pasang() {
+    if (DALAM_APPS_SCRIPT) { panduanGoogle(); return; }
+    if (tawaran) {
+      const t = tawaran; tawaran = null;   // acara hanya boleh digunakan sekali; jika pengguna batal, klik seterusnya memaparkan panduan
+      try { t.prompt(); await t.userChoice; } catch (e) { /* abaikan */ }
+      return;
+    }
+    panduan();
+  }
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); tawaran = e; });   // halang mini-infobar pelayar: butang sendiri digunakan
+  window.addEventListener('appinstalled', function () {
+    tawaran = null; if (btn) btn.hidden = true;
+    try { toastKejayaan('E-Tasmik berjaya dipasang', 'Cari ikon E-Tasmik pada skrin utama atau menu aplikasi.'); } catch (e) { /* abaikan */ }
+  });
+  if (btn) { btn.hidden = berjalanSebagaiApp(); btn.addEventListener('click', pasang); }
+  return { adaTawaran: function () { return !!tawaran; } };
+})();
 // ---------------------------------------------------------------
 // MULA
 // ---------------------------------------------------------------
